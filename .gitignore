@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Large raw Census downloads — document but don't commit
+data/raw/*.csv
+
+# Temporary files
+*.tmp
+*.log

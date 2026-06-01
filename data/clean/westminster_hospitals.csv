@@ -1,0 +1,6 @@
+Name,Type,Address,Latitude,Longitude,District,ER,Trauma_Level,Notes
+SCL Health — St. Anthony North Health Campus,Hospital,14300 Orchard Pkwy Westminster CO 80023,39.9201,-105.0298,6,Yes,Level II Trauma,Closest trauma center to Westminster. Primary EMS transport destination.
+84th Avenue Neighborhood Health Center,Urgent Care / ER,8461 Turnpike Dr Westminster CO 80031,39.8734,-105.0421,2,Yes,None,Located in District 2 medical district. WFD transports here.
+UCHealth Urgent Care — Westminster,Urgent Care,9889 Westminster Blvd Westminster CO 80031,39.8823,-105.0312,2,No,None,No emergency room — urgent care only.
+SCL Health Medical Group — Westminster,Medical Office,3455 Lutheran Pkwy Westminster CO 80234,39.9034,-105.0531,6,No,None,Outpatient only. No emergency services.
+Walgreens Health — Westminster,Clinic,6935 W 88th Ave Westminster CO 80021,39.8812,-105.0634,3,No,None,Minor care clinic only.

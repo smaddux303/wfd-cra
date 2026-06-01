@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Westminster Fire Department — Community Risk Assessment 2024–2028</title>
+  <meta name="description" content="Westminster Fire Department Community Risk Assessment and Standards of Cover, 2024–2028 CFAI Accreditation Cycle">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Westminster Brand Tokens ─── */
+    :root {
+      --teal:        #008996;
+      --teal-light:  #63C7C7;
+      --navy:        #253646;
+      --gray-dark:   #555759;
+      --gray-light:  #CFD2D3;
+      --off-white:   #F4F5F5;
+      --white:       #FFFFFF;
+      --orange:      #FCB61A;
+      --orange-red:  #FF671D;
+      --green:       #8CC740;
+      --lime:        #DAE144;
+
+      --font:        'Montserrat', Arial, sans-serif;
+      --max-w:       1100px;
+      --section-pad: 5rem 2rem;
+    }
+
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); color: var(--navy); background: var(--white); line-height: 1.6; }
+    img { max-width: 100%; display: block; }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── Navigation ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 60px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.25);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--white); font-size: 14px; font-weight: 600; letter-spacing: .02em;
+    }
+    .nav-logo {
+      width: 32px; height: 32px; background: var(--teal);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex; gap: 0; list-style: none;
+    }
+    .nav-links a {
+      color: var(--gray-light); font-size: 12px; font-weight: 500;
+      padding: 0 14px; height: 60px; display: flex; align-items: center;
+      letter-spacing: .04em; text-transform: uppercase;
+      border-bottom: 3px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-links a:hover { color: var(--white); border-color: var(--teal); text-decoration: none; }
+    .nav-updated { font-size: 11px; color: var(--gray-light); white-space: nowrap; }
+
+    /* ─── Hero ─── */
+    .hero {
+      background: linear-gradient(160deg, var(--navy) 0%, #1a2d3e 50%, #0d1f2d 100%);
+      padding: 7rem 2rem 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 60px,
+        rgba(0,137,150,.04) 60px,
+        rgba(0,137,150,.04) 61px
+      );
+    }
+    .hero-inner { max-width: var(--max-w); margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--teal-light);
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
+      color: var(--white); line-height: 1.1; margin-bottom: 1.5rem;
+      max-width: 800px;
+    }
+    .hero h1 span { color: var(--teal); }
+    .hero-sub {
+      font-size: 16px; color: var(--gray-light);
+      max-width: 600px; margin-bottom: 2.5rem; line-height: 1.7;
+    }
+    .hero-badges {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; letter-spacing: .04em;
+      padding: 5px 12px; border-radius: 20px;
+    }
+    .badge-teal { background: rgba(0,137,150,.2); color: var(--teal-light); border: 1px solid rgba(0,137,150,.4); }
+    .badge-gold { background: rgba(252,182,26,.15); color: var(--orange); border: 1px solid rgba(252,182,26,.3); }
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1px; background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 12px; overflow: hidden;
+      margin-top: 1rem;
+    }
+    .kpi-item {
+      background: rgba(255,255,255,.04);
+      padding: 1.25rem 1rem; text-align: center;
+    }
+    .kpi-value {
+      font-size: 28px; font-weight: 800; color: var(--teal);
+      line-height: 1; display: block; margin-bottom: 4px;
+    }
+    .kpi-label { font-size: 11px; color: var(--gray-light); font-weight: 500; }
+    .kpi-sub { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 2px; }
+
+    /* ─── Section shell ─── */
+    .section { padding: var(--section-pad); }
+    .section-alt { background: var(--off-white); }
+    .section-dark { background: var(--navy); color: var(--white); }
+    .section-teal { background: var(--teal); color: var(--white); }
+    .inner { max-width: var(--max-w); margin: 0 auto; }
+
+    /* ─── Section headers ─── */
+    .section-eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: .5rem;
+    }
+    .section-dark .section-eyebrow { color: var(--teal-light); }
+    .section-teal .section-eyebrow { color: rgba(255,255,255,.7); }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700;
+      line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-lead {
+      font-size: 16px; color: var(--gray-dark); max-width: 680px;
+      line-height: 1.7; margin-bottom: 2.5rem;
+    }
+    .section-dark .section-lead { color: var(--gray-light); }
+    .section-teal .section-lead { color: rgba(255,255,255,.85); }
+    .section-teal .section-title { color: var(--white); }
+
+    /* ─── Divider accent ─── */
+    .accent-bar {
+      width: 48px; height: 4px; background: var(--teal);
+      border-radius: 2px; margin-bottom: 1.5rem;
+    }
+    .section-dark .accent-bar { background: var(--teal-light); }
+    .section-teal .accent-bar { background: rgba(255,255,255,.5); }
+
+    /* ─── Intro / methodology ─── */
+    .intro-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      align-items: start;
+    }
+    .intro-prose p { font-size: 15px; color: var(--gray-dark); line-height: 1.8; margin-bottom: 1rem; }
+    .intro-prose p:last-child { margin-bottom: 0; }
+    .values-list {
+      display: flex; flex-direction: column; gap: 10px; margin-top: 1.5rem;
+    }
+    .value-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--white); border: 1px solid var(--gray-light);
+      border-radius: 8px; padding: 10px 14px;
+    }
+    .value-letter {
+      width: 32px; height: 32px; background: var(--teal); color: var(--white);
+      border-radius: 6px; font-weight: 800; font-size: 16px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .value-text { font-size: 13px; font-weight: 500; color: var(--navy); }
+    .value-sub { font-size: 11px; color: var(--gray-dark); }
+    .method-card {
+      background: var(--white); border-radius: 12px;
+      border: 1px solid var(--gray-light); padding: 1.5rem;
+    }
+    .method-card h3 {
+      font-size: 14px; font-weight: 700; color: var(--navy);
+      margin-bottom: 1rem; padding-bottom: .75rem;
+      border-bottom: 2px solid var(--teal);
+    }
+    .method-step {
+      display: flex; gap: 12px; margin-bottom: 1rem; align-items: flex-start;
+    }
+    .method-step:last-child { margin-bottom: 0; }
+    .method-num {
+      width: 26px; height: 26px; background: var(--teal); color: var(--white);
+      border-radius: 50%; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .method-step p { font-size: 13px; color: var(--gray-dark); line-height: 1.5; }
+    .method-step strong { color: var(--navy); }
+
+    /* ─── Community characteristics ─── */
+    .chars-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .char-card {
+      background: var(--white); border-radius: 10px;
+      border: 1px solid var(--gray-light); padding: 1.25rem;
+    }
+    .char-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(0,137,150,.1); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: .75rem;
+    }
+    .char-card h3 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .char-card p { font-size: 12px; color: var(--gray-dark); line-height: 1.5; }
+
+    /* ─── Embed wrapper ─── */
+    .embed-wrap {
+      background: var(--white); border-radius: 12px;
+      border: 1px solid var(--gray-light);
+      overflow: hidden; margin: 2rem 0;
+    }
+    .embed-header {
+      background: var(--teal); color: var(--white);
+      padding: .75rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .embed-header h3 { font-size: 13px; font-weight: 600; }
+    .embed-tag {
+      font-size: 10px; font-weight: 600; letter-spacing: .06em;
+      background: rgba(255,255,255,.2); padding: 2px 8px; border-radius: 10px;
+    }
+    .embed-body { padding: 0; }
+    .embed-body iframe {
+      width: 100%; border: none; display: block;
+    }
+    .embed-placeholder {
+      background: var(--off-white); padding: 3rem 2rem; text-align: center;
+    }
+    .embed-placeholder p {
+      font-size: 13px; color: var(--gray-dark); margin-bottom: .5rem;
+    }
+    .embed-placeholder .ep-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 1rem;
+    }
+
+    /* ─── Demographics ─── */
+    .demo-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .demo-stat {
+      background: var(--white); border-radius: 10px;
+      border: 1px solid var(--gray-light); padding: 1.25rem 1.5rem;
+    }
+    .demo-stat .val {
+      font-size: 2.25rem; font-weight: 800; color: var(--teal);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .demo-stat .lbl { font-size: 13px; font-weight: 600; color: var(--navy); }
+    .demo-stat .sub { font-size: 12px; color: var(--gray-dark); margin-top: 2px; }
+
+    /* ─── Risk section ─── */
+    .risk-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .risk-card {
+      border-radius: 10px; padding: 1.25rem; border: 1px solid;
+    }
+    .risk-high { background: rgba(255,103,29,.08); border-color: rgba(255,103,29,.3); }
+    .risk-med  { background: rgba(252,182,26,.08); border-color: rgba(252,182,26,.3); }
+    .risk-low  { background: rgba(140,199,64,.08); border-color: rgba(140,199,64,.3); }
+    .risk-card .risk-level {
+      font-size: 10px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: .5rem;
+    }
+    .risk-high .risk-level { color: var(--orange-red); }
+    .risk-med  .risk-level { color: #a06800; }
+    .risk-low  .risk-level { color: #4a7a10; }
+    .risk-card h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .risk-card .score { font-size: 24px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .risk-high .score { color: var(--orange-red); }
+    .risk-med  .score { color: var(--orange); }
+    .risk-low  .score { color: var(--green); }
+    .risk-card p { font-size: 12px; color: var(--gray-dark); }
+
+    /* ─── District profiles ─── */
+    .district-tabs {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .district-tab {
+      padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      border: 1.5px solid var(--gray-light); color: var(--gray-dark);
+      cursor: pointer; transition: all .15s; background: var(--white);
+    }
+    .district-tab:hover, .district-tab.active {
+      background: var(--teal); color: var(--white); border-color: var(--teal);
+    }
+    .district-panel { display: none; }
+    .district-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .district-info { background: var(--white); border-radius: 10px; border: 1px solid var(--gray-light); padding: 1.5rem; }
+    .district-info h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; padding-bottom: .75rem; border-bottom: 2px solid var(--teal); }
+    .district-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--off-white); font-size: 13px; }
+    .district-row:last-child { border-bottom: none; }
+    .district-row .dk { color: var(--gray-dark); }
+    .district-row .dv { font-weight: 600; color: var(--navy); }
+
+    /* ─── Footer ─── */
+    .footer {
+      background: var(--navy); color: var(--gray-light);
+      padding: 3rem 2rem; margin-top: 0;
+    }
+    .footer-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem;
+    }
+    .footer h4 { font-size: 12px; font-weight: 700; color: var(--white); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; }
+    .footer p, .footer li { font-size: 12px; line-height: 1.8; }
+    .footer ul { list-style: none; }
+    .footer a { color: var(--teal-light); }
+    .footer a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: var(--max-w); margin: 2rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.1);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: rgba(255,255,255,.35); flex-wrap: wrap; gap: 8px;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      :root { --section-pad: 3rem 1.25rem; }
+      .nav-links { display: none; }
+      .intro-grid, .demo-grid, .district-panel.active, .footer-inner {
+        grid-template-columns: 1fr;
+      }
+      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Navigation ─── -->
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-brand">
+    <div class="nav-logo" aria-hidden="true"></div>
+    Westminster Fire Department
+  </div>
+  <ul class="nav-links" role="list">
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#demographics">Demographics</a></li>
+    <li><a href="#climate">Climate</a></li>
+    <li><a href="#risks">Risks</a></li>
+    <li><a href="#districts">Districts</a></li>
+  </ul>
+  <span class="nav-updated">Data period: 2024–2028</span>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">2024–2028 Accreditation Cycle · CFAI / CPSE</p>
+    <h1 id="hero-title">Community<br><span>Risk Assessment</span></h1>
+    <p class="hero-sub">Westminster Fire Department's commitment to transparency — understanding the risks our community faces and how we're organized to serve all 116,000 residents across 34 square miles.</p>
+    <div class="hero-badges">
+      <span class="badge badge-gold">⭐ ISO Class 1</span>
+      <span class="badge badge-teal">✓ CFAI Accredited Agency</span>
+      <span class="badge badge-teal">📅 Data Period: 2024–2028</span>
+    </div>
+    <div class="kpi-strip" role="list">
+      <div class="kpi-item" role="listitem">
+        <span class="kpi-value">153</span>
+        <span class="kpi-label">Total Personnel</span>
+      </div>
+      <div class="kpi-item" role="listitem">
+        <span class="kpi-value">33</span>
+        <span class="kpi-label">Min. Daily Staffing</span>
+        <span class="kpi-sub">48/96 schedule</span>
+      </div>
+      <div class="kpi-item" role="listitem">
+        <span class="kpi-value">6</span>
+        <span class="kpi-label">Fire Stations</span>
+        <span class="kpi-sub">2 additional proposed</span>
+      </div>
+      <div class="kpi-item" role="listitem">
+        <span class="kpi-value">17,033</span>
+        <span class="kpi-label">Calls in 2023</span>
+      </div>
+      <div class="kpi-item" role="listitem">
+        <span class="kpi-value">34 mi²</span>
+        <span class="kpi-label">Service Area</span>
+      </div>
+      <div class="kpi-item" role="listitem">
+        <span class="kpi-value">72,964</span>
+        <span class="kpi-label">5-Year Responses</span>
+        <span class="kpi-sub">2019–2023</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Introduction ─── -->
+<section id="introduction" class="section" aria-labelledby="intro-title">
+  <div class="inner">
+    <p class="section-eyebrow">Introduction</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <div class="intro-grid">
+      <div class="intro-prose">
+        <h2 id="intro-title" class="section-title">Who We Are</h2>
+        <p>Westminster Fire Department is a career, all-hazards fire and emergency medical services agency serving the City of Westminster, Colorado. Established in 1934, WFD has grown from a volunteer department into a nationally accredited agency — achieving ISO Class 1 status in 2017 and CFAI accreditation through the Commission on Fire Accreditation International in 2019.</p>
+        <p>This Community Risk Assessment represents our commitment to transparency. It is an honest examination of who lives in Westminster, what risks they face, and how WFD is organized and resourced to protect them — presented in a format that is accessible to residents, elected officials, and accreditation reviewers alike.</p>
+        <p>WFD operates across six fire districts from six strategically located stations, providing fire suppression, advanced life support emergency medical services, technical rescue, hazardous materials response, dive and swift water rescue, wildland firefighting, and emergency management services.</p>
+
+        <div class="values-list" aria-label="WFD core values — SERVE">
+          <div class="value-item">
+            <div class="value-letter" aria-hidden="true">S</div>
+            <div><div class="value-text">Steadfast</div><div class="value-sub">Reliable, consistent, committed</div></div>
+          </div>
+          <div class="value-item">
+            <div class="value-letter" aria-hidden="true">E</div>
+            <div><div class="value-text">Engaged</div><div class="value-sub">Present, involved, accountable</div></div>
+          </div>
+          <div class="value-item">
+            <div class="value-letter" aria-hidden="true">R</div>
+            <div><div class="value-text">Receptive</div><div class="value-sub">Open, listening, adaptable</div></div>
+          </div>
+          <div class="value-item">
+            <div class="value-letter" aria-hidden="true">V</div>
+            <div><div class="value-text">Visionary</div><div class="value-sub">Forward-thinking, innovative</div></div>
+          </div>
+          <div class="value-item">
+            <div class="value-letter" aria-hidden="true">E</div>
+            <div><div class="value-text">Empathetic</div><div class="value-sub">Compassionate, human-centered</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="method-card">
+          <h3>How We Measure Community Risk</h3>
+          <div class="method-step">
+            <div class="method-num" aria-hidden="true">1</div>
+            <p><strong>Probability</strong> — How likely is this type of incident to occur in Westminster? Based on five years of actual incident history (2019–2023).</p>
+          </div>
+          <div class="method-step">
+            <div class="method-num" aria-hidden="true">2</div>
+            <p><strong>Consequence</strong> — If this incident occurs, how severe could the impact be? We consider life safety, property loss, and environmental harm.</p>
+          </div>
+          <div class="method-step">
+            <div class="method-num" aria-hidden="true">3</div>
+            <p><strong>Community Impact</strong> — What is the potential effect on Westminster as a whole? Infrastructure, economy, and public health are all considered.</p>
+          </div>
+          <div class="method-step">
+            <div class="method-num" aria-hidden="true">4</div>
+            <p><strong>Risk Score</strong> — These three factors are combined using Heron's Formula to produce a final community risk score, rated <strong>High</strong>, <strong>Medium</strong>, or <strong>Low</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Community Characteristics ─── -->
+<section id="community" class="section section-alt" aria-labelledby="community-title">
+  <div class="inner">
+    <p class="section-eyebrow">Community Characteristics</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 id="community-title" class="section-title">Westminster, Colorado</h2>
+    <p class="section-lead">Westminster covers 34 square miles in the northern Denver metro area, spanning portions of both Adams and Jefferson counties. Its location at the convergence of two major interstate corridors and proximity to Rocky Mountain Regional Airport shapes both the character of the community and the risks WFD responds to.</p>
+
+    <div class="chars-grid">
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">📍</div>
+        <h3>Location</h3>
+        <p>Northern Denver metro · Adams &amp; Jefferson counties · Elevation ~5,400 ft</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">🛣️</div>
+        <h3>Major Roads</h3>
+        <p>I-25, US-36 (Boulder Turnpike), 104th Ave corridor · High-volume MVA risk</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">✈️</div>
+        <h3>Air &amp; Rail</h3>
+        <p>Rocky Mountain Regional Airport · BNSF Railroad freight corridor</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">🌊</div>
+        <h3>Waterways</h3>
+        <p>Big Dry Creek · Little Dry Creek · Flood-prone areas in southern districts</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">🏥</div>
+        <h3>Medical Facilities</h3>
+        <p>St. Anthony North Health Campus (Level II Trauma) · Multiple urgent care centers</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">💧</div>
+        <h3>Water Supply</h3>
+        <p>Public water system · Hydrant coverage throughout service area · Pressure zone mapping complete</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">🏘️</div>
+        <h3>Land Use</h3>
+        <p>Parks/open space 33% · Residential 30% · ROW 16% · Vacant 8%</p>
+      </div>
+      <div class="char-card">
+        <div class="char-icon" aria-hidden="true">🏗️</div>
+        <h3>Growth</h3>
+        <p>Active development in north Westminster · Westminster Station mixed-use district</p>
+      </div>
+    </div>
+
+    <!-- Population density map embed -->
+    <div class="embed-wrap">
+      <div class="embed-header">
+        <h3>Population Density by Census Tract</h3>
+        <span class="embed-tag">Datawrapper · Interactive Map</span>
+      </div>
+      <div class="embed-body">
+        <div class="embed-placeholder">
+          <p class="ep-label">📍 Map goes here</p>
+          <p>Replace this block with your Datawrapper population density choropleth embed.</p>
+          <p style="margin-top:.5rem; font-size:11px; color:#888">
+            Paste your iframe src URL from Datawrapper here after publishing.
+          </p>
+        </div>
+        <!-- REPLACE PLACEHOLDER WITH:
+        <iframe src="https://datawrapper.dwcdn.net/XXXXX/1/"
+          height="480" scrolling="no" frameborder="0"
+          style="width:100%; min-width:100%!important; border:none;">
+        </iframe>
+        -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Demographics ─── -->
+<section id="demographics" class="section" aria-labelledby="demo-title">
+  <div class="inner">
+    <p class="section-eyebrow">Demographics</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 id="demo-title" class="section-title">Who Lives in Westminster</h2>
+    <p class="section-lead">Understanding who lives in Westminster is fundamental to understanding risk. Age, income, housing type, and access to health care all influence the likelihood and severity of emergencies — and WFD's ability to help effectively.</p>
+
+    <div class="demo-grid">
+      <div class="demo-stat">
+        <div class="val">116,000</div>
+        <div class="lbl">Total Population</div>
+        <div class="sub">2023 ACS Estimate</div>
+      </div>
+      <div class="demo-stat">
+        <div class="val">36.4</div>
+        <div class="lbl">Median Age</div>
+        <div class="sub">Slightly younger than national median of 38.9</div>
+      </div>
+      <div class="demo-stat">
+        <div class="val">$86K</div>
+        <div class="lbl">Median Household Income</div>
+        <div class="sub">Above Colorado state median</div>
+      </div>
+      <div class="demo-stat">
+        <div class="val">~8%</div>
+        <div class="lbl">Below Poverty Line</div>
+        <div class="sub">Concentrated in southern districts</div>
+      </div>
+    </div>
+
+    <!-- Poverty map embed -->
+    <div class="embed-wrap">
+      <div class="embed-header">
+        <h3>Poverty Rate by Census Tract</h3>
+        <span class="embed-tag">Datawrapper · Interactive Map</span>
+      </div>
+      <div class="embed-body">
+        <div class="embed-placeholder">
+          <p class="ep-label">📍 Poverty Rate Map Goes Here</p>
+          <p>Replace with your Datawrapper poverty choropleth embed (table B17001).</p>
+          <p style="margin-top:.5rem; font-size:11px; color:#888">Darker areas = higher poverty rate. Hover any tract to see the exact rate.</p>
+        </div>
+        <!-- REPLACE PLACEHOLDER WITH YOUR IFRAME -->
+      </div>
+    </div>
+
+    <!-- Vulnerability dashboard embed -->
+    <div class="embed-wrap">
+      <div class="embed-header">
+        <h3>Vulnerability Indicators by Fire District</h3>
+        <span class="embed-tag">Power BI · Interactive Dashboard</span>
+      </div>
+      <div class="embed-body">
+        <div class="embed-placeholder">
+          <p class="ep-label">📊 Power BI Dashboard Goes Here</p>
+          <p>Replace with your Power BI vulnerability dashboard embed.</p>
+          <p style="margin-top:.5rem; font-size:11px; color:#888">Use the district slicer to explore uninsured rate, population 65+, youth population, and poverty by district.</p>
+        </div>
+        <!-- REPLACE PLACEHOLDER WITH:
+        <iframe src="https://app.powerbigov.us/view?r=YOUR_TOKEN"
+          height="560" frameborder="0" allowfullscreen="true">
+        </iframe>
+        -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Climate ─── -->
+<section id="climate" class="section section-dark" aria-labelledby="climate-title">
+  <div class="inner">
+    <p class="section-eyebrow">Climatological Risks</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 id="climate-title" class="section-title" style="color:var(--white)">Weather &amp; Natural Hazards</h2>
+    <p class="section-lead">Westminster's Front Range location exposes the community to a wide range of weather-driven hazards — from winter blizzards to summer wildfire conditions, flash flooding to severe hailstorms. These climatological risks directly shape WFD's call volume, deployment needs, and resource planning.</p>
+
+    <div class="embed-wrap" style="border-color: rgba(255,255,255,.15)">
+      <div class="embed-header" style="background: rgba(255,255,255,.08)">
+        <h3>Average Temperature &amp; Precipitation by Month</h3>
+        <span class="embed-tag">Power BI · Climate Charts</span>
+      </div>
+      <div class="embed-body">
+        <div class="embed-placeholder" style="background: rgba(255,255,255,.04)">
+          <p class="ep-label" style="color: var(--teal-light)">📊 Climate Charts Go Here</p>
+          <p style="color: var(--gray-light)">Replace with your Power BI community profile page embed (Charts 1 &amp; 2 — temperature and precipitation by month).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-grid" style="margin-top: 2rem">
+      <div class="risk-card risk-high">
+        <div class="risk-level">High Climate Risk</div>
+        <h3>Extreme Winter Weather</h3>
+        <p>Blizzards, ice storms, and extreme cold events create elevated demand for medical emergencies and vehicle accidents.</p>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High Climate Risk</div>
+        <h3>Flash Flooding</h3>
+        <p>Big Dry Creek and Little Dry Creek corridors subject to rapid flooding. Swift water rescue deployments increase significantly in summer monsoon season.</p>
+      </div>
+      <div class="risk-card risk-med">
+        <div class="risk-level">Medium Climate Risk</div>
+        <h3>Wildfire / Urban Interface</h3>
+        <p>Drought conditions and open space in northern Westminster create periodic wildfire risk. WFD deploys resources statewide and nationally during major fire events.</p>
+      </div>
+      <div class="risk-card risk-med">
+        <div class="risk-level">Medium Climate Risk</div>
+        <h3>Severe Thunderstorms / Hail</h3>
+        <p>Colorado's hail alley location produces some of the highest hail frequencies in North America, creating structure damage and injury calls.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Risk Assessment ─── -->
+<section id="risks" class="section section-alt" aria-labelledby="risks-title">
+  <div class="inner">
+    <p class="section-eyebrow">Risk Assessment</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 id="risks-title" class="section-title">Community Risk Scores</h2>
+    <p class="section-lead">WFD assessed risk across all NFIRS incident types using five years of actual response data. Each incident type received a probability score, a consequence score, and a community impact score — combined into a final Community Risk Score.</p>
+
+    <div class="risk-grid">
+      <div class="risk-card risk-high">
+        <div class="risk-level">High Risk</div>
+        <h3>Building Fire</h3>
+        <div class="score">78.7</div>
+        <p>Highest risk score. Structure fires pose the most severe life safety and property loss consequences.</p>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High Risk</div>
+        <h3>EMS — Medical Emergency</h3>
+        <div class="score">38.7</div>
+        <p>Highest call volume category. Cardiac, respiratory, and trauma emergencies are the most frequent life-threatening events.</p>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High Risk</div>
+        <h3>Explosion</h3>
+        <div class="score">36.2</div>
+        <p>Industrial and residential gas incidents carry extreme consequence scores even at lower probability.</p>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High Risk</div>
+        <h3>MVA with Injuries</h3>
+        <div class="score">32.6</div>
+        <p>I-25 and US-36 corridors generate significant high-severity vehicle accident calls annually.</p>
+      </div>
+    </div>
+
+    <!-- Risk matrix embed -->
+    <div class="embed-wrap">
+      <div class="embed-header">
+        <h3>Full Community Risk Score Matrix — All Incident Types</h3>
+        <span class="embed-tag">Power BI · Interactive Table</span>
+      </div>
+      <div class="embed-body">
+        <div class="embed-placeholder">
+          <p class="ep-label">📊 Risk Matrix Goes Here</p>
+          <p>Replace with your Power BI risk assessment page embed. Use the risk-level slicer (High / Medium / Low) to filter the full matrix of all NFIRS incident types.</p>
+        </div>
+        <!-- REPLACE PLACEHOLDER WITH YOUR IFRAME -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── District Profiles ─── -->
+<section id="districts" class="section" aria-labelledby="districts-title">
+  <div class="inner">
+    <p class="section-eyebrow">District Profiles</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 id="districts-title" class="section-title">Six Districts, One Department</h2>
+    <p class="section-lead">Westminster is divided into six fire response districts, each served by a primary station. Select a district to see its geographic characteristics, demographics, and station information.</p>
+
+    <div class="district-tabs" role="tablist" aria-label="Fire districts">
+      <button class="district-tab active" role="tab" aria-selected="true" onclick="showDistrict(1)">District 1</button>
+      <button class="district-tab" role="tab" aria-selected="false" onclick="showDistrict(2)">District 2</button>
+      <button class="district-tab" role="tab" aria-selected="false" onclick="showDistrict(3)">District 3</button>
+      <button class="district-tab" role="tab" aria-selected="false" onclick="showDistrict(4)">District 4</button>
+      <button class="district-tab" role="tab" aria-selected="false" onclick="showDistrict(5)">District 5</button>
+      <button class="district-tab" role="tab" aria-selected="false" onclick="showDistrict(6)">District 6</button>
+    </div>
+
+    <div id="district-1" class="district-panel active" role="tabpanel">
+      <div class="district-info">
+        <h3>District 1 — Station 1</h3>
+        <div class="district-row"><span class="dk">Station address</span><span class="dv">3948 W. 73rd Ave</span></div>
+        <div class="district-row"><span class="dk">Apparatus</span><span class="dv">Engine 1, Medic 1, Dive 1</span></div>
+        <div class="district-row"><span class="dk">Primary area</span><span class="dv">Southwest Westminster</span></div>
+        <div class="district-row"><span class="dk">Notable hazards</span><span class="dv">I-25, older housing stock, Big Dry Creek</span></div>
+        <div class="district-row"><span class="dk">Housing type</span><span class="dv">Primarily residential, older construction</span></div>
+      </div>
+      <div class="embed-wrap" style="margin:0">
+        <div class="embed-header"><h3>District 1 — Call Volume &amp; Demographics</h3><span class="embed-tag">Power BI</span></div>
+        <div class="embed-body"><div class="embed-placeholder"><p class="ep-label">📊 District 1 data</p><p>Power BI district profile embed — filter to District 1.</p></div></div>
+      </div>
+    </div>
+
+    <div id="district-2" class="district-panel" role="tabpanel">
+      <div class="district-info">
+        <h3>District 2 — Station 2</h3>
+        <div class="district-row"><span class="dk">Station address</span><span class="dv">10200 Sheridan Blvd</span></div>
+        <div class="district-row"><span class="dk">Apparatus</span><span class="dv">Engine 2, Medic 2, Truck 2, SAM 1</span></div>
+        <div class="district-row"><span class="dk">Primary area</span><span class="dv">Central Westminster</span></div>
+        <div class="district-row"><span class="dk">Notable hazards</span><span class="dv">US-36, commercial corridor, mid-rise construction</span></div>
+        <div class="district-row"><span class="dk">Housing type</span><span class="dv">Mixed residential and commercial</span></div>
+      </div>
+      <div class="embed-wrap" style="margin:0">
+        <div class="embed-header"><h3>District 2 — Call Volume &amp; Demographics</h3><span class="embed-tag">Power BI</span></div>
+        <div class="embed-body"><div class="embed-placeholder"><p class="ep-label">📊 District 2 data</p><p>Power BI district profile embed — filter to District 2.</p></div></div>
+      </div>
+    </div>
+
+    <div id="district-3" class="district-panel" role="tabpanel">
+      <div class="district-info">
+        <h3>District 3 — Station 3</h3>
+        <div class="district-row"><span class="dk">Station address</span><span class="dv">7800 Lowell Blvd</span></div>
+        <div class="district-row"><span class="dk">Apparatus</span><span class="dv">Engine 3, Medic 3</span></div>
+        <div class="district-row"><span class="dk">Primary area</span><span class="dv">Southeast Westminster</span></div>
+        <div class="district-row"><span class="dk">Notable hazards</span><span class="dv">Light industrial, BNSF rail corridor</span></div>
+        <div class="district-row"><span class="dk">Housing type</span><span class="dv">Residential and light industrial mix</span></div>
+      </div>
+      <div class="embed-wrap" style="margin:0">
+        <div class="embed-header"><h3>District 3 — Call Volume &amp; Demographics</h3><span class="embed-tag">Power BI</span></div>
+        <div class="embed-body"><div class="embed-placeholder"><p class="ep-label">📊 District 3 data</p><p>Power BI district profile embed — filter to District 3.</p></div></div>
+      </div>
+    </div>
+
+    <div id="district-4" class="district-panel" role="tabpanel">
+      <div class="district-info">
+        <h3>District 4 — Station 4</h3>
+        <div class="district-row"><span class="dk">Station address</span><span class="dv">8100 W. 100th Ave</span></div>
+        <div class="district-row"><span class="dk">Apparatus</span><span class="dv">Engine 4, Medic 4, Heavy Rescue 2</span></div>
+        <div class="district-row"><span class="dk">Primary area</span><span class="dv">West-central Westminster</span></div>
+        <div class="district-row"><span class="dk">Notable hazards</span><span class="dv">Big Dry Creek flood zone, open space interface</span></div>
+        <div class="district-row"><span class="dk">Housing type</span><span class="dv">Newer residential development</span></div>
+      </div>
+      <div class="embed-wrap" style="margin:0">
+        <div class="embed-header"><h3>District 4 — Call Volume &amp; Demographics</h3><span class="embed-tag">Power BI</span></div>
+        <div class="embed-body"><div class="embed-placeholder"><p class="ep-label">📊 District 4 data</p><p>Power BI district profile embed — filter to District 4.</p></div></div>
+      </div>
+    </div>
+
+    <div id="district-5" class="district-panel" role="tabpanel">
+      <div class="district-info">
+        <h3>District 5 — Station 5</h3>
+        <div class="district-row"><span class="dk">Station address</span><span class="dv">5560 W. 112th Ave</span></div>
+        <div class="district-row"><span class="dk">Apparatus</span><span class="dv">Engine 5, Medic 5</span></div>
+        <div class="district-row"><span class="dk">Primary area</span><span class="dv">North Westminster</span></div>
+        <div class="district-row"><span class="dk">Notable hazards</span><span class="dv">Rocky Mountain Regional Airport, newer commercial growth</span></div>
+        <div class="district-row"><span class="dk">Housing type</span><span class="dv">Mixed newer residential and commercial</span></div>
+      </div>
+      <div class="embed-wrap" style="margin:0">
+        <div class="embed-header"><h3>District 5 — Call Volume &amp; Demographics</h3><span class="embed-tag">Power BI</span></div>
+        <div class="embed-body"><div class="embed-placeholder"><p class="ep-label">📊 District 5 data</p><p>Power BI district profile embed — filter to District 5.</p></div></div>
+      </div>
+    </div>
+
+    <div id="district-6" class="district-panel" role="tabpanel">
+      <div class="district-info">
+        <h3>District 6 — Station 6</h3>
+        <div class="district-row"><span class="dk">Station address</span><span class="dv">999 W. 124th Ave</span></div>
+        <div class="district-row"><span class="dk">Apparatus</span><span class="dv">Medic 6, Truck 6</span></div>
+        <div class="district-row"><span class="dk">Primary area</span><span class="dv">Northeast Westminster</span></div>
+        <div class="district-row"><span class="dk">Notable hazards</span><span class="dv">I-25 interchange, dense residential, growth pressure</span></div>
+        <div class="district-row"><span class="dk">Housing type</span><span class="dv">High-density residential and retail</span></div>
+      </div>
+      <div class="embed-wrap" style="margin:0">
+        <div class="embed-header"><h3>District 6 — Call Volume &amp; Demographics</h3><span class="embed-tag">Power BI</span></div>
+        <div class="embed-body"><div class="embed-placeholder"><p class="ep-label">📊 District 6 data</p><p>Power BI district profile embed — filter to District 6.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <h4>Westminster Fire Department</h4>
+      <p>9110 Yates Street<br>Westminster, CO 80031</p>
+      <p style="margin-top:.75rem">Community Risk Assessment &amp; Standards of Cover<br>2024–2028 Accreditation Cycle</p>
+      <p style="margin-top:.75rem">Accredited by the Commission on Fire Accreditation International (CFAI) through the Center for Public Safety Excellence (CPSE).</p>
+    </div>
+    <div>
+      <h4>Documents</h4>
+      <ul>
+        <li><a href="#">Full CRA/SOC (PDF)</a></li>
+        <li><a href="#">Standards of Cover</a></li>
+        <li><a href="#">Hazard Mitigation Plan</a></li>
+        <li><a href="#">All-Hazards CRA (2020)</a></li>
+        <li><a href="#">Annual Report</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Data &amp; Methods</h4>
+      <ul>
+        <li><a href="https://data.census.gov" target="_blank" rel="noopener">U.S. Census ACS</a></li>
+        <li><a href="https://github.com/YOUR-USERNAME/wfd-cra" target="_blank" rel="noopener">Data on GitHub</a></li>
+        <li><a href="docs/DATA_SOURCES.md">Data sources</a></li>
+        <li><a href="#">WFD Website</a></li>
+      </ul>
+      <p style="margin-top:1rem">Data period: 2024–2028<br>Last updated: 2025</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 City of Westminster, Colorado · Westminster Fire Department</span>
+    <span>Built with GitHub Pages · Data: U.S. Census Bureau ACS 5-Year Estimates</span>
+  </div>
+</footer>
+
+<script>
+  function showDistrict(num) {
+    // Hide all panels and deactivate all tabs
+    document.querySelectorAll('.district-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.district-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    // Show selected
+    document.getElementById('district-' + num).classList.add('active');
+    const tabs = document.querySelectorAll('.district-tab');
+    tabs[num - 1].classList.add('active');
+    tabs[num - 1].setAttribute('aria-selected', 'true');
+  }
+
+  // Smooth fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section').forEach(s => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(20px)';
+    s.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(s);
+  });
+</script>
+
+</body>
+</html>

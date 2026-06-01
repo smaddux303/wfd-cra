@@ -36,7 +36,4 @@ wfd-cra/
 | westminster_stations.csv | Westminster Fire Dept. | Internal | 2024 |
 | westminster_apparatus.csv | Westminster Fire Dept. | Internal | 2024 |
 
-## Key Contributors
-- **Project lead:** Westminster Fire Department
-- **Data period:** 2019–2023
-- **Accreditation body:** CFAI / CPSE
+

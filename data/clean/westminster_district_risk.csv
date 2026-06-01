@@ -1,0 +1,7 @@
+District,Station,Population,Median_Age,Median_HHI,Poverty_Rate_Pct,Hispanic_Pct,EMS_P,EMS_C,EMS_I,EMS_Score,EMS_Risk,Fire_P,Fire_C,Fire_I,Fire_Score,Fire_Risk,Rescue_P,Rescue_C,Rescue_I,Rescue_Score,Rescue_Risk,HazMat_P,HazMat_C,HazMat_I,HazMat_Score,HazMat_Risk,Wildland_P,Wildland_C,Wildland_I,Wildland_Score,Wildland_Risk,Overall_Score,Overall_Risk
+1,Station 1,22518,34.4,63220,14.02,41.21,9,8,8,29.76,High,5,7,6,14.7,Medium,4,5,4,7.81,Low,3,4,3,4.47,Low,1,2,1,0.0,Low,11.35,Medium
+2,Station 2,18584,37.85,72863,7.55,35.26,7,7,6,18.97,Medium,5,7,6,14.7,Medium,5,6,5,12.0,Medium,4,9,8,16.0,Medium,1,2,1,0.0,Low,12.33,Medium
+3,Station 3,18363,36.7,79553,4.82,16.95,6,6,5,13.64,Medium,3,5,4,6.0,Low,5,7,6,14.7,Medium,4,7,7,13.42,Medium,4,6,5,9.92,Low,11.54,Medium
+4,Station 4,25419,41.5,112805,3.43,13.95,4,5,4,7.81,Low,3,5,4,6.0,Low,3,4,3,4.47,Low,2,3,2,1.98,Low,5,6,5,12.0,Medium,6.45,Low
+5,Station 5,14178,38.6,105507,4.18,21.96,5,6,5,12.0,Medium,3,5,4,6.0,Low,5,7,6,14.7,Medium,5,8,7,17.32,Medium,7,7,7,21.22,High,14.25,Medium
+6,Station 6,18781,35.9,86112,5.78,22.91,6,6,6,15.59,Medium,5,6,5,12.0,Medium,5,6,5,12.0,Medium,2,3,2,1.98,Low,2,3,2,1.98,Low,8.71,Low

@@ -1,0 +1,73 @@
+name: Update Census Data
+
+on:
+  # Run automatically every October 15th
+  schedule:
+    - cron: '0 9 15 10 *'   # 9am UTC on October 15th each year
+
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual run'
+        required: false
+        default: 'Manual data refresh'
+
+jobs:
+  update-census-data:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # needed to commit updated CSVs back to repo
+
+    steps:
+      # 1. Check out the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install requests pandas
+
+      # 4. Run the Census data update script
+      - name: Pull fresh Census data
+        env:
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
+        run: |
+          python update_census_data.py
+
+      # 5. Commit and push updated CSVs if anything changed
+      - name: Commit updated data files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "Census Data Bot"
+          git add data/clean/westminster_poverty.csv
+          git add data/clean/westminster_insurance.csv
+          git add data/clean/westminster_age_65plus.csv
+          git add data/clean/westminster_population_density.csv
+          git add data/clean/westminster_language.csv
+          git add data/clean/westminster_race.csv
+
+          # Only commit if something actually changed
+          if git diff --staged --quiet; then
+            echo "No data changes — Census data is already current."
+          else
+            git commit -m "Auto-update: Census ACS 5-Year data refresh $(date +'%Y-%m-%d')"
+            git push
+            echo "Data updated and pushed successfully."
+          fi
+
+      # 6. Log completion
+      - name: Log completion
+        run: |
+          echo "✓ Census data update complete"
+          echo "✓ Data files committed to smaddux303/wfd-cra"
+          echo "✓ Datawrapper maps will refresh automatically"
+          echo "✓ Site: https://smaddux303.github.io/wfd-cra"

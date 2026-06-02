@@ -1,29 +1,7 @@
 """
 WFD CRA — Automated Census Data Updater
-========================================
-Pulls fresh ACS 5-Year data from the Census API, cleans it,
-runs a spatial join against fire district boundaries, and writes
-all output CSVs to data/clean/.
-
+Pulls fresh ACS 5-Year data, runs spatial join against fire districts.
 Runs via GitHub Actions every October 15th.
-
-Tables pulled:
-  B17001 — Poverty status (tract level)
-  B27001 — Health insurance coverage (tract level)
-  B01001 — Age 65+ (tract level)
-  B16004 — Language spoken at home (tract level)
-  B01003 — Total population (tract level)
-  B03002 — Race and ethnicity (tract level)
-
-Output files:
-  data/clean/westminster_poverty.csv
-  data/clean/westminster_insurance.csv
-  data/clean/westminster_age_65plus.csv
-  data/clean/westminster_language.csv
-  data/clean/westminster_population.csv
-  data/clean/westminster_race.csv
-  data/clean/westminster_demographics_by_district.csv  ← spatial join output
-
 GitHub repo: https://github.com/smaddux303/wfd-cra
 """
 
@@ -43,14 +21,14 @@ STATE          = "08"
 ADAMS_CO       = "001"
 JEFFERSON_CO   = "059"
 OUT_DIR        = "data/clean"
-DISTRICTS_FILE = "wfd_districts.geojson"
+DISTRICTS_FILE = "FireResponseAreas.json"
 
 print(f"WFD CRA — Census Data Updater")
 print(f"ACS Year: {ACS_YEAR} 5-Year Estimates")
 print(f"Run time: {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
 print("=" * 55)
 
-# ── Install spatial libraries if needed ───────────────────────
+# ── Install spatial libraries ──────────────────────────────────
 import subprocess
 subprocess.run([sys.executable, "-m", "pip", "install",
                 "geopandas", "pyproj", "shapely", "--quiet"], check=True)
@@ -197,17 +175,16 @@ except Exception as e:
 # ── 7. SPATIAL JOIN → DEMOGRAPHICS BY DISTRICT ────────────────
 print("\n7/7  Spatial join → demographics by district...")
 try:
-    # Load district boundaries — handle Esri JSON format
     if not os.path.exists(DISTRICTS_FILE):
         raise FileNotFoundError(f"{DISTRICTS_FILE} not found in repo root")
 
+    # Load Esri JSON and convert to GeoDataFrame
     with open(DISTRICTS_FILE, 'r') as f:
         raw_json = json.load(f)
 
-    # Convert Esri JSON (attributes+geometry) to GeoJSON features
     transformer_esri = Transformer.from_crs("EPSG:6428", "EPSG:4326", always_xy=True)
 
-    def transform_esri_geometry(geom):
+    def transform_esri_geom(geom):
         result_rings = []
         for ring_set in [geom.get('rings', []), geom.get('curveRings', [])]:
             for ring in ring_set:
@@ -228,23 +205,23 @@ try:
                     result_rings.append(coords)
         return result_rings
 
-    district_features = []
+    district_rows = []
     for feat in raw_json.get('features', []):
         attrs = feat.get('attributes', {})
-        district_num = attrs.get('DISTRICT')
-        if district_num not in [1, 2, 3, 4, 5, 6]:
+        dist_num = attrs.get('DISTRICT')
+        if dist_num not in [1, 2, 3, 4, 5, 6]:
             continue
-        rings = transform_esri_geometry(feat['geometry'])
+        rings = transform_esri_geom(feat['geometry'])
         polys = [Polygon(r) for r in rings if len(r) >= 3]
         if not polys:
             continue
         geom = polys[0] if len(polys) == 1 else MultiPolygon(polys)
-        district_features.append({'District': district_num, 'geometry': geom})
+        district_rows.append({'District': dist_num, 'geometry': geom})
 
-    districts_gdf = gpd.GeoDataFrame(district_features, crs='EPSG:4326')
+    districts_gdf = gpd.GeoDataFrame(district_rows, crs='EPSG:4326')
     print(f"   Districts loaded: {len(districts_gdf)}")
 
-    # Download Colorado tract boundaries from Census SDK
+    # Download Colorado tract boundaries
     print("   Downloading CO tract boundaries...")
     req = urllib.request.Request(
         "https://raw.githubusercontent.com/uscensusbureau/citysdk/master/v2/GeoJSON/500k/2020/08/tract.json",
@@ -257,24 +234,24 @@ try:
     tracts_gdf["GEO_ID"] = (tracts_gdf["STATEFP"]
                              + tracts_gdf["COUNTYFP"]
                              + tracts_gdf["TRACTCE"]).astype(str)
-    tracts_gdf = tracts_gdf[tracts_gdf["COUNTYFP"].isin(["001","059"])]
+    tracts_gdf = tracts_gdf[tracts_gdf["COUNTYFP"].isin(["001", "059"])]
     print(f"   CO tracts loaded: {len(tracts_gdf)}")
 
-    # Reproject to UTM 13N for accurate centroid calculation
+    # Reproject to UTM 13N for accurate centroids
     tracts_proj    = tracts_gdf.to_crs("EPSG:26913")
     districts_proj = districts_gdf.to_crs("EPSG:26913")
 
     tracts_proj["centroid"] = tracts_proj.geometry.centroid
     tracts_c = tracts_proj.set_geometry("centroid")
 
-    joined = gpd.sjoin(tracts_c, districts_proj[["District","geometry"]],
+    joined = gpd.sjoin(tracts_c, districts_proj[["District", "geometry"]],
                        how="left", predicate="within")
-    joined = joined[["GEO_ID","District"]].dropna(subset=["District"]).copy()
+    joined = joined[["GEO_ID", "District"]].dropna(subset=["District"]).copy()
     joined["District"] = joined["District"].astype(int)
     joined["GEO_ID"]   = joined["GEO_ID"].astype(str)
-    print(f"   Tracts matched to districts: {len(joined)}")
+    print(f"   Tracts matched: {len(joined)}")
 
-    # Load all tract CSVs and fix GEO_ID to 11-digit format
+    # Load CSVs with GEO_ID padded to 11 digits
     def load_fix(path, cols):
         df = pd.read_csv(path)
         df["GEO_ID"] = df["GEO_ID"].astype(str).str.zfill(11)
@@ -301,35 +278,35 @@ try:
 
     # Aggregate by district
     def district_summary(group):
-        t  = group["Total_Pop"].sum()
-        bp = group["Below_Poverty"].sum()
-        ui = group["Total_Uninsured"].sum()
-        s  = group["Pop_65plus"].sum()
-        ne = group["Non_English"].sum()
-        wh = group["White_NonHispanic"].sum()
-        bl = group["Black_NonHispanic"].sum()
-        as_ = group["Asian_NonHispanic"].sum()
-        hi = group["Hispanic"].sum()
+        t   = group["Total_Pop"].sum()
+        bp  = group["Below_Poverty"].sum()
+        ui  = group["Total_Uninsured"].sum()
+        s   = group["Pop_65plus"].sum()
+        ne  = group["Non_English"].sum()
+        wh  = group["White_NonHispanic"].sum()
+        bl  = group["Black_NonHispanic"].sum()
+        asi = group["Asian_NonHispanic"].sum()
+        hi  = group["Hispanic"].sum()
         return pd.Series({
-            "Station":          f"Station {int(group['District'].iloc[0])}",
-            "Total_Pop":        int(t),
-            "Below_Poverty":    int(bp),
-            "Poverty_Rate":     pct(bp, t),
-            "Total_Uninsured":  int(ui),
-            "Uninsured_Rate":   pct(ui, t),
-            "Pop_65plus":       int(s),
-            "Pct_65plus":       pct(s, t),
-            "Non_English":      int(ne),
-            "Pct_Non_English":  pct(ne, t),
-            "White_NonHispanic":int(wh),
-            "Pct_White_NonHisp":pct(wh, t),
-            "Black_NonHispanic":int(bl),
-            "Pct_Black":        pct(bl, t),
-            "Asian_NonHispanic":int(as_),
-            "Pct_Asian":        pct(as_, t),
-            "Hispanic":         int(hi),
-            "Pct_Hispanic":     pct(hi, t),
-            "Tract_Count":      len(group)
+            "Station":           f"Station {int(group['District'].iloc[0])}",
+            "Total_Pop":         int(t),
+            "Below_Poverty":     int(bp),
+            "Poverty_Rate":      pct(bp, t),
+            "Total_Uninsured":   int(ui),
+            "Uninsured_Rate":    pct(ui, t),
+            "Pop_65plus":        int(s),
+            "Pct_65plus":        pct(s, t),
+            "Non_English":       int(ne),
+            "Pct_Non_English":   pct(ne, t),
+            "White_NonHispanic": int(wh),
+            "Pct_White_NonHisp": pct(wh, t),
+            "Black_NonHispanic": int(bl),
+            "Pct_Black":         pct(bl, t),
+            "Asian_NonHispanic": int(asi),
+            "Pct_Asian":         pct(asi, t),
+            "Hispanic":          int(hi),
+            "Pct_Hispanic":      pct(hi, t),
+            "Tract_Count":       len(group)
         })
 
     summary = tracts.groupby("District").apply(district_summary).reset_index()
@@ -337,8 +314,6 @@ try:
     summary.to_csv(f"{OUT_DIR}/westminster_demographics_by_district.csv", index=False)
 
     print(f"   ✓ {len(summary)} districts → westminster_demographics_by_district.csv")
-    print()
-    print("   District summary:")
     for _, row in summary.iterrows():
         print(f"   District {int(row.District)} | Pop {int(row.Total_Pop):,} | "
               f"Poverty {row.Poverty_Rate}% | Uninsured {row.Uninsured_Rate}% | "

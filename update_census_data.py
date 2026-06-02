@@ -43,7 +43,7 @@ STATE          = "08"
 ADAMS_CO       = "001"
 JEFFERSON_CO   = "059"
 OUT_DIR        = "data/clean"
-DISTRICTS_FILE = "FireResponseAreas.json"
+DISTRICTS_FILE = "wfd_districts.geojson"
 
 print(f"WFD CRA — Census Data Updater")
 print(f"ACS Year: {ACS_YEAR} 5-Year Estimates")
@@ -197,12 +197,51 @@ except Exception as e:
 # ── 7. SPATIAL JOIN → DEMOGRAPHICS BY DISTRICT ────────────────
 print("\n7/7  Spatial join → demographics by district...")
 try:
-    # Load district boundaries
+    # Load district boundaries — handle Esri JSON format
     if not os.path.exists(DISTRICTS_FILE):
         raise FileNotFoundError(f"{DISTRICTS_FILE} not found in repo root")
 
-    districts_gdf = gpd.read_file(DISTRICTS_FILE)
-    districts_gdf = districts_gdf.set_crs('EPSG:4326', allow_override=True)
+    with open(DISTRICTS_FILE, 'r') as f:
+        raw_json = json.load(f)
+
+    # Convert Esri JSON (attributes+geometry) to GeoJSON features
+    transformer_esri = Transformer.from_crs("EPSG:6428", "EPSG:4326", always_xy=True)
+
+    def transform_esri_geometry(geom):
+        result_rings = []
+        for ring_set in [geom.get('rings', []), geom.get('curveRings', [])]:
+            for ring in ring_set:
+                coords = []
+                for pt in ring:
+                    if isinstance(pt, list) and len(pt) == 2 and isinstance(pt[0], (int, float)):
+                        lon, lat = transformer_esri.transform(pt[0], pt[1])
+                        coords.append([lon, lat])
+                    elif isinstance(pt, dict):
+                        for key in ['c', 'a', 'b']:
+                            if key in pt and isinstance(pt[key], list):
+                                endpoint = pt[key][-1] if isinstance(pt[key][-1], list) else pt[key]
+                                if isinstance(endpoint, list) and len(endpoint) == 2:
+                                    lon, lat = transformer_esri.transform(endpoint[0], endpoint[1])
+                                    coords.append([lon, lat])
+                                    break
+                if coords:
+                    result_rings.append(coords)
+        return result_rings
+
+    district_features = []
+    for feat in raw_json.get('features', []):
+        attrs = feat.get('attributes', {})
+        district_num = attrs.get('DISTRICT')
+        if district_num not in [1, 2, 3, 4, 5, 6]:
+            continue
+        rings = transform_esri_geometry(feat['geometry'])
+        polys = [Polygon(r) for r in rings if len(r) >= 3]
+        if not polys:
+            continue
+        geom = polys[0] if len(polys) == 1 else MultiPolygon(polys)
+        district_features.append({'District': district_num, 'geometry': geom})
+
+    districts_gdf = gpd.GeoDataFrame(district_features, crs='EPSG:4326')
     print(f"   Districts loaded: {len(districts_gdf)}")
 
     # Download Colorado tract boundaries from Census SDK

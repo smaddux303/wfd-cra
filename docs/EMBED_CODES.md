@@ -33,8 +33,8 @@ https://raw.githubusercontent.com/smaddux303/wfd-cra/main/data/clean/westminster
 | Map | Datawrapper URL | Section | Embed height |
 |-----|----------------|---------|-------------|
 | Poverty rate choropleth |https://datawrapper.dwcdn.net/vJliz/1/ | Demographics | 500px |
-| Uninsured rate choropleth | https://datawrapper.dwcdn.net/XXXXX/1/ | Demographics | 500px |
-| Population 65+ choropleth | https://datawrapper.dwcdn.net/XXXXX/1/ | Demographics | 500px |
+| Uninsured rate choropleth | https://datawrapper.dwcdn.net/Q9OYv/1/| Demographics | 500px |
+| Population 65+ choropleth | https://datawrapper.dwcdn.net/3k2ot/1/ | Demographics | 500px |
 | Language other than English | https://datawrapper.dwcdn.net/XXXXX/1/ | Demographics | 500px |
 | Population density choropleth | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 500px |
 | Race/ethnicity choropleth | https://datawrapper.dwcdn.net/XXXXX/1/ | Demographics | 500px |

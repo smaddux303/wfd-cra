@@ -1,254 +1,254 @@
-GEO_ID,Tract_Name,County,Total_Pop,Total_Uninsured,Uninsured_Rate
-08001007801,"Census Tract 78.01, Adams County, CO",Adams County,4145,911,22.0
-08001007802,"Census Tract 78.02, Adams County, CO",Adams County,4070,1335,32.8
-08001007900,"Census Tract 79, Adams County, CO",Adams County,6161,1446,23.5
-08001008000,"Census Tract 80, Adams County, CO",Adams County,5701,880,15.4
-08001008100,"Census Tract 81, Adams County, CO",Adams County,1404,35,2.5
-08001008200,"Census Tract 82, Adams County, CO",Adams County,7010,1354,19.3
-08001008308,"Census Tract 83.08, Adams County, CO",Adams County,5775,1623,28.1
-08001008309,"Census Tract 83.09, Adams County, CO",Adams County,4401,1073,24.4
-08001008354,"Census Tract 83.54, Adams County, CO",Adams County,6219,606,9.7
-08001008355,"Census Tract 83.55, Adams County, CO",Adams County,4811,798,16.6
-08001008401,"Census Tract 84.01, Adams County, CO",Adams County,5585,569,10.2
-08001008402,"Census Tract 84.02, Adams County, CO",Adams County,5340,479,9.0
-08001008505,"Census Tract 85.05, Adams County, CO",Adams County,6878,225,3.3
-08001008506,"Census Tract 85.06, Adams County, CO",Adams County,5667,810,14.3
-08001008507,"Census Tract 85.07, Adams County, CO",Adams County,6421,440,6.9
-08001008508,"Census Tract 85.08, Adams County, CO",Adams County,5460,748,13.7
-08001008524,"Census Tract 85.24, Adams County, CO",Adams County,9164,655,7.1
-08001008526,"Census Tract 85.26, Adams County, CO",Adams County,7114,112,1.6
-08001008533,"Census Tract 85.33, Adams County, CO",Adams County,7773,1189,15.3
-08001008534,"Census Tract 85.34, Adams County, CO",Adams County,4228,423,10.0
-08001008535,"Census Tract 85.35, Adams County, CO",Adams County,4733,472,10.0
-08001008536,"Census Tract 85.36, Adams County, CO",Adams County,4924,182,3.7
-08001008538,"Census Tract 85.38, Adams County, CO",Adams County,12846,222,1.7
-08001008540,"Census Tract 85.40, Adams County, CO",Adams County,9878,295,3.0
-08001008544,"Census Tract 85.44, Adams County, CO",Adams County,6096,156,2.6
-08001008545,"Census Tract 85.45, Adams County, CO",Adams County,6402,251,3.9
-08001008546,"Census Tract 85.46, Adams County, CO",Adams County,3584,363,10.1
-08001008547,"Census Tract 85.47, Adams County, CO",Adams County,3210,28,0.9
-08001008548,"Census Tract 85.48, Adams County, CO",Adams County,1586,83,5.2
-08001008549,"Census Tract 85.49, Adams County, CO",Adams County,4434,747,16.8
-08001008550,"Census Tract 85.50, Adams County, CO",Adams County,8351,417,5.0
-08001008551,"Census Tract 85.51, Adams County, CO",Adams County,1733,21,1.2
-08001008552,"Census Tract 85.52, Adams County, CO",Adams County,4882,455,9.3
-08001008553,"Census Tract 85.53, Adams County, CO",Adams County,5634,390,6.9
-08001008554,"Census Tract 85.54, Adams County, CO",Adams County,2713,110,4.1
-08001008555,"Census Tract 85.55, Adams County, CO",Adams County,6343,965,15.2
-08001008556,"Census Tract 85.56, Adams County, CO",Adams County,6226,286,4.6
-08001008557,"Census Tract 85.57, Adams County, CO",Adams County,1212,78,6.4
-08001008558,"Census Tract 85.58, Adams County, CO",Adams County,4350,368,8.5
-08001008559,"Census Tract 85.59, Adams County, CO",Adams County,9433,732,7.8
-08001008560,"Census Tract 85.60, Adams County, CO",Adams County,2191,56,2.6
-08001008561,"Census Tract 85.61, Adams County, CO",Adams County,5190,54,1.0
-08001008562,"Census Tract 85.62, Adams County, CO",Adams County,6063,279,4.6
-08001008563,"Census Tract 85.63, Adams County, CO",Adams County,4807,622,12.9
-08001008564,"Census Tract 85.64, Adams County, CO",Adams County,1174,22,1.9
-08001008565,"Census Tract 85.65, Adams County, CO",Adams County,7186,510,7.1
-08001008603,"Census Tract 86.03, Adams County, CO",Adams County,1986,267,13.4
-08001008604,"Census Tract 86.04, Adams County, CO",Adams County,4135,615,14.9
-08001008605,"Census Tract 86.05, Adams County, CO",Adams County,4098,516,12.6
-08001008606,"Census Tract 86.06, Adams County, CO",Adams County,6236,448,7.2
-08001008705,"Census Tract 87.05, Adams County, CO",Adams County,5413,956,17.7
-08001008706,"Census Tract 87.06, Adams County, CO",Adams County,4854,579,11.9
-08001008709,"Census Tract 87.09, Adams County, CO",Adams County,7371,773,10.5
-08001008801,"Census Tract 88.01, Adams County, CO",Adams County,5394,835,15.5
-08001008802,"Census Tract 88.02, Adams County, CO",Adams County,4186,672,16.1
-08001008901,"Census Tract 89.01, Adams County, CO",Adams County,2660,361,13.6
-08001009001,"Census Tract 90.01, Adams County, CO",Adams County,4968,406,8.2
-08001009003,"Census Tract 90.03, Adams County, CO",Adams County,4344,875,20.1
-08001009004,"Census Tract 90.04, Adams County, CO",Adams County,5526,1172,21.2
-08001009101,"Census Tract 91.01, Adams County, CO",Adams County,4414,389,8.8
-08001009103,"Census Tract 91.03, Adams County, CO",Adams County,4561,925,20.3
-08001009104,"Census Tract 91.04, Adams County, CO",Adams County,6753,1307,19.4
-08001009202,"Census Tract 92.02, Adams County, CO",Adams County,4625,923,20.0
-08001009203,"Census Tract 92.03, Adams County, CO",Adams County,5019,1403,28.0
-08001009204,"Census Tract 92.04, Adams County, CO",Adams County,7343,968,13.2
-08001009206,"Census Tract 92.06, Adams County, CO",Adams County,2543,202,7.9
-08001009207,"Census Tract 92.07, Adams County, CO",Adams County,5007,614,12.3
-08001009304,"Census Tract 93.04, Adams County, CO",Adams County,5511,404,7.3
-08001009306,"Census Tract 93.06, Adams County, CO",Adams County,3946,515,13.1
-08001009307,"Census Tract 93.07, Adams County, CO",Adams County,3648,263,7.2
-08001009308,"Census Tract 93.08, Adams County, CO",Adams County,4489,738,16.4
-08001009309,"Census Tract 93.09, Adams County, CO",Adams County,4323,845,19.5
-08001009310,"Census Tract 93.10, Adams County, CO",Adams County,5985,619,10.3
-08001009316,"Census Tract 93.16, Adams County, CO",Adams County,7317,1575,21.5
-08001009318,"Census Tract 93.18, Adams County, CO",Adams County,7022,524,7.5
-08001009319,"Census Tract 93.19, Adams County, CO",Adams County,2579,411,15.9
-08001009320,"Census Tract 93.20, Adams County, CO",Adams County,2872,454,15.8
-08001009321,"Census Tract 93.21, Adams County, CO",Adams County,4441,846,19.0
-08001009322,"Census Tract 93.22, Adams County, CO",Adams County,5047,1034,20.5
-08001009323,"Census Tract 93.23, Adams County, CO",Adams County,3593,424,11.8
-08001009325,"Census Tract 93.25, Adams County, CO",Adams County,6075,813,13.4
-08001009326,"Census Tract 93.26, Adams County, CO",Adams County,2902,156,5.4
-08001009327,"Census Tract 93.27, Adams County, CO",Adams County,4781,387,8.1
-08001009401,"Census Tract 94.01, Adams County, CO",Adams County,4530,482,10.6
-08001009406,"Census Tract 94.06, Adams County, CO",Adams County,4496,252,5.6
-08001009407,"Census Tract 94.07, Adams County, CO",Adams County,5299,985,18.6
-08001009408,"Census Tract 94.08, Adams County, CO",Adams County,4954,162,3.3
-08001009409,"Census Tract 94.09, Adams County, CO",Adams County,5863,236,4.0
-08001009410,"Census Tract 94.10, Adams County, CO",Adams County,3252,132,4.1
-08001009411,"Census Tract 94.11, Adams County, CO",Adams County,2987,129,4.3
-08001009501,"Census Tract 95.01, Adams County, CO",Adams County,2861,356,12.4
-08001009502,"Census Tract 95.02, Adams County, CO",Adams County,5484,186,3.4
-08001009553,"Census Tract 95.53, Adams County, CO",Adams County,3386,463,13.7
-08001009603,"Census Tract 96.03, Adams County, CO",Adams County,5817,1186,20.4
-08001009604,"Census Tract 96.04, Adams County, CO",Adams County,4206,352,8.4
-08001009606,"Census Tract 96.06, Adams County, CO",Adams County,3155,243,7.7
-08001009607,"Census Tract 96.07, Adams County, CO",Adams County,4292,381,8.9
-08001009608,"Census Tract 96.08, Adams County, CO",Adams County,2859,462,16.2
-08001009751,"Census Tract 97.51, Adams County, CO",Adams County,3832,1129,29.5
-08001009752,"Census Tract 97.52, Adams County, CO",Adams County,3026,619,20.5
-08001015000,"Census Tract 150, Adams County, CO",Adams County,2578,323,12.5
-08001060001,"Census Tract 600.01, Adams County, CO",Adams County,2908,18,0.6
-08001060002,"Census Tract 600.02, Adams County, CO",Adams County,4538,56,1.2
-08001060100,"Census Tract 601, Adams County, CO",Adams County,7527,124,1.6
-08001060200,"Census Tract 602, Adams County, CO",Adams County,4554,386,8.5
-08001061200,"Census Tract 612, Adams County, CO",Adams County,4190,158,3.8
-08001988700,"Census Tract 9887, Adams County, CO",Adams County,0,0,
-08059009806,"Census Tract 98.06, Jefferson County, CO",Jefferson County,4539,77,1.7
-08059009807,"Census Tract 98.07, Jefferson County, CO",Jefferson County,1665,17,1.0
-08059009815,"Census Tract 98.15, Jefferson County, CO",Jefferson County,5184,37,0.7
-08059009823,"Census Tract 98.23, Jefferson County, CO",Jefferson County,4342,148,3.4
-08059009824,"Census Tract 98.24, Jefferson County, CO",Jefferson County,4982,265,5.3
-08059009827,"Census Tract 98.27, Jefferson County, CO",Jefferson County,5615,320,5.7
-08059009828,"Census Tract 98.28, Jefferson County, CO",Jefferson County,5214,398,7.6
-08059009829,"Census Tract 98.29, Jefferson County, CO",Jefferson County,1856,29,1.6
-08059009830,"Census Tract 98.30, Jefferson County, CO",Jefferson County,2199,177,8.0
-08059009831,"Census Tract 98.31, Jefferson County, CO",Jefferson County,2889,124,4.3
-08059009832,"Census Tract 98.32, Jefferson County, CO",Jefferson County,2283,124,5.4
-08059009833,"Census Tract 98.33, Jefferson County, CO",Jefferson County,5536,73,1.3
-08059009834,"Census Tract 98.34, Jefferson County, CO",Jefferson County,4706,327,6.9
-08059009835,"Census Tract 98.35, Jefferson County, CO",Jefferson County,3490,47,1.3
-08059009836,"Census Tract 98.36, Jefferson County, CO",Jefferson County,4042,63,1.6
-08059009837,"Census Tract 98.37, Jefferson County, CO",Jefferson County,8619,195,2.3
-08059009838,"Census Tract 98.38, Jefferson County, CO",Jefferson County,5062,55,1.1
-08059009839,"Census Tract 98.39, Jefferson County, CO",Jefferson County,2322,27,1.2
-08059009840,"Census Tract 98.40, Jefferson County, CO",Jefferson County,3367,104,3.1
-08059009841,"Census Tract 98.41, Jefferson County, CO",Jefferson County,1991,110,5.5
-08059009842,"Census Tract 98.42, Jefferson County, CO",Jefferson County,3317,10,0.3
-08059009845,"Census Tract 98.45, Jefferson County, CO",Jefferson County,4179,31,0.7
-08059009846,"Census Tract 98.46, Jefferson County, CO",Jefferson County,4989,152,3.0
-08059009847,"Census Tract 98.47, Jefferson County, CO",Jefferson County,3271,53,1.6
-08059009848,"Census Tract 98.48, Jefferson County, CO",Jefferson County,2616,113,4.3
-08059009850,"Census Tract 98.50, Jefferson County, CO",Jefferson County,2552,17,0.7
-08059009851,"Census Tract 98.51, Jefferson County, CO",Jefferson County,4112,183,4.5
-08059009852,"Census Tract 98.52, Jefferson County, CO",Jefferson County,5191,161,3.1
-08059009853,"Census Tract 98.53, Jefferson County, CO",Jefferson County,2684,30,1.1
-08059009854,"Census Tract 98.54, Jefferson County, CO",Jefferson County,5617,48,0.9
-08059009855,"Census Tract 98.55, Jefferson County, CO",Jefferson County,2950,17,0.6
-08059009856,"Census Tract 98.56, Jefferson County, CO",Jefferson County,2680,119,4.4
-08059009857,"Census Tract 98.57, Jefferson County, CO",Jefferson County,2869,162,5.6
-08059009858,"Census Tract 98.58, Jefferson County, CO",Jefferson County,3509,238,6.8
-08059009901,"Census Tract 99.01, Jefferson County, CO",Jefferson County,3057,71,2.3
-08059010001,"Census Tract 100.01, Jefferson County, CO",Jefferson County,3247,45,1.4
-08059010100,"Census Tract 101, Jefferson County, CO",Jefferson County,5098,377,7.4
-08059010205,"Census Tract 102.05, Jefferson County, CO",Jefferson County,2562,102,4.0
-08059010206,"Census Tract 102.06, Jefferson County, CO",Jefferson County,4087,159,3.9
-08059010208,"Census Tract 102.08, Jefferson County, CO",Jefferson County,6141,308,5.0
-08059010209,"Census Tract 102.09, Jefferson County, CO",Jefferson County,7311,639,8.7
-08059010210,"Census Tract 102.10, Jefferson County, CO",Jefferson County,3275,43,1.3
-08059010211,"Census Tract 102.11, Jefferson County, CO",Jefferson County,2825,79,2.8
-08059010212,"Census Tract 102.12, Jefferson County, CO",Jefferson County,4181,681,16.3
-08059010213,"Census Tract 102.13, Jefferson County, CO",Jefferson County,4519,293,6.5
-08059010303,"Census Tract 103.03, Jefferson County, CO",Jefferson County,5248,448,8.5
-08059010304,"Census Tract 103.04, Jefferson County, CO",Jefferson County,2396,85,3.5
-08059010305,"Census Tract 103.05, Jefferson County, CO",Jefferson County,3578,350,9.8
-08059010306,"Census Tract 103.06, Jefferson County, CO",Jefferson County,2813,128,4.6
-08059010307,"Census Tract 103.07, Jefferson County, CO",Jefferson County,4681,277,5.9
-08059010308,"Census Tract 103.08, Jefferson County, CO",Jefferson County,6129,326,5.3
-08059010402,"Census Tract 104.02, Jefferson County, CO",Jefferson County,5831,441,7.6
-08059010403,"Census Tract 104.03, Jefferson County, CO",Jefferson County,5412,505,9.3
-08059010405,"Census Tract 104.05, Jefferson County, CO",Jefferson County,2832,307,10.8
-08059010406,"Census Tract 104.06, Jefferson County, CO",Jefferson County,3118,474,15.2
-08059010502,"Census Tract 105.02, Jefferson County, CO",Jefferson County,5341,334,6.3
-08059010503,"Census Tract 105.03, Jefferson County, CO",Jefferson County,4468,281,6.3
-08059010504,"Census Tract 105.04, Jefferson County, CO",Jefferson County,3042,13,0.4
-08059010603,"Census Tract 106.03, Jefferson County, CO",Jefferson County,3583,303,8.5
-08059010604,"Census Tract 106.04, Jefferson County, CO",Jefferson County,2252,47,2.1
-08059010701,"Census Tract 107.01, Jefferson County, CO",Jefferson County,4966,266,5.4
-08059010702,"Census Tract 107.02, Jefferson County, CO",Jefferson County,4928,555,11.3
-08059010801,"Census Tract 108.01, Jefferson County, CO",Jefferson County,2342,38,1.6
-08059010901,"Census Tract 109.01, Jefferson County, CO",Jefferson County,5623,349,6.2
-08059010902,"Census Tract 109.02, Jefferson County, CO",Jefferson County,2840,45,1.6
-08059011000,"Census Tract 110, Jefferson County, CO",Jefferson County,5751,581,10.1
-08059011101,"Census Tract 111.01, Jefferson County, CO",Jefferson County,3665,227,6.2
-08059011102,"Census Tract 111.02, Jefferson County, CO",Jefferson County,3073,265,8.6
-08059011202,"Census Tract 112.02, Jefferson County, CO",Jefferson County,4900,283,5.8
-08059011300,"Census Tract 113, Jefferson County, CO",Jefferson County,3146,263,8.4
-08059011401,"Census Tract 114.01, Jefferson County, CO",Jefferson County,2532,315,12.4
-08059011402,"Census Tract 114.02, Jefferson County, CO",Jefferson County,3943,644,16.3
-08059011551,"Census Tract 115.51, Jefferson County, CO",Jefferson County,3982,408,10.2
-08059011552,"Census Tract 115.52, Jefferson County, CO",Jefferson County,2858,191,6.7
-08059011601,"Census Tract 116.01, Jefferson County, CO",Jefferson County,4120,613,14.9
-08059011602,"Census Tract 116.02, Jefferson County, CO",Jefferson County,4077,659,16.2
-08059011701,"Census Tract 117.01, Jefferson County, CO",Jefferson County,4602,460,10.0
-08059011702,"Census Tract 117.02, Jefferson County, CO",Jefferson County,5186,256,4.9
-08059011708,"Census Tract 117.08, Jefferson County, CO",Jefferson County,3893,123,3.2
-08059011709,"Census Tract 117.09, Jefferson County, CO",Jefferson County,3347,207,6.2
-08059011710,"Census Tract 117.10, Jefferson County, CO",Jefferson County,3844,380,9.9
-08059011711,"Census Tract 117.11, Jefferson County, CO",Jefferson County,4002,136,3.4
-08059011712,"Census Tract 117.12, Jefferson County, CO",Jefferson County,4252,118,2.8
-08059011720,"Census Tract 117.20, Jefferson County, CO",Jefferson County,5196,31,0.6
-08059011721,"Census Tract 117.21, Jefferson County, CO",Jefferson County,2855,114,4.0
-08059011723,"Census Tract 117.23, Jefferson County, CO",Jefferson County,3614,176,4.9
-08059011724,"Census Tract 117.24, Jefferson County, CO",Jefferson County,7962,63,0.8
-08059011725,"Census Tract 117.25, Jefferson County, CO",Jefferson County,1659,43,2.6
-08059011726,"Census Tract 117.26, Jefferson County, CO",Jefferson County,5284,356,6.7
-08059011727,"Census Tract 117.27, Jefferson County, CO",Jefferson County,3868,56,1.4
-08059011728,"Census Tract 117.28, Jefferson County, CO",Jefferson County,2591,105,4.1
-08059011729,"Census Tract 117.29, Jefferson County, CO",Jefferson County,4095,216,5.3
-08059011730,"Census Tract 117.30, Jefferson County, CO",Jefferson County,3461,379,11.0
-08059011731,"Census Tract 117.31, Jefferson County, CO",Jefferson County,4286,335,7.8
-08059011732,"Census Tract 117.32, Jefferson County, CO",Jefferson County,4722,697,14.8
-08059011733,"Census Tract 117.33, Jefferson County, CO",Jefferson County,2314,117,5.1
-08059011803,"Census Tract 118.03, Jefferson County, CO",Jefferson County,6397,546,8.5
-08059011804,"Census Tract 118.04, Jefferson County, CO",Jefferson County,4045,469,11.6
-08059011806,"Census Tract 118.06, Jefferson County, CO",Jefferson County,4861,754,15.5
-08059011807,"Census Tract 118.07, Jefferson County, CO",Jefferson County,2719,351,12.9
-08059011808,"Census Tract 118.08, Jefferson County, CO",Jefferson County,2567,316,12.3
-08059011904,"Census Tract 119.04, Jefferson County, CO",Jefferson County,3126,226,7.2
-08059011951,"Census Tract 119.51, Jefferson County, CO",Jefferson County,4143,207,5.0
-08059012022,"Census Tract 120.22, Jefferson County, CO",Jefferson County,5705,87,1.5
-08059012023,"Census Tract 120.23, Jefferson County, CO",Jefferson County,3123,89,2.8
-08059012024,"Census Tract 120.24, Jefferson County, CO",Jefferson County,5495,271,4.9
-08059012026,"Census Tract 120.26, Jefferson County, CO",Jefferson County,3402,113,3.3
-08059012027,"Census Tract 120.27, Jefferson County, CO",Jefferson County,2855,27,0.9
-08059012030,"Census Tract 120.30, Jefferson County, CO",Jefferson County,3678,185,5.0
-08059012031,"Census Tract 120.31, Jefferson County, CO",Jefferson County,3485,121,3.5
-08059012032,"Census Tract 120.32, Jefferson County, CO",Jefferson County,2725,51,1.9
-08059012033,"Census Tract 120.33, Jefferson County, CO",Jefferson County,2966,236,8.0
-08059012034,"Census Tract 120.34, Jefferson County, CO",Jefferson County,3857,10,0.3
-08059012035,"Census Tract 120.35, Jefferson County, CO",Jefferson County,5196,23,0.4
-08059012036,"Census Tract 120.36, Jefferson County, CO",Jefferson County,3171,168,5.3
-08059012037,"Census Tract 120.37, Jefferson County, CO",Jefferson County,3799,140,3.7
-08059012038,"Census Tract 120.38, Jefferson County, CO",Jefferson County,3568,217,6.1
-08059012039,"Census Tract 120.39, Jefferson County, CO",Jefferson County,5446,243,4.5
-08059012041,"Census Tract 120.41, Jefferson County, CO",Jefferson County,5193,171,3.3
-08059012042,"Census Tract 120.42, Jefferson County, CO",Jefferson County,3833,80,2.1
-08059012043,"Census Tract 120.43, Jefferson County, CO",Jefferson County,5902,123,2.1
-08059012044,"Census Tract 120.44, Jefferson County, CO",Jefferson County,3829,182,4.8
-08059012045,"Census Tract 120.45, Jefferson County, CO",Jefferson County,5828,286,4.9
-08059012046,"Census Tract 120.46, Jefferson County, CO",Jefferson County,2022,80,4.0
-08059012047,"Census Tract 120.47, Jefferson County, CO",Jefferson County,4258,144,3.4
-08059012048,"Census Tract 120.48, Jefferson County, CO",Jefferson County,2062,12,0.6
-08059012049,"Census Tract 120.49, Jefferson County, CO",Jefferson County,3724,33,0.9
-08059012050,"Census Tract 120.50, Jefferson County, CO",Jefferson County,3884,104,2.7
-08059012051,"Census Tract 120.51, Jefferson County, CO",Jefferson County,4059,163,4.0
-08059012052,"Census Tract 120.52, Jefferson County, CO",Jefferson County,5579,548,9.8
-08059012053,"Census Tract 120.53, Jefferson County, CO",Jefferson County,4441,133,3.0
-08059012054,"Census Tract 120.54, Jefferson County, CO",Jefferson County,3807,123,3.2
-08059012055,"Census Tract 120.55, Jefferson County, CO",Jefferson County,3700,60,1.6
-08059012057,"Census Tract 120.57, Jefferson County, CO",Jefferson County,5893,215,3.6
-08059012058,"Census Tract 120.58, Jefferson County, CO",Jefferson County,3806,239,6.3
-08059012059,"Census Tract 120.59, Jefferson County, CO",Jefferson County,3664,122,3.3
-08059012060,"Census Tract 120.60, Jefferson County, CO",Jefferson County,3237,150,4.6
-08059015800,"Census Tract 158, Jefferson County, CO",Jefferson County,4242,176,4.1
-08059015900,"Census Tract 159, Jefferson County, CO",Jefferson County,3320,164,4.9
-08059060300,"Census Tract 603, Jefferson County, CO",Jefferson County,4341,155,3.6
-08059060400,"Census Tract 604, Jefferson County, CO",Jefferson County,5508,138,2.5
-08059060501,"Census Tract 605.01, Jefferson County, CO",Jefferson County,10295,411,4.0
-08059980000,"Census Tract 9800, Jefferson County, CO",Jefferson County,0,0,
-08059980400,"Census Tract 9804, Jefferson County, CO",Jefferson County,0,0,
-08059980700,"Census Tract 9807, Jefferson County, CO",Jefferson County,0,0,
-08059980800,"Census Tract 9808, Jefferson County, CO",Jefferson County,0,0,
+GEO_ID,Tract_Name,Total_Pop,Total_Uninsured,Uninsured_Rate
+08001007801,Census Tract 78.01; Adams County; Colorado,4108,1205,29.3
+08001007802,Census Tract 78.02; Adams County; Colorado,4249,1296,30.5
+08001007900,Census Tract 79; Adams County; Colorado,6718,1789,26.6
+08001008000,Census Tract 80; Adams County; Colorado,5597,780,13.9
+08001008100,Census Tract 81; Adams County; Colorado,1455,60,4.1
+08001008200,Census Tract 82; Adams County; Colorado,6446,1167,18.1
+08001008308,Census Tract 83.08; Adams County; Colorado,6477,2053,31.7
+08001008309,Census Tract 83.09; Adams County; Colorado,3816,1325,34.7
+08001008354,Census Tract 83.54; Adams County; Colorado,7914,967,12.2
+08001008355,Census Tract 83.55; Adams County; Colorado,4830,889,18.4
+08001008401,Census Tract 84.01; Adams County; Colorado,5956,581,9.8
+08001008402,Census Tract 84.02; Adams County; Colorado,5620,551,9.8
+08001008505,Census Tract 85.05; Adams County; Colorado,7106,304,4.3
+08001008506,Census Tract 85.06; Adams County; Colorado,5921,633,10.7
+08001008507,Census Tract 85.07; Adams County; Colorado,6320,538,8.5
+08001008508,Census Tract 85.08; Adams County; Colorado,5768,1012,17.5
+08001008524,Census Tract 85.24; Adams County; Colorado,8976,658,7.3
+08001008526,Census Tract 85.26; Adams County; Colorado,7537,275,3.6
+08001008533,Census Tract 85.33; Adams County; Colorado,7910,822,10.4
+08001008534,Census Tract 85.34; Adams County; Colorado,4213,353,8.4
+08001008535,Census Tract 85.35; Adams County; Colorado,4758,331,7.0
+08001008536,Census Tract 85.36; Adams County; Colorado,5093,225,4.4
+08001008538,Census Tract 85.38; Adams County; Colorado,14890,308,2.1
+08001008540,Census Tract 85.40; Adams County; Colorado,10799,359,3.3
+08001008544,Census Tract 85.44; Adams County; Colorado,5972,254,4.3
+08001008545,Census Tract 85.45; Adams County; Colorado,6361,251,3.9
+08001008546,Census Tract 85.46; Adams County; Colorado,3440,185,5.4
+08001008547,Census Tract 85.47; Adams County; Colorado,3242,220,6.8
+08001008548,Census Tract 85.48; Adams County; Colorado,1604,97,6.0
+08001008549,Census Tract 85.49; Adams County; Colorado,5032,855,17.0
+08001008550,Census Tract 85.50; Adams County; Colorado,8191,447,5.5
+08001008551,Census Tract 85.51; Adams County; Colorado,1916,86,4.5
+08001008552,Census Tract 85.52; Adams County; Colorado,5493,662,12.1
+08001008553,Census Tract 85.53; Adams County; Colorado,5832,376,6.4
+08001008554,Census Tract 85.54; Adams County; Colorado,2912,101,3.5
+08001008555,Census Tract 85.55; Adams County; Colorado,6621,973,14.7
+08001008556,Census Tract 85.56; Adams County; Colorado,6068,258,4.3
+08001008557,Census Tract 85.57; Adams County; Colorado,1371,93,6.8
+08001008558,Census Tract 85.58; Adams County; Colorado,4811,465,9.7
+08001008559,Census Tract 85.59; Adams County; Colorado,9239,889,9.6
+08001008560,Census Tract 85.60; Adams County; Colorado,2470,108,4.4
+08001008561,Census Tract 85.61; Adams County; Colorado,5113,27,0.5
+08001008562,Census Tract 85.62; Adams County; Colorado,6534,416,6.4
+08001008563,Census Tract 85.63; Adams County; Colorado,4537,513,11.3
+08001008564,Census Tract 85.64; Adams County; Colorado,1502,37,2.5
+08001008565,Census Tract 85.65; Adams County; Colorado,7268,640,8.8
+08001008603,Census Tract 86.03; Adams County; Colorado,1881,208,11.1
+08001008604,Census Tract 86.04; Adams County; Colorado,3852,625,16.2
+08001008605,Census Tract 86.05; Adams County; Colorado,4099,484,11.8
+08001008606,Census Tract 86.06; Adams County; Colorado,6384,640,10.0
+08001008705,Census Tract 87.05; Adams County; Colorado,5444,934,17.2
+08001008706,Census Tract 87.06; Adams County; Colorado,4662,678,14.5
+08001008709,Census Tract 87.09; Adams County; Colorado,6837,509,7.4
+08001008801,Census Tract 88.01; Adams County; Colorado,5644,933,16.5
+08001008802,Census Tract 88.02; Adams County; Colorado,3934,412,10.5
+08001008901,Census Tract 89.01; Adams County; Colorado,2485,370,14.9
+08001009001,Census Tract 90.01; Adams County; Colorado,5323,432,8.1
+08001009003,Census Tract 90.03; Adams County; Colorado,4460,963,21.6
+08001009004,Census Tract 90.04; Adams County; Colorado,5570,1508,27.1
+08001009101,Census Tract 91.01; Adams County; Colorado,4258,432,10.1
+08001009103,Census Tract 91.03; Adams County; Colorado,4484,755,16.8
+08001009104,Census Tract 91.04; Adams County; Colorado,7108,1546,21.8
+08001009202,Census Tract 92.02; Adams County; Colorado,4340,791,18.2
+08001009203,Census Tract 92.03; Adams County; Colorado,4221,1281,30.3
+08001009204,Census Tract 92.04; Adams County; Colorado,6591,839,12.7
+08001009206,Census Tract 92.06; Adams County; Colorado,2222,153,6.9
+08001009207,Census Tract 92.07; Adams County; Colorado,4764,715,15.0
+08001009304,Census Tract 93.04; Adams County; Colorado,5520,336,6.1
+08001009306,Census Tract 93.06; Adams County; Colorado,4131,513,12.4
+08001009307,Census Tract 93.07; Adams County; Colorado,3627,388,10.7
+08001009308,Census Tract 93.08; Adams County; Colorado,4198,556,13.2
+08001009309,Census Tract 93.09; Adams County; Colorado,3946,723,18.3
+08001009310,Census Tract 93.10; Adams County; Colorado,5474,473,8.6
+08001009316,Census Tract 93.16; Adams County; Colorado,7145,1817,25.4
+08001009318,Census Tract 93.18; Adams County; Colorado,7233,631,8.7
+08001009319,Census Tract 93.19; Adams County; Colorado,2409,265,11.0
+08001009320,Census Tract 93.20; Adams County; Colorado,2965,520,17.5
+08001009321,Census Tract 93.21; Adams County; Colorado,4351,775,17.8
+08001009322,Census Tract 93.22; Adams County; Colorado,5133,1032,20.1
+08001009323,Census Tract 93.23; Adams County; Colorado,3434,325,9.5
+08001009325,Census Tract 93.25; Adams County; Colorado,6010,753,12.5
+08001009326,Census Tract 93.26; Adams County; Colorado,2487,79,3.2
+08001009327,Census Tract 93.27; Adams County; Colorado,4962,464,9.4
+08001009401,Census Tract 94.01; Adams County; Colorado,4529,423,9.3
+08001009406,Census Tract 94.06; Adams County; Colorado,4384,245,5.6
+08001009407,Census Tract 94.07; Adams County; Colorado,5312,1033,19.4
+08001009408,Census Tract 94.08; Adams County; Colorado,4742,173,3.6
+08001009409,Census Tract 94.09; Adams County; Colorado,5728,216,3.8
+08001009410,Census Tract 94.10; Adams County; Colorado,3124,64,2.0
+08001009411,Census Tract 94.11; Adams County; Colorado,3133,88,2.8
+08001009501,Census Tract 95.01; Adams County; Colorado,3184,333,10.5
+08001009502,Census Tract 95.02; Adams County; Colorado,5276,78,1.5
+08001009553,Census Tract 95.53; Adams County; Colorado,3587,455,12.7
+08001009603,Census Tract 96.03; Adams County; Colorado,6343,1578,24.9
+08001009604,Census Tract 96.04; Adams County; Colorado,3779,342,9.1
+08001009606,Census Tract 96.06; Adams County; Colorado,3092,230,7.4
+08001009607,Census Tract 96.07; Adams County; Colorado,4096,377,9.2
+08001009608,Census Tract 96.08; Adams County; Colorado,2827,459,16.2
+08001009751,Census Tract 97.51; Adams County; Colorado,3884,1410,36.3
+08001009752,Census Tract 97.52; Adams County; Colorado,3163,535,16.9
+08001015000,Census Tract 150; Adams County; Colorado,2263,196,8.7
+08001060001,Census Tract 600.01; Adams County; Colorado,2974,108,3.6
+08001060002,Census Tract 600.02; Adams County; Colorado,5127,167,3.3
+08001060100,Census Tract 601; Adams County; Colorado,7667,763,10.0
+08001060200,Census Tract 602; Adams County; Colorado,4721,357,7.6
+08001061200,Census Tract 612; Adams County; Colorado,4271,166,3.9
+08001988700,Census Tract 9887; Adams County; Colorado,0,0,
+08059009806,Census Tract 98.06; Jefferson County; Colorado,4706,76,1.6
+08059009807,Census Tract 98.07; Jefferson County; Colorado,1719,27,1.6
+08059009815,Census Tract 98.15; Jefferson County; Colorado,5126,37,0.7
+08059009823,Census Tract 98.23; Jefferson County; Colorado,4308,150,3.5
+08059009824,Census Tract 98.24; Jefferson County; Colorado,4889,289,5.9
+08059009827,Census Tract 98.27; Jefferson County; Colorado,5614,319,5.7
+08059009828,Census Tract 98.28; Jefferson County; Colorado,5203,603,11.6
+08059009829,Census Tract 98.29; Jefferson County; Colorado,1736,28,1.6
+08059009830,Census Tract 98.30; Jefferson County; Colorado,2277,161,7.1
+08059009831,Census Tract 98.31; Jefferson County; Colorado,3121,173,5.5
+08059009832,Census Tract 98.32; Jefferson County; Colorado,2285,136,6.0
+08059009833,Census Tract 98.33; Jefferson County; Colorado,5603,182,3.2
+08059009834,Census Tract 98.34; Jefferson County; Colorado,4592,307,6.7
+08059009835,Census Tract 98.35; Jefferson County; Colorado,3421,56,1.6
+08059009836,Census Tract 98.36; Jefferson County; Colorado,3947,60,1.5
+08059009837,Census Tract 98.37; Jefferson County; Colorado,8574,171,2.0
+08059009838,Census Tract 98.38; Jefferson County; Colorado,5244,39,0.7
+08059009839,Census Tract 98.39; Jefferson County; Colorado,2245,20,0.9
+08059009840,Census Tract 98.40; Jefferson County; Colorado,3423,70,2.0
+08059009841,Census Tract 98.41; Jefferson County; Colorado,2064,148,7.2
+08059009842,Census Tract 98.42; Jefferson County; Colorado,3201,47,1.5
+08059009845,Census Tract 98.45; Jefferson County; Colorado,4123,29,0.7
+08059009846,Census Tract 98.46; Jefferson County; Colorado,4990,222,4.4
+08059009847,Census Tract 98.47; Jefferson County; Colorado,3362,194,5.8
+08059009848,Census Tract 98.48; Jefferson County; Colorado,2589,125,4.8
+08059009850,Census Tract 98.50; Jefferson County; Colorado,2531,20,0.8
+08059009851,Census Tract 98.51; Jefferson County; Colorado,3854,158,4.1
+08059009852,Census Tract 98.52; Jefferson County; Colorado,4888,45,0.9
+08059009853,Census Tract 98.53; Jefferson County; Colorado,2695,16,0.6
+08059009854,Census Tract 98.54; Jefferson County; Colorado,5252,92,1.8
+08059009855,Census Tract 98.55; Jefferson County; Colorado,3043,25,0.8
+08059009856,Census Tract 98.56; Jefferson County; Colorado,2707,193,7.1
+08059009857,Census Tract 98.57; Jefferson County; Colorado,2945,169,5.7
+08059009858,Census Tract 98.58; Jefferson County; Colorado,3605,304,8.4
+08059009901,Census Tract 99.01; Jefferson County; Colorado,3192,92,2.9
+08059010001,Census Tract 100.01; Jefferson County; Colorado,3286,113,3.4
+08059010100,Census Tract 101; Jefferson County; Colorado,4846,254,5.2
+08059010205,Census Tract 102.05; Jefferson County; Colorado,2521,120,4.8
+08059010206,Census Tract 102.06; Jefferson County; Colorado,4098,121,3.0
+08059010208,Census Tract 102.08; Jefferson County; Colorado,5559,125,2.2
+08059010209,Census Tract 102.09; Jefferson County; Colorado,7130,686,9.6
+08059010210,Census Tract 102.10; Jefferson County; Colorado,3187,47,1.5
+08059010211,Census Tract 102.11; Jefferson County; Colorado,2936,124,4.2
+08059010212,Census Tract 102.12; Jefferson County; Colorado,4201,468,11.1
+08059010213,Census Tract 102.13; Jefferson County; Colorado,4574,314,6.9
+08059010303,Census Tract 103.03; Jefferson County; Colorado,5269,254,4.8
+08059010304,Census Tract 103.04; Jefferson County; Colorado,2322,96,4.1
+08059010305,Census Tract 103.05; Jefferson County; Colorado,3510,335,9.5
+08059010306,Census Tract 103.06; Jefferson County; Colorado,2640,141,5.3
+08059010307,Census Tract 103.07; Jefferson County; Colorado,4615,122,2.6
+08059010308,Census Tract 103.08; Jefferson County; Colorado,7062,546,7.7
+08059010402,Census Tract 104.02; Jefferson County; Colorado,5428,456,8.4
+08059010403,Census Tract 104.03; Jefferson County; Colorado,5525,953,17.2
+08059010405,Census Tract 104.05; Jefferson County; Colorado,2903,147,5.1
+08059010406,Census Tract 104.06; Jefferson County; Colorado,2873,490,17.1
+08059010502,Census Tract 105.02; Jefferson County; Colorado,5262,254,4.8
+08059010503,Census Tract 105.03; Jefferson County; Colorado,4711,182,3.9
+08059010504,Census Tract 105.04; Jefferson County; Colorado,3092,19,0.6
+08059010603,Census Tract 106.03; Jefferson County; Colorado,3619,209,5.8
+08059010604,Census Tract 106.04; Jefferson County; Colorado,2248,55,2.4
+08059010701,Census Tract 107.01; Jefferson County; Colorado,4579,294,6.4
+08059010702,Census Tract 107.02; Jefferson County; Colorado,5305,667,12.6
+08059010801,Census Tract 108.01; Jefferson County; Colorado,2411,23,1.0
+08059010901,Census Tract 109.01; Jefferson County; Colorado,5469,278,5.1
+08059010902,Census Tract 109.02; Jefferson County; Colorado,2993,146,4.9
+08059011000,Census Tract 110; Jefferson County; Colorado,5573,514,9.2
+08059011101,Census Tract 111.01; Jefferson County; Colorado,3590,196,5.5
+08059011102,Census Tract 111.02; Jefferson County; Colorado,2879,243,8.4
+08059011202,Census Tract 112.02; Jefferson County; Colorado,5091,329,6.5
+08059011300,Census Tract 113; Jefferson County; Colorado,3230,298,9.2
+08059011401,Census Tract 114.01; Jefferson County; Colorado,2533,287,11.3
+08059011402,Census Tract 114.02; Jefferson County; Colorado,3970,727,18.3
+08059011551,Census Tract 115.51; Jefferson County; Colorado,4043,443,11.0
+08059011552,Census Tract 115.52; Jefferson County; Colorado,3171,221,7.0
+08059011601,Census Tract 116.01; Jefferson County; Colorado,4068,409,10.1
+08059011602,Census Tract 116.02; Jefferson County; Colorado,4012,379,9.4
+08059011701,Census Tract 117.01; Jefferson County; Colorado,4591,666,14.5
+08059011702,Census Tract 117.02; Jefferson County; Colorado,5359,223,4.2
+08059011708,Census Tract 117.08; Jefferson County; Colorado,3806,286,7.5
+08059011709,Census Tract 117.09; Jefferson County; Colorado,3297,185,5.6
+08059011710,Census Tract 117.10; Jefferson County; Colorado,3939,405,10.3
+08059011711,Census Tract 117.11; Jefferson County; Colorado,4086,105,2.6
+08059011712,Census Tract 117.12; Jefferson County; Colorado,4139,86,2.1
+08059011720,Census Tract 117.20; Jefferson County; Colorado,5212,56,1.1
+08059011721,Census Tract 117.21; Jefferson County; Colorado,3146,158,5.0
+08059011723,Census Tract 117.23; Jefferson County; Colorado,3487,131,3.8
+08059011724,Census Tract 117.24; Jefferson County; Colorado,8052,37,0.5
+08059011725,Census Tract 117.25; Jefferson County; Colorado,1821,126,6.9
+08059011726,Census Tract 117.26; Jefferson County; Colorado,5424,383,7.1
+08059011727,Census Tract 117.27; Jefferson County; Colorado,3818,59,1.5
+08059011728,Census Tract 117.28; Jefferson County; Colorado,2647,102,3.9
+08059011729,Census Tract 117.29; Jefferson County; Colorado,4173,282,6.8
+08059011730,Census Tract 117.30; Jefferson County; Colorado,3322,236,7.1
+08059011731,Census Tract 117.31; Jefferson County; Colorado,4205,416,9.9
+08059011732,Census Tract 117.32; Jefferson County; Colorado,5002,752,15.0
+08059011733,Census Tract 117.33; Jefferson County; Colorado,2330,133,5.7
+08059011803,Census Tract 118.03; Jefferson County; Colorado,6285,640,10.2
+08059011804,Census Tract 118.04; Jefferson County; Colorado,4172,599,14.4
+08059011806,Census Tract 118.06; Jefferson County; Colorado,4866,803,16.5
+08059011807,Census Tract 118.07; Jefferson County; Colorado,2548,175,6.9
+08059011808,Census Tract 118.08; Jefferson County; Colorado,2409,223,9.3
+08059011904,Census Tract 119.04; Jefferson County; Colorado,3102,153,4.9
+08059011951,Census Tract 119.51; Jefferson County; Colorado,4084,205,5.0
+08059012022,Census Tract 120.22; Jefferson County; Colorado,5571,229,4.1
+08059012023,Census Tract 120.23; Jefferson County; Colorado,3002,147,4.9
+08059012024,Census Tract 120.24; Jefferson County; Colorado,5638,273,4.8
+08059012026,Census Tract 120.26; Jefferson County; Colorado,3273,41,1.3
+08059012027,Census Tract 120.27; Jefferson County; Colorado,2792,0,0.0
+08059012030,Census Tract 120.30; Jefferson County; Colorado,3835,185,4.8
+08059012031,Census Tract 120.31; Jefferson County; Colorado,3249,208,6.4
+08059012032,Census Tract 120.32; Jefferson County; Colorado,2603,78,3.0
+08059012033,Census Tract 120.33; Jefferson County; Colorado,3017,167,5.5
+08059012034,Census Tract 120.34; Jefferson County; Colorado,4017,10,0.2
+08059012035,Census Tract 120.35; Jefferson County; Colorado,5038,30,0.6
+08059012036,Census Tract 120.36; Jefferson County; Colorado,3153,171,5.4
+08059012037,Census Tract 120.37; Jefferson County; Colorado,3721,174,4.7
+08059012038,Census Tract 120.38; Jefferson County; Colorado,3425,150,4.4
+08059012039,Census Tract 120.39; Jefferson County; Colorado,5227,97,1.9
+08059012041,Census Tract 120.41; Jefferson County; Colorado,5244,178,3.4
+08059012042,Census Tract 120.42; Jefferson County; Colorado,3919,112,2.9
+08059012043,Census Tract 120.43; Jefferson County; Colorado,5829,127,2.2
+08059012044,Census Tract 120.44; Jefferson County; Colorado,3784,156,4.1
+08059012045,Census Tract 120.45; Jefferson County; Colorado,5820,267,4.6
+08059012046,Census Tract 120.46; Jefferson County; Colorado,1944,79,4.1
+08059012047,Census Tract 120.47; Jefferson County; Colorado,4312,208,4.8
+08059012048,Census Tract 120.48; Jefferson County; Colorado,2079,6,0.3
+08059012049,Census Tract 120.49; Jefferson County; Colorado,3511,50,1.4
+08059012050,Census Tract 120.50; Jefferson County; Colorado,3901,57,1.5
+08059012051,Census Tract 120.51; Jefferson County; Colorado,4025,122,3.0
+08059012052,Census Tract 120.52; Jefferson County; Colorado,5672,224,3.9
+08059012053,Census Tract 120.53; Jefferson County; Colorado,4397,134,3.0
+08059012054,Census Tract 120.54; Jefferson County; Colorado,3798,154,4.1
+08059012055,Census Tract 120.55; Jefferson County; Colorado,3685,65,1.8
+08059012057,Census Tract 120.57; Jefferson County; Colorado,5981,191,3.2
+08059012058,Census Tract 120.58; Jefferson County; Colorado,3840,255,6.6
+08059012059,Census Tract 120.59; Jefferson County; Colorado,3551,107,3.0
+08059012060,Census Tract 120.60; Jefferson County; Colorado,3154,155,4.9
+08059015800,Census Tract 158; Jefferson County; Colorado,4130,221,5.4
+08059015900,Census Tract 159; Jefferson County; Colorado,3524,152,4.3
+08059060300,Census Tract 603; Jefferson County; Colorado,4145,157,3.8
+08059060400,Census Tract 604; Jefferson County; Colorado,6129,149,2.4
+08059060501,Census Tract 605.01; Jefferson County; Colorado,11135,388,3.5
+08059980000,Census Tract 9800; Jefferson County; Colorado,0,0,
+08059980400,Census Tract 9804; Jefferson County; Colorado,0,0,
+08059980700,Census Tract 9807; Jefferson County; Colorado,0,0,
+08059980800,Census Tract 9808; Jefferson County; Colorado,0,0,

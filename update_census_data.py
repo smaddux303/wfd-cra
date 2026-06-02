@@ -277,7 +277,7 @@ try:
     tracts = tracts.merge(race,     on="GEO_ID", how="left")
 
     # Aggregate by district
-    def district_summary(group):
+    def district_summary(district_num, group):
         t   = group["Total_Pop"].sum()
         bp  = group["Below_Poverty"].sum()
         ui  = group["Total_Uninsured"].sum()
@@ -288,7 +288,7 @@ try:
         asi = group["Asian_NonHispanic"].sum()
         hi  = group["Hispanic"].sum()
         return pd.Series({
-            "Station":           f"Station {int(group['District'].iloc[0])}",
+            "Station":           f"Station {district_num}",
             "Total_Pop":         int(t),
             "Below_Poverty":     int(bp),
             "Poverty_Rate":      pct(bp, t),
@@ -309,7 +309,7 @@ try:
             "Tract_Count":       len(group)
         })
 
-    summary = tracts.groupby("District").apply(district_summary).reset_index()
+    summary = tracts.groupby("District").apply(lambda g: district_summary(g.name, g)).reset_index()
     summary = summary.sort_values("District")
     summary.to_csv(f"{OUT_DIR}/westminster_demographics_by_district.csv", index=False)
 

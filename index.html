@@ -368,20 +368,120 @@
   </div>
 </section>
 
-<!-- Climate -->
+<!-- Climate / Natural Hazards -->
 <section id="climate" class="section section-dark" aria-labelledby="climate-title">
   <div class="inner">
-    <p class="section-eyebrow">Climatological Risks</p>
+    <p class="section-eyebrow">Natural Hazards</p>
     <div class="accent-bar" aria-hidden="true"></div>
-    <h2 id="climate-title" class="section-title" style="color:var(--white)">Weather &amp; Natural Hazards</h2>
-    <p class="section-lead">Westminster's Front Range location exposes the community to a wide range of weather-driven hazards — from winter blizzards to summer wildfire conditions, flash flooding to severe hailstorms. These climatological risks directly shape WFD's call volume, deployment needs, and resource planning.</p>
+    <h2 id="climate-title" class="section-title" style="color:var(--white)">Westminster's Hazard Profile</h2>
+    <p class="section-lead">Westminster's Front Range location exposes the community to a broad range of natural hazards. The City's 2023 Hazard Mitigation Plan assessed 15 natural hazards using likelihood of occurrence (A–E) and potential impact (1–5). Since 2018, wildfire risk has been elevated significantly following the 2021 Marshall Fire — a watershed moment for Front Range communities. Since 1965, Adams and Jefferson counties have received 25 presidential disaster declarations.</p>
 
-    <div class="risk-grid">
-      <div class="risk-card risk-high"><div class="risk-level">High Climate Risk</div><h3>Extreme Winter Weather</h3><p>Blizzards, ice storms, and extreme cold create elevated demand for medical emergencies and vehicle accidents.</p></div>
-      <div class="risk-card risk-high"><div class="risk-level">High Climate Risk</div><h3>Flash Flooding</h3><p>Big Dry Creek and Little Dry Creek corridors subject to rapid flooding. Swift water rescue deployments increase significantly in summer monsoon season.</p></div>
-      <div class="risk-card risk-med"><div class="risk-level">Medium Climate Risk</div><h3>Wildfire / Urban Interface</h3><p>Drought conditions and open space in northern Westminster create periodic wildfire risk. WFD deploys resources statewide and nationally during major fire events.</p></div>
-      <div class="risk-card risk-med"><div class="risk-level">Medium Climate Risk</div><h3>Severe Thunderstorms / Hail</h3><p>Colorado's hail alley location produces some of the highest hail frequencies in North America, creating structure damage and injury calls.</p></div>
+    <!-- Disaster declaration callout -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-bottom:2.5rem;">
+      <div style="background:rgba(255,255,255,.04);padding:1rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:var(--teal);line-height:1;">25</div>
+        <div style="font-size:11px;color:var(--gray-light);font-weight:500;margin-top:4px;">Presidential Declarations<br>since 1965</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:1rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:var(--teal);line-height:1;">9</div>
+        <div style="font-size:11px;color:var(--gray-light);font-weight:500;margin-top:4px;">Flood Declarations<br>most common type</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:1rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:var(--teal);line-height:1;">5</div>
+        <div style="font-size:11px;color:var(--gray-light);font-weight:500;margin-top:4px;">Fire Declarations<br>incl. 2012 wildfires</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:1rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:var(--teal);line-height:1;">4</div>
+        <div style="font-size:11px;color:var(--gray-light);font-weight:500;margin-top:4px;">Snow Declarations<br>most recent 2007</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:1rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:var(--orange);line-height:1;">↑</div>
+        <div style="font-size:11px;color:var(--gray-light);font-weight:500;margin-top:4px;">Wildfire risk elevated<br>post-Marshall Fire 2021</div>
+      </div>
     </div>
+
+    <!-- Hazard cards grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:2rem;">
+
+      <!-- High consequence hazards -->
+      <div style="background:rgba(255,103,29,.12);border:1px solid rgba(255,103,29,.35);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-red);margin-bottom:.5rem;">Likelihood B · Impact E5 — Very High Consequence</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Drought &amp; Water Security</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Westminster's semi-arid climate makes drought inevitable — roughly once per decade. Colorado was in drought 50 of the past 126 years. A multi-decade drought would threaten Standley Lake and the entire Front Range water supply. Water demand may surpass supply as soon as 2025 in the South Platte Basin.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: wildfire risk, dehydration EMS calls, water supply for firefighting</div>
+      </div>
+
+      <div style="background:rgba(255,103,29,.12);border:1px solid rgba(255,103,29,.35);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-red);margin-bottom:.5rem;">Likelihood A · Impact A5 — Very High Consequence</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Dam Failure</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Westminster owns Ketner and McKay dams. Standley Lake (High Hazard), McKay Lake South (High Hazard), and Woman Creek (High Hazard) all have Emergency Action Plans. A Standley Lake failure would destroy several hundred homes and endanger the city's primary water supply.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: mass casualty event, swift water rescue, mutual aid activation</div>
+      </div>
+
+      <div style="background:rgba(255,103,29,.12);border:1px solid rgba(255,103,29,.35);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-red);margin-bottom:.5rem;">Likelihood C · Impact C5 — High Consequence (elevated since 2021)</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Open Space Fire / Wildfire</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Wildfire risk was elevated significantly in the 2023 HMP following the 2021 Marshall Fire, which destroyed over 1,000 homes in Boulder County. Westminster has open space interface in northern districts and deploys resources statewide and nationally. WFD maintains Type 6 brush trucks and participates in regional wildland response.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: structure protection, regional deployment, multi-day operations</div>
+      </div>
+
+      <!-- Medium-high consequence hazards -->
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood D · Impact D4 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Flooding</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Westminster sits at the headwaters of Big Dry Creek and Little Dry Creek. Intense rain events (2–3 inches in one hour) can produce 100-year flood conditions rapidly. Nine presidential flood declarations since 1965. Adams County could experience $30 million in future flood losses under moderate climate scenarios.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: swift water rescue, vehicle extrication, infrastructure disruption</div>
+      </div>
+
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood D · Impact D4 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Extreme Cold &amp; Severe Winter Storms</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Seven recorded extreme cold events since 1998. Blizzards are Westminster's most common meteorological hazard. While winters are trending warmer and shorter, extreme events remain a significant threat — particularly to vulnerable populations including elderly residents and those experiencing homelessness.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: hypothermia EMS calls, vehicle accidents, hazardous road conditions</div>
+      </div>
+
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood C · Impact C5 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Extreme Heat</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Climate change is increasing the frequency and intensity of extreme heat events on the Front Range. Heat index above 103°F poses life-threatening risk, especially for elderly, outdoor workers, and those without air conditioning. February 2023 was the fourth-warmest on global record — 528 consecutive months above the 20th century average.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: heat-related EMS calls surge, vulnerable population welfare checks</div>
+      </div>
+
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood C · Impact C5 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Epidemic / Pandemic</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Based on five pandemics in the past 100 years, a pandemic occurs roughly every 20 years — a 5% probability in any given year. Westminster received four COVID-19 presidential declarations in 2020. Emerging and antibiotic-resistant diseases remain a perennial threat driven by global travel and climate-influenced vector habitats.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: PPE demands, EMS surge, staffing shortages, mutual aid strain</div>
+      </div>
+
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood B · Impact B4 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Earthquake</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">The Golden Fault is the closest quaternary fault to Westminster. While large earthquakes are rare in Colorado, induced seismicity from oil and gas activity north and east of the city warrants monitoring. A 2,500-year probabilistic scenario projects significant building damage and economic losses for the region.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: structure collapse, search &amp; rescue, utility disruption, mass casualty</div>
+      </div>
+
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood B · Impact B4 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Severe Summer Storms, Hail &amp; Lightning</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Colorado's "hail alley" location produces some of the nation's highest hail frequencies. Lightning strikes and severe summer storms cause significant property damage and injury calls annually. These are rapid-onset events well understood by the public but persistently dangerous and economically disruptive.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: structure fires, traumatic injuries, vehicle accidents, power outages</div>
+      </div>
+
+      <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:10px;padding:1.25rem;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;">Likelihood B · Impact B4 — Significant</div>
+        <h3 style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:.4rem;">Tornado</h3>
+        <p style="font-size:12px;color:var(--gray-light);line-height:1.6;">Westminster has recorded tornado events dating to 1950 including one presidential declaration in 1965. While the probability of a major tornado is low, the consequences are severe — structure destruction, mass casualties, and infrastructure damage. The city's grid street pattern and open areas increase exposure.</p>
+        <div style="margin-top:.75rem;font-size:11px;color:var(--teal-light);font-weight:600;">WFD impact: mass casualty, heavy rescue, search &amp; rescue, utility response</div>
+      </div>
+
+    </div>
+
+    <!-- Cascading hazards note -->
+    <div style="background:rgba(0,137,150,.1);border:1px solid rgba(0,137,150,.3);border-radius:10px;padding:1.25rem;">
+      <p style="font-size:12px;color:var(--gray-light);line-height:1.7;margin:0;"><strong style="color:var(--teal-light);">Cascading hazard note:</strong> Westminster's 2023 Hazard Mitigation Plan emphasizes that hazards are interconnected. Drought stresses vegetation and increases wildfire risk. Wildfire degrades watersheds and increases flooding. Flooding can threaten dams. Extreme heat exacerbates drought. Climate change is amplifying the frequency and severity of each of these hazards — making multi-hazard planning and all-hazards emergency response capability increasingly critical for WFD. This document should be read alongside Westminster's <a href="https://www.westminsterco.gov" style="color:var(--teal-light);" target="_blank" rel="noopener">2023 Hazard Mitigation Plan</a> for full depth of analysis.</p>
+    </div>
+
   </div>
 </section>
 

@@ -10,6 +10,9 @@ on:
         required: false
         default: 'Manual data refresh'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   update-census-data:
     runs-on: ubuntu-latest
@@ -19,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: '3.11'
 
@@ -60,5 +63,4 @@ jobs:
         run: |
           echo "✓ Census data update complete"
           echo "✓ Data files committed to smaddux303/wfd-cra"
-          echo "✓ Datawrapper maps will refresh automatically"
           echo "✓ Site: https://smaddux303.github.io/wfd-cra"

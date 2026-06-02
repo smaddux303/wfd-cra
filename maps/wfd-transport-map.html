@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WFD EMS Transport Destinations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', Arial, sans-serif; background: #FFFFFF; color: #253646; }
+
+    .map-header {
+      background: #253646;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .map-title { font-size: 14px; font-weight: 700; color: #FFFFFF; }
+    .map-subtitle { font-size: 11px; color: #63C7C7; font-weight: 500; margin-top: 2px; }
+    .map-badge {
+      font-size: 11px; color: #CFD2D3; font-weight: 500;
+      background: rgba(255,255,255,.08);
+      padding: 4px 10px; border-radius: 20px;
+    }
+
+    #map { width: 100%; height: 520px; }
+
+    .legend {
+      background: rgba(255,255,255,.97);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 11px;
+      color: #253646;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    }
+    .legend-title {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      color: #555759; margin-bottom: 8px;
+      padding-bottom: 6px; border-bottom: 1px solid #CFD2D3;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-weight: 500; }
+    .legend-item:last-child { margin-bottom: 0; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .legend-square { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+    .legend-line { width: 20px; height: 3px; border-radius: 2px; flex-shrink: 0; }
+    .legend-divider { border: none; border-top: 1px solid #F4F5F5; margin: 8px 0; }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px !important;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15) !important;
+      padding: 0 !important;
+      overflow: hidden;
+    }
+    .leaflet-popup-content { margin: 0 !important; font-family: 'Montserrat', Arial, sans-serif !important; }
+
+    .popup-header { background: #008996; padding: 10px 14px; color: white; }
+    .popup-header.navy { background: #253646; }
+    .popup-name { font-size: 13px; font-weight: 700; line-height: 1.3; }
+    .popup-type { font-size: 10px; font-weight: 500; opacity: .85; margin-top: 2px; letter-spacing: .04em; text-transform: uppercase; }
+    .popup-body { padding: 10px 14px; background: white; }
+    .popup-row { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #F4F5F5; }
+    .popup-row:last-child { border-bottom: none; }
+    .popup-key { color: #555759; font-weight: 500; white-space: nowrap; }
+    .popup-val { font-weight: 600; color: #253646; text-align: right; }
+    .popup-val.teal { color: #008996; }
+
+    .hospital-label {
+      background: white;
+      border: 1px solid #CFD2D3;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      color: #253646;
+      box-shadow: 0 1px 4px rgba(0,0,0,.1);
+      white-space: nowrap;
+    }
+    .hospital-label::before { display: none; }
+
+    .map-footer {
+      background: #F4F5F5;
+      padding: 8px 16px;
+      font-size: 10px;
+      color: #555759;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="map-header">
+  <div>
+    <div class="map-title">WFD EMS Transport Destinations</div>
+    <div class="map-subtitle">Westminster Fire Department</div>
+  </div>
+  
+</div>
+
+<div id="map"></div>
+
+<div class="map-footer">
+  <span>Click any marker for details · Teal outline = Westminster city limits</span>
+  <span>Source: Westminster Fire Department</span>
+</div>
+
+<script>
+const stations = [
+  { name: "Station 1", lat: 39.82897739402387, lon: -105.03951050229404, address: "3948 W 73rd Ave, Westminster CO 80030" },
+  { name: "Station 2", lat: 39.86242876583143, lon: -105.03406344647097, address: "9150 Lowell Blvd, Westminster CO 80031" },
+  { name: "Station 3", lat: 39.85959349152336, lon: -105.08374008879989, address: "7702 W 90th Ave, Westminster CO 80021" },
+  { name: "Station 4", lat: 39.89957237371062, lon: -105.04476122927822, address: "4580 W 112th Ave, Westminster CO 80031" },
+  { name: "Station 5", lat: 39.8798298685933,  lon: -105.10235040229244, address: "10100 Garland St, Westminster CO 80021" },
+  { name: "Station 6", lat: 39.92273319462504, lon: -104.99906258694868, address: "999 W 124th Ave, Westminster CO 80234" },
+];
+
+const hospitals = [
+  { name: "HCA HealthONE Mountain Ridge",               lat: 39.86375271520582, lon: -104.98573035996422, address: "9191 Grant St, Thornton" },
+  { name: "St. Anthony North Health Campus",             lat: 39.95578657750701, lon: -104.99193835996120, address: "14300 Orchard Pkwy, Westminster" },
+  { name: "Good Samaritan Medical Center",               lat: 39.97079789499254, lon: -105.08584784646752, address: "200 Exempla Cir, Lafayette" },
+  { name: "Lutheran Hospital – Intermountain Health",    lat: 39.77198244081536, lon: -105.14552515996710, address: "12911 W 40th Ave, Wheat Ridge" },
+  { name: "UCHealth Broomfield Hospital",                lat: 39.91056275074954, lon: -105.09151384462024, address: "11820 Destination Dr, Broomfield" },
+  { name: "Centura Health 84th Ave Neighborhood Health Ctr", lat: 39.85104072520337, lon: -105.01828621763578, address: "Westminster" },
+  { name: "Children's Hospital Colorado North Campus",   lat: 40.00155134327442, lon: -104.99319315995972, address: "State Hwy 7, Broomfield" },
+  { name: "Intermountain Health – Northglenn ER",        lat: 39.91258539973522, lon: -104.98396593678136, address: "Northglenn" },
+  { name: "AdventHealth Avista",                         lat: 39.95172618614244, lon: -105.15139865996140, address: "Louisville" },
+  { name: "Children's Hospital Colorado Main Campus",    lat: 39.75551727217259, lon: -104.83832992573910, address: "Aurora" },
+];
+
+const BOUNDARY_URL = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main/maps/westminster_boundary.geojson";
+
+// Init map
+const map = L.map('map', {
+  center: [39.89, -105.04],
+  zoom: 11,
+  zoomControl: true,
+  scrollWheelZoom: false
+});
+
+// Clean Positron basemap
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
+// Westminster boundary
+fetch(BOUNDARY_URL)
+  .then(r => r.json())
+  .then(gj => {
+    L.geoJSON(gj, {
+      style: {
+        color: '#008996', weight: 2.5, opacity: 0.9,
+        fillColor: '#008996', fillOpacity: 0.04
+      }
+    }).addTo(map);
+  })
+  .catch(() => {});
+
+// Hospital markers — uniform navy dots
+hospitals.forEach(h => {
+  const circle = L.circleMarker([h.lat, h.lon], {
+    radius: 9,
+    fillColor: '#253646',
+    color: '#FFFFFF',
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.85
+  }).addTo(map);
+
+  // Hover label
+  circle.bindTooltip(h.name, {
+    permanent: false,
+    direction: 'right',
+    offset: [10, 0],
+    className: 'hospital-label'
+  });
+
+  circle.bindPopup(`
+    <div class="popup-header">
+      <div class="popup-name">${h.name}</div>
+      <div class="popup-type">EMS Transport Destination</div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-row">
+        <span class="popup-key">Address</span>
+        <span class="popup-val">${h.address}</span>
+      </div>
+    </div>
+  `, { maxWidth: 260 });
+
+  circle.on('mouseover', function() { this.setStyle({ fillColor: '#008996', fillOpacity: 1 }); });
+  circle.on('mouseout',  function() { this.setStyle({ fillColor: '#253646', fillOpacity: 0.85 }); });
+});
+
+// Station markers — teal numbered squares
+stations.forEach(s => {
+  const num = s.name.replace('Station ', '');
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="
+      width:22px;height:22px;
+      background:#008996;
+      border:2px solid #fff;
+      border-radius:4px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:Montserrat,Arial,sans-serif;
+      font-size:10px;font-weight:700;color:white;
+      box-shadow:0 1px 4px rgba(0,0,0,.25);
+    ">${num}</div>`,
+    iconSize: [22,22], iconAnchor: [11,11], popupAnchor: [0,-14]
+  });
+
+  L.marker([s.lat, s.lon], { icon }).addTo(map)
+    .bindPopup(`
+      <div class="popup-header navy">
+        <div class="popup-name">${s.name}</div>
+        <div class="popup-type">WFD Fire Station</div>
+      </div>
+      <div class="popup-body">
+        <div class="popup-row">
+          <span class="popup-key">Address</span>
+          <span class="popup-val">${s.address}</span>
+        </div>
+      </div>
+    `, { maxWidth: 260 });
+});
+
+// Legend
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = function() {
+  const div = L.DomUtil.create('div', 'legend');
+  div.innerHTML = `
+    <div class="legend-title">Legend</div>
+    <div class="legend-item">
+      <div class="legend-square" style="background:#008996;"></div>
+      WFD Fire Station
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#253646;opacity:.85;border:2px solid #fff;box-shadow:0 0 0 1px #ccc;"></div>
+      Transport Destination
+    </div>
+    <hr class="legend-divider">
+    <div class="legend-item">
+      <div class="legend-line" style="background:#008996;"></div>
+      Westminster boundary
+    </div>
+  `;
+  return div;
+};
+legend.addTo(map);
+
+// Fit all markers
+const allPts = [
+  ...stations.map(s => [s.lat, s.lon]),
+  ...hospitals.map(h => [h.lat, h.lon])
+];
+map.fitBounds(allPts, { padding: [40, 40] });
+</script>
+</body>
+</html>

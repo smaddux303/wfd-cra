@@ -1,0 +1,19 @@
+Name,Type,Subtype,Latitude,Longitude,Description,Transports,Icon
+Station 1,Station,WFD Station,39.8395,-105.0584,Station 1 — 3948 W 73rd Ave,,fire-station
+Station 2,Station,WFD Station,39.8734,-105.0298,Station 2 — 9150 Lowell Blvd,,fire-station
+Station 3,Station,WFD Station,39.8562,-105.0421,Station 3 — 7800 Lowell Blvd,,fire-station
+Station 4,Station,WFD Station,39.8901,-105.0531,Station 4 — 8100 W 100th Ave,,fire-station
+Station 5,Station,WFD Station,39.9012,-105.0187,Station 5 — 5560 W 112th Ave,,fire-station
+Station 6,Station,WFD Station,39.9134,-105.0298,Station 6 — 999 W 124th Ave,,fire-station
+Mountain Ridge (North Suburban Medical Center),Transport Destination,Hospital,39.9172,-104.9731,Thornton — 942 transports (30.2%),942,hospital
+St. Anthony North Health Campus,Transport Destination,Hospital,39.9198,-105.0282,Westminster — 793 transports (25.4%) — Level II Trauma,793,hospital
+Good Samaritan Medical Center,Transport Destination,Hospital,39.9936,-105.0897,Lafayette — 647 transports (20.7%),647,hospital
+Lutheran Hospital - Intermountain Health,Transport Destination,Hospital,39.7697,-105.1019,Wheat Ridge — 251 transports (8.0%),251,hospital
+Broomfield Hospital,Transport Destination,Hospital,39.9342,-105.0866,Broomfield — 240 transports (7.7%),240,hospital
+Centura Health 84th Ave Neighborhood Health Ctr,Transport Destination,Hospital,39.8734,-105.0421,Westminster — 159 transports (5.1%),159,hospital
+Children's Hospital North Campus,Transport Destination,Hospital,39.9401,-105.0514,Broomfield — 49 transports (1.6%),49,hospital
+SCL Health Saint Joseph ED Northglenn,Transport Destination,Hospital,39.8878,-104.9881,Northglenn — 16 transports (0.5%),16,hospital
+Centura Health Avista Adventist Hospital,Transport Destination,Hospital,39.9778,-105.1317,Louisville — 11 transports (0.4%),11,hospital
+Children's Hospital Colorado,Transport Destination,Hospital,39.7219,-104.8378,Aurora — 5 transports (specialty pediatric),5,hospital
+Rocky Mountain Metropolitan Airport,Infrastructure,Airport,39.9084,-105.1164,Borders Westminster to northwest — 390 avg daily flights,,airport
+Westminster Station (RTD B-Line),Infrastructure,Rail Station,39.8312,-105.0421,RTD commuter rail — southern terminus of B-Line,,train

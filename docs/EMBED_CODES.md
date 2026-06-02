@@ -32,12 +32,12 @@ https://raw.githubusercontent.com/smaddux303/wfd-cra/main/data/clean/westminster
 
 | Map | Datawrapper URL | Section | Embed height |
 |-----|----------------|---------|-------------|
-| Poverty rate choropleth |https://datawrapper.dwcdn.net/vJliz/1/ | Demographics | 500px |
-| Uninsured rate choropleth | https://datawrapper.dwcdn.net/Q9OYv/1/| Demographics | 500px |
-| Population 65+ choropleth | https://datawrapper.dwcdn.net/3k2ot/1/ | Demographics | 500px |
-| Limited English Proficiency | https://datawrapper.dwcdn.net/UXK5S/1/ | Demographics | 500px |
-| Population density choropleth | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 500px |
-| Race/ethnicity choropleth | https://datawrapper.dwcdn.net/XXXXX/1/ | Demographics | 500px |
+| Poverty rate choropleth |https://datawrapper.dwcdn.net/vJliz/1/ | Demographics | 600px |
+| Uninsured rate choropleth | https://datawrapper.dwcdn.net/Q9OYv/1/| Demographics | 600px |
+| Population 65+ choropleth | https://datawrapper.dwcdn.net/3k2ot/1/ | Demographics | 600px |
+| Limited English Proficiency | https://datawrapper.dwcdn.net/UXK5S/1/ | Demographics | 600px |
+| Population density choropleth | https://datawrapper.dwcdn.net/PCeH5/1/ | Community | 600px |
+| Hispanic choropleth | https://datawrapper.dwcdn.net/aRmWT/1/) | Demographics | 600px |
 | Station locations map | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 480px |
 | Medical facilities map | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 480px |
 | Transportation map | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 480px |

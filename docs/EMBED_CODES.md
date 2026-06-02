@@ -41,7 +41,7 @@ https://raw.githubusercontent.com/smaddux303/wfd-cra/main/data/clean/westminster
 | Station locations map | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 480px |
 | Medical facilities map | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 480px |
 | Transportation map | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 480px |
-| Population growth chart | https://datawrapper.dwcdn.net/XXXXX/1/ | Community | 380px |
+| Population growth chart | https://datawrapper.dwcdn.net/h2myN/1/ | Community | 380px |
 
 ---
 

@@ -43,7 +43,7 @@ STATE          = "08"
 ADAMS_CO       = "001"
 JEFFERSON_CO   = "059"
 OUT_DIR        = "data/clean"
-DISTRICTS_FILE = "wfd_districts.geojson"
+DISTRICTS_FILE = "FireResponseAreas.json"
 
 print(f"WFD CRA — Census Data Updater")
 print(f"ACS Year: {ACS_YEAR} 5-Year Estimates")

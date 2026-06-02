@@ -1,0 +1,14 @@
+Name,Type,Subtype,Latitude,Longitude,Description,Transports
+Station 1,Station,WFD Station,39.82897739402387,-105.03951050229404,"3948 W 73rd Ave, Westminster CO 80030",
+Station 2,Station,WFD Station,39.86242876583143,-105.03406344647097,"9150 Lowell Blvd, Westminster CO 80031",
+Station 3,Station,WFD Station,39.85959349152336,-105.08374008879989,"7702 W 90th Ave, Westminster CO 80021",
+Station 4,Station,WFD Station,39.89957237371062,-105.04476122927822,"4580 W 112th Ave, Westminster CO 80031",
+Station 5,Station,WFD Station,39.8798298685933,-105.10235040229244,"10100 Garland St, Westminster CO 80021",
+Station 6,Station,WFD Station,39.92273319462504,-104.99906258694868,"999 W 124th Ave, Westminster CO 80234",
+HCA HealthONE Mountain Ridge,Transport Destination,Hospital,39.86375271520582,-104.98573035996422,"9191 Grant St, Thornton — 942 transports (30.2%)",942.0
+St. Anthony North Health Campus,Transport Destination,Hospital,39.95578657750701,-104.9919383599612,"14300 Orchard Pkwy, Westminster — 793 transports (25.4%) — Level II Trauma",793.0
+UCHealth Broomfield Hospital,Transport Destination,Hospital,39.91056275074954,-105.09151384462024,"11820 Destination Dr, Broomfield — 240 transports (7.7%)",240.0
+Centura Health 84th Ave Neighborhood Health Ctr,Transport Destination,Hospital,39.85104072520337,-105.01828621763578,Westminster — 159 transports (5.1%),159.0
+Intermountain Health - Northglenn ER,Transport Destination,Hospital,39.91258539973522,-104.98396593678136,Intermountain Health Northglenn ER — 16 transports (0.5%),16.0
+Rocky Mountain Metropolitan Airport,Infrastructure,Airport,39.90985386817847,-105.11128591681614,Borders Westminster NW — 390 avg daily flights,
+Westminster Station (RTD B-Line),Infrastructure,Rail Station,39.82349745118018,-105.02808705996551,3200 Westminster Station Dr — RTD B-Line southern terminus,

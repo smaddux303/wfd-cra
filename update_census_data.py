@@ -264,7 +264,7 @@ try:
     age      = load_fix(f"{OUT_DIR}/westminster_age_65plus.csv",
                         ["GEO_ID","Pop_65plus"])
     language = load_fix(f"{OUT_DIR}/westminster_language.csv",
-                        ["GEO_ID","Non_English"])
+                        ["GEO_ID","Total_Pop_5plus","Non_English"])
     race     = load_fix(f"{OUT_DIR}/westminster_race.csv",
                         ["GEO_ID","White_NonHispanic","Black_NonHispanic",
                          "Asian_NonHispanic","Hispanic"])
@@ -278,15 +278,16 @@ try:
 
     # Aggregate by district
     def district_summary(district_num, group):
-        t   = group["Total_Pop"].sum()
-        bp  = group["Below_Poverty"].sum()
-        ui  = group["Total_Uninsured"].sum()
-        s   = group["Pop_65plus"].sum()
-        ne  = group["Non_English"].sum()
-        wh  = group["White_NonHispanic"].sum()
-        bl  = group["Black_NonHispanic"].sum()
-        asi = group["Asian_NonHispanic"].sum()
-        hi  = group["Hispanic"].sum()
+        t    = group["Total_Pop"].sum()
+        bp   = group["Below_Poverty"].sum()
+        ui   = group["Total_Uninsured"].sum()
+        s    = group["Pop_65plus"].sum()
+        t5   = group["Total_Pop_5plus"].sum()  # language denominator (pop 5+)
+        ne   = group["Non_English"].sum()
+        wh   = group["White_NonHispanic"].sum()
+        bl   = group["Black_NonHispanic"].sum()
+        asi  = group["Asian_NonHispanic"].sum()
+        hi   = group["Hispanic"].sum()
         return pd.Series({
             "Station":           f"Station {district_num}",
             "Total_Pop":         int(t),
@@ -297,7 +298,8 @@ try:
             "Pop_65plus":        int(s),
             "Pct_65plus":        pct(s, t),
             "Non_English":       int(ne),
-            "Pct_Non_English":   pct(ne, t),
+            "Total_Pop_5plus":   int(t5),
+            "Pct_Non_English":   pct(ne, t5),  # correct: use pop 5+ as denominator
             "White_NonHispanic": int(wh),
             "Pct_White_NonHisp": pct(wh, t),
             "Black_NonHispanic": int(bl),

@@ -23,7 +23,6 @@ from datetime import datetime
 # ── Configuration ──────────────────────────────────────────────
 CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY", "")
 BLS_API_KEY    = os.environ.get("BLS_API_KEY", "")
-CO_DATA_API_KEY     = os.environ.get("CO_DATA_API_KEY", "")     # data.colorado.gov API key
 ACS_YEAR       = datetime.now().year - 2
 BASE_URL       = f"https://api.census.gov/data/{ACS_YEAR}/acs/acs5"
 STATE          = "08"
@@ -498,101 +497,6 @@ try:
 except Exception as e:
     print(f"   ✗ Business data: {e}")
 
-# ── COLORADO OPEN DATA ────────────────────────────────────────
-print("\n── Pulling Colorado open data (data.colorado.gov)...")
-
-SODA_HEADERS = {"Accept": "application/json"}
-if CO_DATA_API_KEY:
-    SODA_HEADERS["X-App-Token"] = CO_DATA_API_KEY
-
-def co_get(dataset_id, params):
-    url = f"https://data.colorado.gov/resource/{dataset_id}.json"
-    r = requests.get(url, params=params, headers=SODA_HEADERS, timeout=30)
-    r.raise_for_status()
-    return r.json()
-
-# 1. Employment by industry — Adams County (CDLE QCEW)
-print("   1/2  Employment by industry (CDLE QCEW)...")
-try:
-    emp_df = None
-    for yr in [ACS_YEAR, ACS_YEAR-1, ACS_YEAR-2]:
-        for area in ["Adams County", "Adams", "ADAMS"]:
-            try:
-                data = co_get("busm-qa5b", {
-                    "$where": f"areaname='{area}' AND periodyear='{yr}'",
-                    "$limit": 100,
-                    "$order": "periodyear DESC"
-                })
-                if data:
-                    emp_df = pd.DataFrame(data)
-                    emp_df.columns = [c.lower() for c in emp_df.columns]
-                    emp_df['Geography'] = 'Adams County, CO (Westminster proxy)'
-                    emp_df['Data_Year'] = yr
-                    emp_df.to_csv(f"{OUT_DIR}/westminster_employment_industry.csv", index=False)
-                    print(f"   ✓ {len(emp_df)} records ({area}, {yr}) → westminster_employment_industry.csv")
-                    break
-            except:
-                pass
-        if emp_df is not None:
-            break
-    if emp_df is None:
-        try:
-            sample = co_get("busm-qa5b", {"$limit": 3})
-            if sample:
-                s = pd.DataFrame(sample)
-                print(f"   ! Columns: {list(s.columns)[:6]}")
-                print(f"   ! Sample areas: {s.get('areaname', s.iloc[:,2]).head(3).tolist()}")
-        except Exception as se:
-            print(f"   ! Could not sample: {se}")
-        print("   ! No employment data found — will retry next run")
-except Exception as e:
-    print(f"   ✗ Employment: {e}")
-
-# 2. Dam safety — Adams and Jefferson counties (DWR)
-print("   2/2  Dam safety (DWR)...")
-try:
-    data = None
-    for where in [
-        "county='Adams' OR county='Jefferson'",
-        "county='ADAMS' OR county='JEFFERSON'",
-        "county like 'Adams%' OR county like 'Jefferson%'"
-    ]:
-        try:
-            data = co_get("mgjv-xmr5", {
-                "$where": where,
-                "$select": "damname,county,hazardclass,damheight,maxstorage,ownertype,inspectiondate,latitude,longitude",
-                "$limit": 200
-            })
-            if data:
-                break
-        except:
-            pass
-
-    if data:
-        dam_df = pd.DataFrame(data)
-        dam_df.columns = [c.lower() for c in dam_df.columns]
-        dam_df['Source'] = 'Colorado Division of Water Resources'
-        dam_df.to_csv(f"{OUT_DIR}/westminster_dam_safety.csv", index=False)
-        high = dam_df[dam_df.get('hazardclass', pd.Series(dtype=str)).str.upper() == 'HIGH'] if 'hazardclass' in dam_df else pd.DataFrame()
-        print(f"   ✓ {len(dam_df)} dams total, {len(high)} High hazard → westminster_dam_safety.csv")
-        for _, row in high.head(5).iterrows():
-            print(f"     HIGH: {row.get('damname','?')} — {row.get('county','?')} County — inspected {row.get('inspectiondate','?')[:10] if row.get('inspectiondate') else 'N/A'}")
-    else:
-        # Sample to see column names
-        try:
-            sample = co_get("mgjv-xmr5", {"$limit": 3})
-            if sample:
-                s = pd.DataFrame(sample)
-                print(f"   ! Columns: {list(s.columns)[:8]}")
-                county_col = next((c for c in s.columns if 'county' in c.lower()), None)
-                if county_col:
-                    print(f"   ! Sample counties: {s[county_col].tolist()}")
-        except Exception as se:
-            print(f"   ! Could not sample: {se}")
-        print("   ! No dam data found — will retry next run")
-except Exception as e:
-    print(f"   ✗ Dam safety: {e}")
-
 # ── SPATIAL JOIN → DISTRICT DEMOGRAPHICS ──────────────────────
 print("\n── Spatial join → district demographics...")
 try:
@@ -770,7 +674,7 @@ except Exception as e:
 
 print()
 print("=" * 60)
-print(f"✓ All data updated (Census + BLS + Colorado open data) — ACS {ACS_YEAR} 5-Year Estimates")
+print(f"✓ All data updated (Census + BLS) — ACS {ACS_YEAR} 5-Year Estimates")
 print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
 print(f"  Repo: https://github.com/smaddux303/wfd-cra")
 print("=" * 60)

@@ -35,6 +35,7 @@ jobs:
         env:
           CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
           BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+          CO_DATA_API_KEY: ${{ secrets.CO_DATA_API_KEY }}
         run: python update_census_data.py
 
       - name: Commit updated data files
@@ -64,7 +65,10 @@ jobs:
             data/clean/westminster_benchmarks.csv \
             data/clean/westminster_unemployment.csv \
             data/clean/westminster_businesses.csv \
-            data/clean/westminster_demographics_by_district.csv; do
+            data/clean/westminster_demographics_by_district.csv \
+            data/clean/westminster_population_projections.csv \
+            data/clean/westminster_employment_industry.csv \
+            data/clean/westminster_dam_safety.csv; do
             if [ -f "$f" ]; then
               git add "$f"
             fi

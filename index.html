@@ -157,6 +157,42 @@
     .footer a:hover { color: var(--white); }
     .footer-bottom { max-width: var(--max-w); margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: rgba(255,255,255,.35); flex-wrap: wrap; gap: 8px; }
 
+    /* District profile panels */
+    .district-sub-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .district-sub-tab { padding: 5px 14px; border-radius: 16px; font-size: 11px; font-weight: 600; border: 1.5px solid var(--gray-light); color: var(--gray-dark); cursor: pointer; transition: all .15s; background: var(--white); font-family: var(--font); }
+    .district-sub-tab:hover, .district-sub-tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .district-sub-panel { display: none; }
+    .district-sub-panel.active { display: block; }
+    .scorecard { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
+    .scorecard-item { background: var(--navy); border-radius: 8px; padding: .9rem .75rem; text-align: center; }
+    .scorecard-val { font-size: 1.5rem; font-weight: 800; color: var(--teal); line-height: 1; display: block; }
+    .scorecard-val.orange { color: var(--orange); }
+    .scorecard-val.red { color: #FF671D; }
+    .scorecard-lbl { font-size: 10px; color: var(--gray-light); font-weight: 500; margin-top: 3px; display: block; }
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .metric-card { background: var(--off-white); border-radius: 8px; padding: 10px 12px; }
+    .metric-name { font-size: 11px; color: var(--gray-dark); font-weight: 500; margin-bottom: 6px; }
+    .metric-val { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .compare-bar-wrap { position: relative; }
+    .compare-label { display: flex; justify-content: space-between; font-size: 9px; color: var(--gray-dark); margin-bottom: 3px; font-weight: 500; }
+    .compare-track { height: 6px; background: var(--gray-light); border-radius: 3px; margin-bottom: 3px; position: relative; overflow: visible; }
+    .compare-bar { height: 6px; border-radius: 3px; position: absolute; top: 0; left: 0; transition: width .3s; }
+    .bar-district { background: var(--teal); }
+    .bar-westminster { background: var(--navy); opacity: .5; }
+    .bar-colorado { background: var(--orange); opacity: .6; }
+    .bar-us { background: var(--gray-dark); opacity: .4; }
+    .compare-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .compare-legend-item { display: flex; align-items: center; gap: 4px; font-size: 9px; color: var(--gray-dark); }
+    .compare-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+    .flag-high { background: rgba(255,103,29,.12); border-left: 3px solid #FF671D; border-radius: 0 6px 6px 0; padding: 6px 10px; font-size: 11px; color: #993c1d; font-weight: 500; margin-bottom: 6px; }
+    .flag-med  { background: rgba(252,182,26,.12); border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; padding: 6px 10px; font-size: 11px; color: #854f0b; font-weight: 500; margin-bottom: 6px; }
+    .ins-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    .ins-row { display: flex; align-items: center; gap: 8px; }
+    .ins-name { font-size: 11px; color: var(--gray-dark); font-weight: 500; width: 120px; flex-shrink: 0; }
+    .ins-bar-track { flex: 1; height: 14px; background: var(--gray-light); border-radius: 3px; overflow: hidden; }
+    .ins-bar-fill { height: 100%; border-radius: 3px; }
+    .ins-pct { font-size: 11px; font-weight: 700; color: var(--navy); width: 36px; text-align: right; flex-shrink: 0; }
+
     /* Responsive */
     @media (max-width: 768px) {
       :root { --section-pad: 3rem 1.25rem; }
@@ -354,16 +390,7 @@
       </div>
     </div>
 
-    <!-- Hispanic population map -->
-    <div class="embed-wrap">
-      <div class="embed-header">
-        <h3>Hispanic Population by Fire District</h3>
-        <span class="embed-tag">Datawrapper · Interactive Map</span>
-      </div>
-      <div class="embed-body">
-        <iframe title="Hispanic Population by Fire District Westminster CO" aria-label="Map" id="datawrapper-chart-aRmWT" src="https://datawrapper.dwcdn.net/aRmWT/1/" scrolling="no" frameborder="0" style="width:100%;min-width:100%!important;border:none;" height="820" data-external="1"></iframe>
-      </div>
-    </div>
+    <!-- Hispanic population shown at district level in District Profiles section -->
 
   </div>
 </section>
@@ -508,155 +535,1879 @@
     <p class="section-eyebrow">District Profiles</p>
     <div class="accent-bar" aria-hidden="true"></div>
     <h2 id="districts-title" class="section-title">Six Districts, One Department</h2>
-    <p class="section-lead">Westminster is divided into six fire response districts, each served by a primary station. Select a district to see its geographic characteristics, demographics, and station information.</p>
+    <p class="section-lead">Westminster is divided into six fire response districts, each served by a primary station. Select a district and use the sub-tabs to explore demographics, economic conditions, health coverage, vulnerability indicators, and risk scores — all compared to Westminster, Colorado, and US benchmarks.</p>
+
+    <div style="font-size:10px;color:var(--gray-dark);margin-bottom:1rem;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <span>Comparison bars:</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:6px;background:var(--teal);border-radius:2px;display:inline-block;"></span> District</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:6px;background:var(--navy);opacity:.5;border-radius:2px;display:inline-block;"></span> Westminster</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:6px;background:var(--orange);opacity:.6;border-radius:2px;display:inline-block;"></span> Colorado</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:6px;background:var(--gray-dark);opacity:.4;border-radius:2px;display:inline-block;"></span> United States</span>
+    </div>
 
     <div class="district-tabs" role="tablist">
-      <button class="district-tab active" role="tab" aria-selected="true"  onclick="showDistrict(1)">District 1</button>
-      <button class="district-tab"        role="tab" aria-selected="false" onclick="showDistrict(2)">District 2</button>
-      <button class="district-tab"        role="tab" aria-selected="false" onclick="showDistrict(3)">District 3</button>
-      <button class="district-tab"        role="tab" aria-selected="false" onclick="showDistrict(4)">District 4</button>
-      <button class="district-tab"        role="tab" aria-selected="false" onclick="showDistrict(5)">District 5</button>
-      <button class="district-tab"        role="tab" aria-selected="false" onclick="showDistrict(6)">District 6</button>
+      <button class="district-tab active" role="tab" onclick="showDistrict(1)">District 1</button>
+      <button class="district-tab" role="tab" onclick="showDistrict(2)">District 2</button>
+      <button class="district-tab" role="tab" onclick="showDistrict(3)">District 3</button>
+      <button class="district-tab" role="tab" onclick="showDistrict(4)">District 4</button>
+      <button class="district-tab" role="tab" onclick="showDistrict(5)">District 5</button>
+      <button class="district-tab" role="tab" onclick="showDistrict(6)">District 6</button>
     </div>
-
-    <div id="district-1" class="district-panel active">
-      <div class="district-info">
-        <h3>District 1 — Station 1</h3>
-        <div class="district-row"><span class="dk">Station address</span><span class="dv">3948 W. 73rd Ave</span></div>
-        <div class="district-row"><span class="dk">Population</span><span class="dv">20,147</span></div>
-        <div class="district-row"><span class="dk">Poverty rate</span><span class="dv">13.8%</span></div>
-        <div class="district-row"><span class="dk">Uninsured rate</span><span class="dv">12.6%</span></div>
-        <div class="district-row"><span class="dk">Population 65+</span><span class="dv">17.3%</span></div>
-        <div class="district-row"><span class="dk">Hispanic population</span><span class="dv">42.0%</span></div>
-        <div class="district-row"><span class="dk">Limited English proficiency</span><span class="dv">4.5%</span></div>
-        <div class="district-row"><span class="dk">Key hazards</span><span class="dv">Senior facilities, I-25, BNSF railroad</span></div>
-        <div class="district-row"><span class="dk">Overall risk</span><span class="dv">High</span></div>
-      </div>
-      <div class="district-info">
-        <h3>District 1 — Risk by Discipline</h3>
-        <div class="district-row"><span class="dk">EMS risk</span><span class="dv">High (29.76)</span></div>
-        <div class="district-row"><span class="dk">Fire risk</span><span class="dv">Medium (14.14)</span></div>
-        <div class="district-row"><span class="dk">Rescue risk</span><span class="dv">Low (4.47)</span></div>
-        <div class="district-row"><span class="dk">HazMat risk</span><span class="dv">Low (4.47)</span></div>
-        <div class="district-row"><span class="dk">Wildland risk</span><span class="dv">Low (0.97)</span></div>
-      </div>
-    </div>
-
+    
+    <div id="district-1" class="district-panel  active">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+    <div style="width:36px;height:36px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">1</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--navy);">District 1 — Station 1</div><div style="font-size:12px;color:var(--gray-dark);">3948 W 73rd Ave</div></div>
+  </div>
+  <div class="flag-high">Highest vulnerability district — elevated poverty, uninsured, SNAP, and EMS call volume</div>
+  <div class="scorecard">
+  <div class="scorecard-item"><span class="scorecard-val red">High</span><span class="scorecard-lbl">Overall Risk</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">20,147</span><span class="scorecard-lbl">Population</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">8,443</span><span class="scorecard-lbl">Households</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">$53K</span><span class="scorecard-lbl">Median Income</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">40.7</span><span class="scorecard-lbl">Median Age</span></div>
+</div>
+  <div class="district-sub-tabs">
+    <button class="district-sub-tab active" onclick="showSubPanel(1,'demo')">Demographics</button>
+    <button class="district-sub-tab" onclick="showSubPanel(1,'econ')">Economic</button>
+    <button class="district-sub-tab" onclick="showSubPanel(1,'health')">Health</button>
+    <button class="district-sub-tab" onclick="showSubPanel(1,'vuln')">Vulnerability</button>
+    <button class="district-sub-tab" onclick="showSubPanel(1,'risk')">Risk Scores</button>
+  </div>
+  <div id="d1-demo" class="district-sub-panel active"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Poverty Rate</div>
+  <div class="metric-val">13.8%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>13.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:44.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>9.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:69.6%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:90.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population 65+</div>
+  <div class="metric-val">17.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>17.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:83.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>14.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:84.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>16.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:97.1%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Hispanic Population</div>
+  <div class="metric-val">42.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>42.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>24.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:59.0%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>22.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:52.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>19.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:45.5%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Limited English Proficiency</div>
+  <div class="metric-val">4.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:53.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>3.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:41.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>5.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Avg Household Size</div>
+  <div class="metric-val">2.64</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.64</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:66.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>2.58</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:64.5%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:63.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Race / Ethnicity</div>
+  <div class="ins-grid">
+    <div class="ins-row">
+  <div class="ins-name">Hispanic/Latino</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:42.0%;background:#008996;"></div></div>
+  <div class="ins-pct">42.0%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">White non-Hispanic</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:50.6%;background:#253646;"></div></div>
+  <div class="ins-pct">50.6%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Asian</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:2.6%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">2.6%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Black</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.0%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.0%</div>
+</div>
+  </div>
+</div>
+</div></div>
+  <div id="d1-econ" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Median Household Income</div>
+  <div class="metric-val">$53,144</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$53,144</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:33.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$86,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$77,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:48.1%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$74,580</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:46.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Median Home Value</div>
+  <div class="metric-val">$400,200</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$400,200</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:57.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$526,700</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:75.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$465,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$305,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:43.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">14.8%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>14.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:51.4%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:57.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:84.5%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Public Assistance</div>
+  <div class="metric-val">3.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>3.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.1%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:59.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:87.5%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d1-health" class="district-sub-panel"><div class="ins-grid" style="margin-bottom:1rem;">
+  <div class="ins-row">
+  <div class="ins-name">Employer-based</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:36.2%;background:#008996;"></div></div>
+  <div class="ins-pct">36.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicaid</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:29.5%;background:#FF671D;"></div></div>
+  <div class="ins-pct">29.5%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicare</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:10.8%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">10.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Direct Purchase</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:4.1%;background:#253646;"></div></div>
+  <div class="ins-pct">4.1%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">TRICARE</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.8%;background:#8CC740;"></div></div>
+  <div class="ins-pct">0.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">VA</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.3%;background:#555759;"></div></div>
+  <div class="ins-pct">0.3%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Uninsured</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:12.6%;background:#CFD2D3;"></div></div>
+  <div class="ins-pct">12.6%</div>
+</div>
+</div>
+<div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Uninsured Rate</div>
+  <div class="metric-val">12.6%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>12.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:64.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:73.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">15.7%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>15.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:70.1%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:82.8%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d1-vuln" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Households — No Vehicle</div>
+  <div class="metric-val">9.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>9.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:46.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:80.6%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:91.4%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Households — No Internet</div>
+  <div class="metric-val">10.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>10.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:44.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:69.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:94.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">14.8%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>14.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:51.4%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:57.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:84.5%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">15.7%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>15.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:70.1%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:82.8%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d1-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FF671D">High</span> <span style="color:var(--gray-dark);font-size:11px;">(29.76)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:99.2%;background:#FF671D;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(14.14)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:47.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(4.47)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:14.9%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(4.47)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:14.9%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(0.97)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:3.2%;background:#8CC740;border-radius:3px;"></div></div></div>
+</div>
+<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Senior care facilities — multiple</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• I-25 corridor</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad — 5 at-grade crossings</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Older non-sprinklered housing</div></div></div>
+</div>
     <div id="district-2" class="district-panel">
-      <div class="district-info">
-        <h3>District 2 — Station 2</h3>
-        <div class="district-row"><span class="dk">Station address</span><span class="dv">9150 Lowell Blvd</span></div>
-        <div class="district-row"><span class="dk">Population</span><span class="dv">21,652</span></div>
-        <div class="district-row"><span class="dk">Poverty rate</span><span class="dv">8.3%</span></div>
-        <div class="district-row"><span class="dk">Uninsured rate</span><span class="dv">12.4%</span></div>
-        <div class="district-row"><span class="dk">Population 65+</span><span class="dv">14.2%</span></div>
-        <div class="district-row"><span class="dk">Hispanic population</span><span class="dv">43.2%</span></div>
-        <div class="district-row"><span class="dk">Limited English proficiency</span><span class="dv">5.3%</span></div>
-        <div class="district-row"><span class="dk">Key hazards</span><span class="dv">Ammonia (ice arena), US-36, multi-family</span></div>
-        <div class="district-row"><span class="dk">Overall risk</span><span class="dv">Medium</span></div>
-      </div>
-      <div class="district-info">
-        <h3>District 2 — Risk by Discipline</h3>
-        <div class="district-row"><span class="dk">EMS risk</span><span class="dv">Medium (18.52)</span></div>
-        <div class="district-row"><span class="dk">Fire risk</span><span class="dv">Medium (14.14)</span></div>
-        <div class="district-row"><span class="dk">Rescue risk</span><span class="dv">Medium (11.18)</span></div>
-        <div class="district-row"><span class="dk">HazMat risk</span><span class="dv">Medium (16.00)</span></div>
-        <div class="district-row"><span class="dk">Wildland risk</span><span class="dv">Low (0.97)</span></div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+    <div style="width:36px;height:36px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">2</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--navy);">District 2 — Station 2</div><div style="font-size:12px;color:var(--gray-dark);">9150 Lowell Blvd</div></div>
+  </div>
+  <div class="flag-med">Highest HazMat risk — ammonia at ice arena is district's defining hazard</div>
+  <div class="scorecard">
+  <div class="scorecard-item"><span class="scorecard-val orange">Medium</span><span class="scorecard-lbl">Overall Risk</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">21,652</span><span class="scorecard-lbl">Population</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">8,071</span><span class="scorecard-lbl">Households</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">$101K</span><span class="scorecard-lbl">Median Income</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">36.0</span><span class="scorecard-lbl">Median Age</span></div>
+</div>
+  <div class="district-sub-tabs">
+    <button class="district-sub-tab active" onclick="showSubPanel(2,'demo')">Demographics</button>
+    <button class="district-sub-tab" onclick="showSubPanel(2,'econ')">Economic</button>
+    <button class="district-sub-tab" onclick="showSubPanel(2,'health')">Health</button>
+    <button class="district-sub-tab" onclick="showSubPanel(2,'vuln')">Vulnerability</button>
+    <button class="district-sub-tab" onclick="showSubPanel(2,'risk')">Risk Scores</button>
+  </div>
+  <div id="d2-demo" class="district-sub-panel active"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Poverty Rate</div>
+  <div class="metric-val">8.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>8.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:48.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>9.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.8%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population 65+</div>
+  <div class="metric-val">14.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>14.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:84.5%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:85.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>14.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:86.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>16.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Hispanic Population</div>
+  <div class="metric-val">43.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>43.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>24.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:57.4%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>22.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:50.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>19.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:44.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Limited English Proficiency</div>
+  <div class="metric-val">5.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>5.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:63.1%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>3.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:41.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>5.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Avg Household Size</div>
+  <div class="metric-val">2.91</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.91</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:72.8%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>2.58</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:64.5%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:63.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Race / Ethnicity</div>
+  <div class="ins-grid">
+    <div class="ins-row">
+  <div class="ins-name">Hispanic/Latino</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:43.2%;background:#008996;"></div></div>
+  <div class="ins-pct">43.2%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">White non-Hispanic</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:48.3%;background:#253646;"></div></div>
+  <div class="ins-pct">48.3%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Asian</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:3.6%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">3.6%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Black</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.6%;background:#8CC740;"></div></div>
+  <div class="ins-pct">0.6%</div>
+</div>
+  </div>
+</div>
+</div></div>
+  <div id="d2-econ" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Median Household Income</div>
+  <div class="metric-val">$101,278</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$101,278</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:63.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$86,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$77,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:48.1%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$74,580</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:46.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Median Home Value</div>
+  <div class="metric-val">$441,100</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$441,100</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:63.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$526,700</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:75.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$465,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$305,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:43.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">11.9%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>11.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:95.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Public Assistance</div>
+  <div class="metric-val">2.1%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:75.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:67.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d2-health" class="district-sub-panel"><div class="ins-grid" style="margin-bottom:1rem;">
+  <div class="ins-row">
+  <div class="ins-name">Employer-based</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:44.1%;background:#008996;"></div></div>
+  <div class="ins-pct">44.1%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicaid</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:24.3%;background:#FF671D;"></div></div>
+  <div class="ins-pct">24.3%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicare</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:8.2%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">8.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Direct Purchase</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:4.8%;background:#253646;"></div></div>
+  <div class="ins-pct">4.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">TRICARE</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.7%;background:#8CC740;"></div></div>
+  <div class="ins-pct">0.7%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">VA</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.2%;background:#555759;"></div></div>
+  <div class="ins-pct">0.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Uninsured</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:12.4%;background:#CFD2D3;"></div></div>
+  <div class="ins-pct">12.4%</div>
+</div>
+</div>
+<div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Uninsured Rate</div>
+  <div class="metric-val">12.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>12.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:62.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:65.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:74.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">11.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>11.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:88.5%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d2-vuln" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Households — No Vehicle</div>
+  <div class="metric-val">4.9%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:57.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:50.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Households — No Internet</div>
+  <div class="metric-val">5.7%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>5.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:58.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:46.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:73.5%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">11.9%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>11.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:95.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">11.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>11.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:88.5%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d2-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(18.52)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:61.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(14.14)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:47.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(11.18)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:37.3%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(16.0)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:53.3%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(0.97)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:3.2%;background:#8CC740;border-radius:3px;"></div></div></div>
+</div>
+<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ammonia storage — ice arena (256 tons)</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• US-36 multi-story hotels</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Non-sprinklered multi-family</div></div></div>
+</div>
     <div id="district-3" class="district-panel">
-      <div class="district-info">
-        <h3>District 3 — Station 3</h3>
-        <div class="district-row"><span class="dk">Station address</span><span class="dv">7702 W. 90th Ave</span></div>
-        <div class="district-row"><span class="dk">Population</span><span class="dv">15,944</span></div>
-        <div class="district-row"><span class="dk">Poverty rate</span><span class="dv">5.0%</span></div>
-        <div class="district-row"><span class="dk">Uninsured rate</span><span class="dv">6.4%</span></div>
-        <div class="district-row"><span class="dk">Population 65+</span><span class="dv">13.2%</span></div>
-        <div class="district-row"><span class="dk">Hispanic population</span><span class="dv">14.0%</span></div>
-        <div class="district-row"><span class="dk">Limited English proficiency</span><span class="dv">1.2%</span></div>
-        <div class="district-row"><span class="dk">Key hazards</span><span class="dv">Standley Lake dam, BNSF railroad, Downtown Westminster</span></div>
-        <div class="district-row"><span class="dk">Overall risk</span><span class="dv">Medium</span></div>
-      </div>
-      <div class="district-info">
-        <h3>District 3 — Risk by Discipline</h3>
-        <div class="district-row"><span class="dk">EMS risk</span><span class="dv">Medium (13.42)</span></div>
-        <div class="district-row"><span class="dk">Fire risk</span><span class="dv">Low (5.83)</span></div>
-        <div class="district-row"><span class="dk">Rescue risk</span><span class="dv">Medium (13.42)</span></div>
-        <div class="district-row"><span class="dk">HazMat risk</span><span class="dv">Medium (13.42)</span></div>
-        <div class="district-row"><span class="dk">Wildland risk</span><span class="dv">Medium (10.83)</span></div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+    <div style="width:36px;height:36px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">3</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--navy);">District 3 — Station 3</div><div style="font-size:12px;color:var(--gray-dark);">7702 W 90th Ave</div></div>
+  </div>
+  <div class="flag-med">Highest rescue risk — Standley Lake water rescue and BNSF rail crossings</div>
+  <div class="scorecard">
+  <div class="scorecard-item"><span class="scorecard-val orange">Medium</span><span class="scorecard-lbl">Overall Risk</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">15,944</span><span class="scorecard-lbl">Population</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">6,987</span><span class="scorecard-lbl">Households</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">$116K</span><span class="scorecard-lbl">Median Income</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">41.4</span><span class="scorecard-lbl">Median Age</span></div>
+</div>
+  <div class="district-sub-tabs">
+    <button class="district-sub-tab active" onclick="showSubPanel(3,'demo')">Demographics</button>
+    <button class="district-sub-tab" onclick="showSubPanel(3,'econ')">Economic</button>
+    <button class="district-sub-tab" onclick="showSubPanel(3,'health')">Health</button>
+    <button class="district-sub-tab" onclick="showSubPanel(3,'vuln')">Vulnerability</button>
+    <button class="district-sub-tab" onclick="showSubPanel(3,'risk')">Risk Scores</button>
+  </div>
+  <div id="d3-demo" class="district-sub-panel active"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Poverty Rate</div>
+  <div class="metric-val">5.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>5.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:40.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:48.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>9.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.8%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population 65+</div>
+  <div class="metric-val">13.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>13.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:78.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:85.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>14.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:86.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>16.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Hispanic Population</div>
+  <div class="metric-val">14.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>14.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:56.5%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>24.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>22.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.7%"></div></div>
+    <div class="compare-label"><span>United States</span><span>19.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:77.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Limited English Proficiency</div>
+  <div class="metric-val">1.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:14.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>3.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:41.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>5.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Avg Household Size</div>
+  <div class="metric-val">2.53</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>2.58</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:64.5%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:63.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Race / Ethnicity</div>
+  <div class="ins-grid">
+    <div class="ins-row">
+  <div class="ins-name">Hispanic/Latino</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:14.0%;background:#008996;"></div></div>
+  <div class="ins-pct">14.0%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">White non-Hispanic</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:74.4%;background:#253646;"></div></div>
+  <div class="ins-pct">74.4%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Asian</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:4.4%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">4.4%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Black</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.9%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.9%</div>
+</div>
+  </div>
+</div>
+</div></div>
+  <div id="d3-econ" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Median Household Income</div>
+  <div class="metric-val">$116,411</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$116,411</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:72.8%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$86,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$77,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:48.1%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$74,580</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:46.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Median Home Value</div>
+  <div class="metric-val">$521,900</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$521,900</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:74.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$526,700</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:75.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$465,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$305,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:43.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">7.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>7.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:56.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Public Assistance</div>
+  <div class="metric-val">0.8%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>0.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:28.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:67.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d3-health" class="district-sub-panel"><div class="ins-grid" style="margin-bottom:1rem;">
+  <div class="ins-row">
+  <div class="ins-name">Employer-based</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:56.8%;background:#008996;"></div></div>
+  <div class="ins-pct">56.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicaid</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:10.4%;background:#FF671D;"></div></div>
+  <div class="ins-pct">10.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicare</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:9.1%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">9.1%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Direct Purchase</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:6.2%;background:#253646;"></div></div>
+  <div class="ins-pct">6.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">TRICARE</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.1%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.1%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">VA</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.4%;background:#555759;"></div></div>
+  <div class="ins-pct">0.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Uninsured</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:6.4%;background:#CFD2D3;"></div></div>
+  <div class="ins-pct">6.4%</div>
+</div>
+</div>
+<div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Uninsured Rate</div>
+  <div class="metric-val">6.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>6.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:69.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">11.6%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>11.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:89.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d3-vuln" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Households — No Vehicle</div>
+  <div class="metric-val">4.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:52.9%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:50.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Households — No Internet</div>
+  <div class="metric-val">2.9%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:29.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:46.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:73.5%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">7.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>7.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:56.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">11.6%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>11.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:89.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d3-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(5.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:19.4%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
+</div>
+<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Standley Lake dam failure risk</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Downtown Westminster high-density development</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad — 3 at-grade crossings</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Manufactured home subdivision</div></div></div>
+</div>
     <div id="district-4" class="district-panel">
-      <div class="district-info">
-        <h3>District 4 — Station 4</h3>
-        <div class="district-row"><span class="dk">Station address</span><span class="dv">4580 W. 112th Ave</span></div>
-        <div class="district-row"><span class="dk">Population</span><span class="dv">26,855</span></div>
-        <div class="district-row"><span class="dk">Poverty rate</span><span class="dv">3.4%</span></div>
-        <div class="district-row"><span class="dk">Uninsured rate</span><span class="dv">3.6%</span></div>
-        <div class="district-row"><span class="dk">Population 65+</span><span class="dv">18.4%</span></div>
-        <div class="district-row"><span class="dk">Hispanic population</span><span class="dv">14.4%</span></div>
-        <div class="district-row"><span class="dk">Limited English proficiency</span><span class="dv">1.4%</span></div>
-        <div class="district-row"><span class="dk">Key hazards</span><span class="dv">Gated community access, open space interface</span></div>
-        <div class="district-row"><span class="dk">Overall risk</span><span class="dv">Low</span></div>
-      </div>
-      <div class="district-info">
-        <h3>District 4 — Risk by Discipline</h3>
-        <div class="district-row"><span class="dk">EMS risk</span><span class="dv">Low (7.94)</span></div>
-        <div class="district-row"><span class="dk">Fire risk</span><span class="dv">Low (5.83)</span></div>
-        <div class="district-row"><span class="dk">Rescue risk</span><span class="dv">Low (3.46)</span></div>
-        <div class="district-row"><span class="dk">HazMat risk</span><span class="dv">Low (1.98)</span></div>
-        <div class="district-row"><span class="dk">Wildland risk</span><span class="dv">Medium (10.83)</span></div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+    <div style="width:36px;height:36px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">4</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--navy);">District 4 — Station 4</div><div style="font-size:12px;color:var(--gray-dark);">4580 W 112th Ave</div></div>
+  </div>
+  <div class="flag-med">Lowest overall risk but highest 65+ population (18.4%) — EMS demand will grow</div>
+  <div class="scorecard">
+  <div class="scorecard-item"><span class="scorecard-val ">Low</span><span class="scorecard-lbl">Overall Risk</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">26,855</span><span class="scorecard-lbl">Population</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">10,601</span><span class="scorecard-lbl">Households</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">$131K</span><span class="scorecard-lbl">Median Income</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">42.4</span><span class="scorecard-lbl">Median Age</span></div>
+</div>
+  <div class="district-sub-tabs">
+    <button class="district-sub-tab active" onclick="showSubPanel(4,'demo')">Demographics</button>
+    <button class="district-sub-tab" onclick="showSubPanel(4,'econ')">Economic</button>
+    <button class="district-sub-tab" onclick="showSubPanel(4,'health')">Health</button>
+    <button class="district-sub-tab" onclick="showSubPanel(4,'vuln')">Vulnerability</button>
+    <button class="district-sub-tab" onclick="showSubPanel(4,'risk')">Risk Scores</button>
+  </div>
+  <div id="d4-demo" class="district-sub-panel active"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Poverty Rate</div>
+  <div class="metric-val">3.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>3.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:27.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:48.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>9.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.8%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population 65+</div>
+  <div class="metric-val">18.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>18.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:78.3%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>14.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:79.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>16.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:91.3%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Hispanic Population</div>
+  <div class="metric-val">14.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:58.1%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>24.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>22.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.7%"></div></div>
+    <div class="compare-label"><span>United States</span><span>19.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:77.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Limited English Proficiency</div>
+  <div class="metric-val">1.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:16.7%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>3.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:41.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>5.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Avg Household Size</div>
+  <div class="metric-val">2.75</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.75</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:68.8%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>2.58</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:64.5%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:63.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Race / Ethnicity</div>
+  <div class="ins-grid">
+    <div class="ins-row">
+  <div class="ins-name">Hispanic/Latino</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:14.4%;background:#008996;"></div></div>
+  <div class="ins-pct">14.4%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">White non-Hispanic</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:72.1%;background:#253646;"></div></div>
+  <div class="ins-pct">72.1%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Asian</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:6.4%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">6.4%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Black</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.1%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.1%</div>
+</div>
+  </div>
+</div>
+</div></div>
+  <div id="d4-econ" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Median Household Income</div>
+  <div class="metric-val">$131,515</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$131,515</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:82.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$86,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$77,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:48.1%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$74,580</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:46.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Median Home Value</div>
+  <div class="metric-val">$619,900</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$619,900</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:88.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$526,700</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:75.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$465,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$305,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:43.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">4.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:32.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Public Assistance</div>
+  <div class="metric-val">0.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>0.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:14.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:67.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d4-health" class="district-sub-panel"><div class="ins-grid" style="margin-bottom:1rem;">
+  <div class="ins-row">
+  <div class="ins-name">Employer-based</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:65.2%;background:#008996;"></div></div>
+  <div class="ins-pct">65.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicaid</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:5.4%;background:#FF671D;"></div></div>
+  <div class="ins-pct">5.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicare</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:12.6%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">12.6%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Direct Purchase</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:7.8%;background:#253646;"></div></div>
+  <div class="ins-pct">7.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">TRICARE</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.4%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">VA</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.5%;background:#555759;"></div></div>
+  <div class="ins-pct">0.5%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Uninsured</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:3.6%;background:#CFD2D3;"></div></div>
+  <div class="ins-pct">3.6%</div>
+</div>
+</div>
+<div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Uninsured Rate</div>
+  <div class="metric-val">3.6%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>3.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:39.1%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">10.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>10.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:80.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d4-vuln" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Households — No Vehicle</div>
+  <div class="metric-val">3.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>3.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:38.8%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:50.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Households — No Internet</div>
+  <div class="metric-val">1.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:15.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:46.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:73.5%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">4.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:32.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">10.4%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>10.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:80.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d4-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(7.94)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:26.5%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(5.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:19.4%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(3.46)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:11.5%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(1.98)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:6.6%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
+</div>
+<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Gated community access delays</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Open space wildland interface</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Highest 65+ population in city</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Newer construction — mostly sprinklered</div></div></div>
+</div>
     <div id="district-5" class="district-panel">
-      <div class="district-info">
-        <h3>District 5 — Station 5</h3>
-        <div class="district-row"><span class="dk">Station address</span><span class="dv">10100 Garland St</span></div>
-        <div class="district-row"><span class="dk">Population</span><span class="dv">21,475</span></div>
-        <div class="district-row"><span class="dk">Poverty rate</span><span class="dv">3.2%</span></div>
-        <div class="district-row"><span class="dk">Uninsured rate</span><span class="dv">4.0%</span></div>
-        <div class="district-row"><span class="dk">Population 65+</span><span class="dv">13.1%</span></div>
-        <div class="district-row"><span class="dk">Hispanic population</span><span class="dv">14.7%</span></div>
-        <div class="district-row"><span class="dk">Limited English proficiency</span><span class="dv">0.5%</span></div>
-        <div class="district-row"><span class="dk">Key hazards</span><span class="dv">Airport approach path, ammonia (Promenade), Standley Lake</span></div>
-        <div class="district-row"><span class="dk">Overall risk</span><span class="dv">Medium</span></div>
-      </div>
-      <div class="district-info">
-        <h3>District 5 — Risk by Discipline</h3>
-        <div class="district-row"><span class="dk">EMS risk</span><span class="dv">Low (9.92)</span></div>
-        <div class="district-row"><span class="dk">Fire risk</span><span class="dv">Low (5.83)</span></div>
-        <div class="district-row"><span class="dk">Rescue risk</span><span class="dv">Medium (13.42)</span></div>
-        <div class="district-row"><span class="dk">HazMat risk</span><span class="dv">Medium (17.32)</span></div>
-        <div class="district-row"><span class="dk">Wildland risk</span><span class="dv">High (21.22)</span></div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+    <div style="width:36px;height:36px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">5</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--navy);">District 5 — Station 5</div><div style="font-size:12px;color:var(--gray-dark);">10100 Garland St</div></div>
+  </div>
+  <div class="flag-high">Only High wildland risk district — Standley Lake open space and airport proximity</div>
+  <div class="scorecard">
+  <div class="scorecard-item"><span class="scorecard-val orange">Medium</span><span class="scorecard-lbl">Overall Risk</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">21,475</span><span class="scorecard-lbl">Population</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">7,963</span><span class="scorecard-lbl">Households</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">$135K</span><span class="scorecard-lbl">Median Income</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">37.0</span><span class="scorecard-lbl">Median Age</span></div>
+</div>
+  <div class="district-sub-tabs">
+    <button class="district-sub-tab active" onclick="showSubPanel(5,'demo')">Demographics</button>
+    <button class="district-sub-tab" onclick="showSubPanel(5,'econ')">Economic</button>
+    <button class="district-sub-tab" onclick="showSubPanel(5,'health')">Health</button>
+    <button class="district-sub-tab" onclick="showSubPanel(5,'vuln')">Vulnerability</button>
+    <button class="district-sub-tab" onclick="showSubPanel(5,'risk')">Risk Scores</button>
+  </div>
+  <div id="d5-demo" class="district-sub-panel active"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Poverty Rate</div>
+  <div class="metric-val">3.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>3.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:25.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:48.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>9.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.8%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population 65+</div>
+  <div class="metric-val">13.1%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>13.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:78.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:85.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>14.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:86.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>16.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Hispanic Population</div>
+  <div class="metric-val">14.7%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>14.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:59.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>24.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>22.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.7%"></div></div>
+    <div class="compare-label"><span>United States</span><span>19.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:77.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Limited English Proficiency</div>
+  <div class="metric-val">0.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>0.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:6.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>3.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:41.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>5.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Avg Household Size</div>
+  <div class="metric-val">2.76</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.76</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:69.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>2.58</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:64.5%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:63.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Race / Ethnicity</div>
+  <div class="ins-grid">
+    <div class="ins-row">
+  <div class="ins-name">Hispanic/Latino</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:14.7%;background:#008996;"></div></div>
+  <div class="ins-pct">14.7%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">White non-Hispanic</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:77.5%;background:#253646;"></div></div>
+  <div class="ins-pct">77.5%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Asian</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:4.0%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">4.0%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Black</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.3%;background:#8CC740;"></div></div>
+  <div class="ins-pct">0.3%</div>
+</div>
+  </div>
+</div>
+</div></div>
+  <div id="d5-econ" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Median Household Income</div>
+  <div class="metric-val">$135,028</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$135,028</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:84.4%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$86,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$77,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:48.1%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$74,580</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:46.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Median Home Value</div>
+  <div class="metric-val">$538,100</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$538,100</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:76.9%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$526,700</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:75.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$465,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$305,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:43.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">1.9%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:15.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Public Assistance</div>
+  <div class="metric-val">0.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>0.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:10.7%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:67.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d5-health" class="district-sub-panel"><div class="ins-grid" style="margin-bottom:1rem;">
+  <div class="ins-row">
+  <div class="ins-name">Employer-based</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:66.4%;background:#008996;"></div></div>
+  <div class="ins-pct">66.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicaid</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:5.2%;background:#FF671D;"></div></div>
+  <div class="ins-pct">5.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicare</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:8.8%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">8.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Direct Purchase</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:6.9%;background:#253646;"></div></div>
+  <div class="ins-pct">6.9%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">TRICARE</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.8%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">VA</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.7%;background:#555759;"></div></div>
+  <div class="ins-pct">0.7%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Uninsured</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:4.0%;background:#CFD2D3;"></div></div>
+  <div class="ins-pct">4.0%</div>
+</div>
+</div>
+<div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Uninsured Rate</div>
+  <div class="metric-val">4.0%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:43.5%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">7.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>7.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:56.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d5-vuln" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Households — No Vehicle</div>
+  <div class="metric-val">1.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:15.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:50.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Households — No Internet</div>
+  <div class="metric-val">0.5%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>0.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:5.1%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:46.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:73.5%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">1.9%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:15.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">7.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>7.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:56.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d5-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(9.92)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:33.1%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(5.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:19.4%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(17.32)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:57.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#FF671D">High</span> <span style="color:var(--gray-dark);font-size:11px;">(21.22)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:70.7%;background:#FF671D;border-radius:3px;"></div></div></div>
+</div>
+<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Rocky Mountain Regional Airport approach path</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ammonia — Promenade ice arena</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Standley Lake Regional Park wildland interface</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ball Aerospace / Ball Metal manufacturing</div></div></div>
+</div>
     <div id="district-6" class="district-panel">
-      <div class="district-info">
-        <h3>District 6 — Station 6</h3>
-        <div class="district-row"><span class="dk">Station address</span><span class="dv">999 W. 124th Ave</span></div>
-        <div class="district-row"><span class="dk">Population</span><span class="dv">18,198</span></div>
-        <div class="district-row"><span class="dk">Poverty rate</span><span class="dv">6.3%</span></div>
-        <div class="district-row"><span class="dk">Uninsured rate</span><span class="dv">10.2%</span></div>
-        <div class="district-row"><span class="dk">Population 65+</span><span class="dv">13.2%</span></div>
-        <div class="district-row"><span class="dk">Hispanic population</span><span class="dv">23.0%</span></div>
-        <div class="district-row"><span class="dk">Limited English proficiency</span><span class="dv">1.7%</span></div>
-        <div class="district-row"><span class="dk">Key hazards</span><span class="dv">Mobile home parks, I-25 interchange, mixed housing</span></div>
-        <div class="district-row"><span class="dk">Overall risk</span><span class="dv">Medium</span></div>
-      </div>
-      <div class="district-info">
-        <h3>District 6 — Risk by Discipline</h3>
-        <div class="district-row"><span class="dk">EMS risk</span><span class="dv">Medium (13.42)</span></div>
-        <div class="district-row"><span class="dk">Fire risk</span><span class="dv">Medium (10.83)</span></div>
-        <div class="district-row"><span class="dk">Rescue risk</span><span class="dv">Medium (10.83)</span></div>
-        <div class="district-row"><span class="dk">HazMat risk</span><span class="dv">Low (1.98)</span></div>
-        <div class="district-row"><span class="dk">Wildland risk</span><span class="dv">Low (1.98)</span></div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+    <div style="width:36px;height:36px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">6</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--navy);">District 6 — Station 6</div><div style="font-size:12px;color:var(--gray-dark);">999 W 124th Ave</div></div>
+  </div>
+  <div class="flag-med">Growth district — residential density increasing with Uplands development</div>
+  <div class="scorecard">
+  <div class="scorecard-item"><span class="scorecard-val orange">Medium</span><span class="scorecard-lbl">Overall Risk</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">18,198</span><span class="scorecard-lbl">Population</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">7,766</span><span class="scorecard-lbl">Households</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">$89K</span><span class="scorecard-lbl">Median Income</span></div>
+  <div class="scorecard-item"><span class="scorecard-val">36.8</span><span class="scorecard-lbl">Median Age</span></div>
+</div>
+  <div class="district-sub-tabs">
+    <button class="district-sub-tab active" onclick="showSubPanel(6,'demo')">Demographics</button>
+    <button class="district-sub-tab" onclick="showSubPanel(6,'econ')">Economic</button>
+    <button class="district-sub-tab" onclick="showSubPanel(6,'health')">Health</button>
+    <button class="district-sub-tab" onclick="showSubPanel(6,'vuln')">Vulnerability</button>
+    <button class="district-sub-tab" onclick="showSubPanel(6,'risk')">Risk Scores</button>
+  </div>
+  <div id="d6-demo" class="district-sub-panel active"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Poverty Rate</div>
+  <div class="metric-val">6.8%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>6.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:54.4%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:48.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>9.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:76.8%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population 65+</div>
+  <div class="metric-val">13.6%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>13.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:81.0%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>14.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:85.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>14.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:86.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>16.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Hispanic Population</div>
+  <div class="metric-val">23.1%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>23.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:93.1%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>24.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:100.0%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>22.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.7%"></div></div>
+    <div class="compare-label"><span>United States</span><span>19.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:77.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Limited English Proficiency</div>
+  <div class="metric-val">1.7%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:20.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>3.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:41.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>5.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:61.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.4%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Avg Household Size</div>
+  <div class="metric-val">2.57</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>2.57</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:64.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>2.58</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:64.5%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:63.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.53</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:63.2%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Race / Ethnicity</div>
+  <div class="ins-grid">
+    <div class="ins-row">
+  <div class="ins-name">Hispanic/Latino</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:23.1%;background:#008996;"></div></div>
+  <div class="ins-pct">23.1%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">White non-Hispanic</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:65.9%;background:#253646;"></div></div>
+  <div class="ins-pct">65.9%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Asian</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:5.4%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">5.4%</div>
+</div>
+    <div class="ins-row">
+  <div class="ins-name">Black</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.9%;background:#8CC740;"></div></div>
+  <div class="ins-pct">0.9%</div>
+</div>
+  </div>
+</div>
+</div></div>
+  <div id="d6-econ" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Median Household Income</div>
+  <div class="metric-val">$89,288</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$89,288</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:55.8%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$86,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:53.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$77,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:48.1%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$74,580</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:46.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Median Home Value</div>
+  <div class="metric-val">$532,400</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>$532,400</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:76.1%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>$526,700</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:75.2%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>$465,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:66.4%"></div></div>
+    <div class="compare-label"><span>United States</span><span>$305,000</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:43.6%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">4.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:33.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Public Assistance</div>
+  <div class="metric-val">1.1%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>1.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:39.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>1.7%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.7%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>1.9%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:67.9%"></div></div>
+    <div class="compare-label"><span>United States</span><span>2.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d6-health" class="district-sub-panel"><div class="ins-grid" style="margin-bottom:1rem;">
+  <div class="ins-row">
+  <div class="ins-name">Employer-based</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:52.4%;background:#008996;"></div></div>
+  <div class="ins-pct">52.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicaid</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:14.8%;background:#FF671D;"></div></div>
+  <div class="ins-pct">14.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Medicare</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:9.6%;background:#FCB61A;"></div></div>
+  <div class="ins-pct">9.6%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Direct Purchase</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:6.8%;background:#253646;"></div></div>
+  <div class="ins-pct">6.8%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">TRICARE</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:1.2%;background:#8CC740;"></div></div>
+  <div class="ins-pct">1.2%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">VA</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:0.4%;background:#555759;"></div></div>
+  <div class="ins-pct">0.4%</div>
+</div>
+  <div class="ins-row">
+  <div class="ins-name">Uninsured</div>
+  <div class="ins-bar-track"><div class="ins-bar-fill" style="width:7.3%;background:#CFD2D3;"></div></div>
+  <div class="ins-pct">7.3%</div>
+</div>
+</div>
+<div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Uninsured Rate</div>
+  <div class="metric-val">7.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>7.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:79.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">10.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>10.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:79.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d6-vuln" class="district-sub-panel"><div class="metric-grid">
+<div class="metric-card">
+  <div class="metric-name">Households — No Vehicle</div>
+  <div class="metric-val">6.1%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>6.1%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:71.8%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:50.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:88.2%"></div></div>
+    <div class="compare-label"><span>United States</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Households — No Internet</div>
+  <div class="metric-val">6.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>6.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:64.3%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>4.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:46.9%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>7.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:73.5%"></div></div>
+    <div class="compare-label"><span>United States</span><span>9.8%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">SNAP Recipients</div>
+  <div class="metric-val">4.2%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>4.2%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:33.6%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>7.6%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:60.8%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>8.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:68.0%"></div></div>
+    <div class="compare-label"><span>United States</span><span>12.5%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+<div class="metric-card">
+  <div class="metric-name">Population with Disability</div>
+  <div class="metric-val">10.3%</div>
+  <div class="compare-bar-wrap">
+    <div class="compare-label"><span>District</span><span>10.3%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-district" style="width:79.2%"></div></div>
+    <div class="compare-label"><span>Westminster</span><span>11.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-westminster" style="width:84.6%"></div></div>
+    <div class="compare-label"><span>Colorado</span><span>12.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-colorado" style="width:92.3%"></div></div>
+    <div class="compare-label"><span>United States</span><span>13.0%</span></div>
+    <div class="compare-track"><div class="compare-bar bar-us" style="width:100.0%"></div></div>
+  </div>
+</div>
+</div></div>
+  <div id="d6-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
+  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(1.98)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:6.6%;background:#8CC740;border-radius:3px;"></div></div></div>
+  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(1.98)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:6.6%;background:#8CC740;border-radius:3px;"></div></div></div>
+</div>
+<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Mobile home parks — fire access challenges</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• I-25 interchange MVA risk</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Mixed housing stock — varying age and construction</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• St. Anthony North Level II Trauma at north end</div></div></div>
+</div>
   </div>
 </section>
 
@@ -704,6 +2455,21 @@
     const tabs = document.querySelectorAll('.district-tab');
     tabs[num-1].classList.add('active');
     tabs[num-1].setAttribute('aria-selected','true');
+    showSubPanel(num, 'demo');
+  }
+
+  function showSubPanel(distNum, panel) {
+    const panels = ['demo','econ','health','vuln','risk'];
+    panels.forEach(p => {
+      const el = document.getElementById('d' + distNum + '-' + p);
+      if (el) el.classList.remove('active');
+    });
+    const active = document.getElementById('d' + distNum + '-' + panel);
+    if (active) active.classList.add('active');
+    const subTabs = document.querySelectorAll('#district-' + distNum + ' .district-sub-tab');
+    subTabs.forEach(t => t.classList.remove('active'));
+    const panelIndex = panels.indexOf(panel);
+    if (subTabs[panelIndex]) subTabs[panelIndex].classList.add('active');
   }
 
   const observer = new IntersectionObserver((entries) => {

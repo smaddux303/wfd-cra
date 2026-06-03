@@ -1,4 +1,4 @@
-GEO_ID,Tract_Name,Total_Pop,Below_Poverty,Poverty_Rate
+GEO_ID,NAME,Total_Pop,Below_Poverty,Poverty_Rate
 08001007801,Census Tract 78.01; Adams County; Colorado,4018,1014,25.2
 08001007802,Census Tract 78.02; Adams County; Colorado,4288,1281,29.9
 08001007900,Census Tract 79; Adams County; Colorado,6735,1455,21.6

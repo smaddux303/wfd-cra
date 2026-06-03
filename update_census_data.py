@@ -157,13 +157,18 @@ except Exception as e:
 # ── 4. LEP ─────────────────────────────────────────────────────
 print("\n4/11  Limited English Proficiency (B16004)...")
 try:
+    # LEP = speaks English "not well" or "not at all" across all age groups and languages
+    # B16004 indices for "not well": 5,12,19,26,33,40,47,54,61
+    # B16004 indices for "not at all": 6,13,20,27,34,41,48,55,62
     lep_vars = [f"B16004_{str(i).zfill(3)}E" for i in
-                [4,5,11,12,18,19,25,26,32,33,39,40,46,47,53,54,60,61]]
+                [5,6,12,13,19,20,26,27,33,34,40,41,47,48,54,55,61,62]]
     raw = get_tracts(["B16004_001E"] + lep_vars)
     raw["Total_Pop_5plus"] = raw["B16004_001E"]
     raw["LEP_Pop"]         = raw[lep_vars].sum(axis=1)
     raw["Pct_LEP"]         = raw.apply(lambda r: pct(r["LEP_Pop"], r["Total_Pop_5plus"]), axis=1)
-    raw[["GEO_ID","NAME","Total_Pop_5plus","LEP_Pop","Pct_LEP"]].to_csv(
+    raw["Tract_Name"]      = raw["NAME"]
+    raw["County"]          = raw["county_fips"].map({"001": "Adams County", "059": "Jefferson County"})
+    raw[["GEO_ID","Tract_Name","County","Total_Pop_5plus","LEP_Pop","Pct_LEP"]].to_csv(
         f"{OUT_DIR}/westminster_language.csv", index=False)
     print(f"   ✓ {len(raw)} tracts → westminster_language.csv")
 except Exception as e:

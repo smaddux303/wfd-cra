@@ -42,7 +42,6 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "Census Data Bot"
 
-          # Add only files that exist
           for f in \
             data/clean/westminster_poverty.csv \
             data/clean/westminster_insurance.csv \
@@ -64,9 +63,7 @@ jobs:
             data/clean/westminster_benchmarks.csv \
             data/clean/westminster_unemployment.csv \
             data/clean/westminster_businesses.csv \
-            data/clean/westminster_demographics_by_district.csv \
-            data/clean/westminster_population_projections.csv \
-data/clean/westminster_demographics_by_district.csv; do
+            data/clean/westminster_demographics_by_district.csv; do
             if [ -f "$f" ]; then
               git add "$f"
             fi

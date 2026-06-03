@@ -16,7 +16,6 @@ env:
 jobs:
   update-census-data:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
@@ -30,14 +29,13 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests pandas
+        run: pip install requests pandas
 
       - name: Pull fresh Census data
         env:
           CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
-        run: |
-          python update_census_data.py
+          BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+        run: python update_census_data.py
 
       - name: Commit updated data files
         run: |
@@ -46,15 +44,29 @@ jobs:
           git add data/clean/westminster_poverty.csv
           git add data/clean/westminster_insurance.csv
           git add data/clean/westminster_age_65plus.csv
-          git add data/clean/westminster_population.csv
           git add data/clean/westminster_language.csv
+          git add data/clean/westminster_population.csv
           git add data/clean/westminster_race.csv
+          git add data/clean/westminster_household_size.csv
+          git add data/clean/westminster_household_number.csv
+          git add data/clean/westminster_median_age.csv
+          git add data/clean/westminster_median_income.csv
+          git add data/clean/westminster_median_home_value.csv
+          git add data/clean/westminster_insurance_type.csv
+          git add data/clean/westminster_public_assistance.csv
+          git add data/clean/westminster_SNAP.csv
+          git add data/clean/westminster_disabled.csv
+          git add data/clean/westminster_no_vehicle.csv
+          git add data/clean/westminster_no_internet.csv
+          git add data/clean/westminster_benchmarks.csv
+          git add data/clean/westminster_unemployment.csv
+          git add data/clean/westminster_businesses.csv
           git add data/clean/westminster_demographics_by_district.csv
 
           if git diff --staged --quiet; then
-            echo "No data changes — Census data is already current."
+            echo "No data changes — already current."
           else
-            git commit -m "Auto-update: Census ACS 5-Year data refresh $(date +'%Y-%m-%d')"
+            git commit -m "Auto-update: Census ACS data refresh $(date +'%Y-%m-%d')"
             git push
             echo "Data updated and pushed successfully."
           fi
@@ -62,5 +74,5 @@ jobs:
       - name: Log completion
         run: |
           echo "✓ Census data update complete"
-          echo "✓ Data files committed to smaddux303/wfd-cra"
+          echo "✓ All CSVs committed to smaddux303/wfd-cra"
           echo "✓ Site: https://smaddux303.github.io/wfd-cra"

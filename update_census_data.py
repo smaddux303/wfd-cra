@@ -502,6 +502,109 @@ try:
 except Exception as e:
     print(f"   ✗ Business data: {e}")
 
+# ── CENSUS TIGER — ROADS & RAILROADS ─────────────────────────
+print("\n── Pulling road and railroad geometry (Census TIGER)...")
+
+TIGER_BASE = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer"
+
+def tiger_get(layer_id, where, out_fields="*"):
+    """Pull features from Census TIGER web services as GeoJSON."""
+    url = f"{TIGER_BASE}/{layer_id}/query"
+    params = {
+        "where":        where,
+        "outFields":    out_fields,
+        "f":            "geojson",
+        "outSR":        "4326",
+        "returnGeometry": "true"
+    }
+    r = requests.get(url, params=params, timeout=60)
+    r.raise_for_status()
+    return r.json()
+
+def save_geojson(features, filepath, description):
+    """Save a list of GeoJSON features to file."""
+    geojson = {"type": "FeatureCollection", "features": features}
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, 'w') as f:
+        json.dump(geojson, f)
+    print(f"   ✓ {len(features)} features → {filepath} ({description})")
+
+# Layer IDs in TIGER web services:
+# Layer 8  = Primary roads (interstates, US highways)
+# Layer 10 = Local roads / state highways
+# Layer 180 = Railroads
+
+# Filter to Adams (08001) and Jefferson (08059) counties
+county_filter = "STATEFP='08' AND (COUNTYFP='001' OR COUNTYFP='059')"
+
+# 1. Primary roads — interstates and US highways
+print("   1/3  Primary roads (interstates, US highways)...")
+try:
+    data = tiger_get(
+        layer_id=8,
+        where=county_filter,
+        out_fields="FULLNAME,RTTYP,MTFCC"
+    )
+    features = data.get('features', [])
+    # Filter to just the roads we care about for Westminster
+    relevant = [f for f in features if any(
+        kw in (f.get('properties',{}).get('FULLNAME','') or '').upper()
+        for kw in ['I- 25','I-25','US HWY 36','US-36','US HWY 287','FEDERAL','US HWY 36']
+    ) or f.get('properties',{}).get('RTTYP','') in ['I','U']]
+
+    # If filter too restrictive, keep all primary roads in the county
+    if len(relevant) < 3:
+        relevant = features
+
+    save_geojson(relevant, "maps/westminster_roads_primary.geojson",
+                 "interstates and US highways")
+except Exception as e:
+    print(f"   ✗ Primary roads: {e}")
+
+# 2. State highways and major arterials
+print("   2/3  State highways and arterials...")
+try:
+    data = tiger_get(
+        layer_id=10,
+        where=county_filter,
+        out_fields="FULLNAME,RTTYP,MTFCC"
+    )
+    features = data.get('features', [])
+    # Filter to state highways (RTTYP=S) and major arterials
+    relevant = [f for f in features if
+                f.get('properties',{}).get('RTTYP','') == 'S'
+                or any(kw in (f.get('properties',{}).get('FULLNAME','') or '').upper()
+                       for kw in ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL',
+                                  '120TH','104TH','88TH','72ND','WESTMINSTER'])]
+
+    if len(relevant) < 3:
+        relevant = [f for f in features if
+                    f.get('properties',{}).get('RTTYP','') in ['S','C']]
+
+    save_geojson(relevant, "maps/westminster_roads_state.geojson",
+                 "state highways and arterials")
+except Exception as e:
+    print(f"   ✗ State highways: {e}")
+
+# 3. Railroads
+print("   3/3  Railroads...")
+try:
+    data = tiger_get(
+        layer_id=180,
+        where=county_filter,
+        out_fields="FULLNAME,MTFCC"
+    )
+    features = data.get('features', [])
+    save_geojson(features, "maps/westminster_railroads.geojson",
+                 "railroad lines")
+    # Show what railroads were found
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in features)
+    for name in sorted(names):
+        if name:
+            print(f"     {name}")
+except Exception as e:
+    print(f"   ✗ Railroads: {e}")
+
 # ── SPATIAL JOIN → DISTRICT DEMOGRAPHICS ──────────────────────
 print("\n── Spatial join → district demographics...")
 try:

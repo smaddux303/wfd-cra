@@ -72,7 +72,7 @@ def get_tracts(get_vars):
         df["county_fips"] = county
         frames.append(df)
     combined = pd.concat(frames, ignore_index=True)
-    combined["GEO_ID"] = (STATE + combined["county_fips"] + combined["tract"].str.zfill(6))
+    combined["GEO_ID"] = (STATE + combined["county_fips"] + combined["tract"].str.zfill(6)).str.zfill(11)
     return combined
 
 def get_place(get_vars):

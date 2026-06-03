@@ -63,7 +63,10 @@ jobs:
             data/clean/westminster_benchmarks.csv \
             data/clean/westminster_unemployment.csv \
             data/clean/westminster_businesses.csv \
-            data/clean/westminster_demographics_by_district.csv; do
+            data/clean/westminster_demographics_by_district.csv \
+            maps/westminster_roads_primary.geojson \
+            maps/westminster_roads_state.geojson \
+            maps/westminster_railroads.geojson; do
             if [ -f "$f" ]; then
               git add "$f"
             fi

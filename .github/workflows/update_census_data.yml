@@ -41,27 +41,34 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "Census Data Bot"
-          git add data/clean/westminster_poverty.csv
-          git add data/clean/westminster_insurance.csv
-          git add data/clean/westminster_age_65plus.csv
-          git add data/clean/westminster_language.csv
-          git add data/clean/westminster_population.csv
-          git add data/clean/westminster_race.csv
-          git add data/clean/westminster_household_size.csv
-          git add data/clean/westminster_household_number.csv
-          git add data/clean/westminster_median_age.csv
-          git add data/clean/westminster_median_income.csv
-          git add data/clean/westminster_median_home_value.csv
-          git add data/clean/westminster_insurance_type.csv
-          git add data/clean/westminster_public_assistance.csv
-          git add data/clean/westminster_SNAP.csv
-          git add data/clean/westminster_disabled.csv
-          git add data/clean/westminster_no_vehicle.csv
-          git add data/clean/westminster_no_internet.csv
-          git add data/clean/westminster_benchmarks.csv
-          git add data/clean/westminster_unemployment.csv
-          git add data/clean/westminster_businesses.csv
-          git add data/clean/westminster_demographics_by_district.csv
+
+          # Add only files that exist
+          for f in \
+            data/clean/westminster_poverty.csv \
+            data/clean/westminster_insurance.csv \
+            data/clean/westminster_age_65plus.csv \
+            data/clean/westminster_language.csv \
+            data/clean/westminster_population.csv \
+            data/clean/westminster_race.csv \
+            data/clean/westminster_household_size.csv \
+            data/clean/westminster_household_number.csv \
+            data/clean/westminster_median_age.csv \
+            data/clean/westminster_median_income.csv \
+            data/clean/westminster_median_home_value.csv \
+            data/clean/westminster_insurance_type.csv \
+            data/clean/westminster_public_assistance.csv \
+            data/clean/westminster_SNAP.csv \
+            data/clean/westminster_disabled.csv \
+            data/clean/westminster_no_vehicle.csv \
+            data/clean/westminster_no_internet.csv \
+            data/clean/westminster_benchmarks.csv \
+            data/clean/westminster_unemployment.csv \
+            data/clean/westminster_businesses.csv \
+            data/clean/westminster_demographics_by_district.csv; do
+            if [ -f "$f" ]; then
+              git add "$f"
+            fi
+          done
 
           if git diff --staged --quiet; then
             echo "No data changes — already current."

@@ -23,6 +23,7 @@ from datetime import datetime
 # ── Configuration ──────────────────────────────────────────────
 CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY", "")
 BLS_API_KEY    = os.environ.get("BLS_API_KEY", "")
+CO_DATA_API_KEY     = os.environ.get("CO_DATA_API_KEY", "")     # data.colorado.gov API key
 ACS_YEAR       = datetime.now().year - 2
 BASE_URL       = f"https://api.census.gov/data/{ACS_YEAR}/acs/acs5"
 STATE          = "08"
@@ -674,7 +675,7 @@ except Exception as e:
 
 print()
 print("=" * 60)
-print(f"✓ All data updated — ACS {ACS_YEAR} 5-Year Estimates")
+print(f"✓ All data updated (Census + BLS + Colorado open data) — ACS {ACS_YEAR} 5-Year Estimates")
 print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
 print(f"  Repo: https://github.com/smaddux303/wfd-cra")
 print("=" * 60)

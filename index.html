@@ -2519,12 +2519,23 @@
     fetch(BENCH_URL)
       .then(r => r.text())
       .then(csv => {
-        const lines = csv.trim().split('\n');
-        const headers = lines[0].split(',');
-        const rows = lines.slice(1).map(l => {
-          const vals = l.split(',');
+        // Parse CSV — split on newlines, first line is headers
+        const lines = csv.trim().split(/\r?\n/);
+        if (lines.length < 2) return;
+
+        const headers = lines[0].split(',').map(h => h.trim());
+        const rows = lines.slice(1).map(line => {
+          // Handle quoted fields by splitting carefully
+          const vals = [];
+          let cur = '', inQuote = false;
+          for (let i = 0; i < line.length; i++) {
+            if (line[i] === '"') { inQuote = !inQuote; }
+            else if (line[i] === ',' && !inQuote) { vals.push(cur.trim()); cur = ''; }
+            else { cur += line[i]; }
+          }
+          vals.push(cur.trim());
           const obj = {};
-          headers.forEach((h, i) => obj[h.trim()] = (vals[i] || '').trim());
+          headers.forEach((h, i) => obj[h] = vals[i] || '');
           return obj;
         });
 
@@ -2532,28 +2543,31 @@
         const wm = rows.find(r => r.Geography && r.Geography.includes('Westminster'));
         if (!wm) return;
 
+        // Find Colorado row for comparison
+        const co = rows.find(r => r.Geography && r.Geography.trim() === 'Colorado');
+
         // Population
         const pop = parseFloat(wm.Population);
-        if (!isNaN(pop)) {
+        if (!isNaN(pop) && pop > 0) {
           document.getElementById('kpi-population').textContent =
             pop >= 1000 ? Math.round(pop / 1000) + ',000' : Math.round(pop).toLocaleString();
         }
 
         // Median age
         const age = parseFloat(wm.Median_Age);
-        if (!isNaN(age)) {
+        if (!isNaN(age) && age > 0) {
           document.getElementById('kpi-age').textContent = age.toFixed(1);
+          const yr = wm.ACS_Year;
+          if (yr) document.getElementById('kpi-age-sub').textContent = `ACS ${yr} 5-Year Estimate`;
         }
 
         // Median income
         const inc = parseFloat(wm.Median_HH_Income);
-        if (!isNaN(inc)) {
+        if (!isNaN(inc) && inc > 0) {
           document.getElementById('kpi-income').textContent = '$' + Math.round(inc / 1000) + 'K';
-          // Compare to CO
-          const co = rows.find(r => r.Geography && r.Geography.includes('Colorado'));
           if (co) {
             const coInc = parseFloat(co.Median_HH_Income);
-            if (!isNaN(coInc)) {
+            if (!isNaN(coInc) && coInc > 0) {
               const diff = Math.round((inc - coInc) / 1000);
               document.getElementById('kpi-income-sub').textContent =
                 diff >= 0 ? `$${diff}K above Colorado median` : `$${Math.abs(diff)}K below Colorado median`;
@@ -2563,17 +2577,11 @@
 
         // Poverty rate
         const pov = parseFloat(wm.Poverty_Rate);
-        if (!isNaN(pov)) {
+        if (!isNaN(pov) && pov > 0) {
           document.getElementById('kpi-poverty').textContent = pov.toFixed(1) + '%';
         }
-
-        // Update year note in age sub
-        const yr = wm.ACS_Year;
-        if (yr) {
-          document.getElementById('kpi-age-sub').textContent = `ACS ${yr} 5-Year Estimate`;
-        }
       })
-      .catch(() => {}); // silently keep hardcoded fallback values on error
+      .catch(() => {}); // keep hardcoded fallback on error
   })();
 </script>
 

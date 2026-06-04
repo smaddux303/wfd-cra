@@ -83,14 +83,16 @@ const RAW = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main";
 
 // Road classification lookup
 function classifyRoad(props) {
-  const name = (props.FULLNAME || '').toUpperCase();
+  const name  = (props.FULLNAME || '').toUpperCase();
   const rttyp = props.RTTYP || '';
   if (rttyp === 'I' || name.includes('I- ') || name.includes('INTERSTATE'))
     return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
   if (rttyp === 'U' || name.includes('US HWY') || name.includes('US-'))
     return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
-  if (rttyp === 'S' || name.includes('STATE HWY') || name.includes('CO HWY'))
-    return { type: 'State Highway', color: '#555759', weight: 3 };
+  if (rttyp === 'S' || name.includes('STATE HWY') || name.includes('CO HWY') || name.includes('CO RD'))
+    return { type: 'State/County Highway', color: '#555759', weight: 3 };
+  if (rttyp === 'C')
+    return { type: 'County Road', color: '#777', weight: 2 };
   return { type: 'Major Arterial', color: '#888', weight: 2 };
 }
 
@@ -164,19 +166,7 @@ fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
 fetch(`${RAW}/maps/westminster_roads_state.geojson`)
   .then(r => r.json())
   .then(gj => {
-    // Filter to just Westminster area and meaningful roads
-    const filtered = {
-      type: 'FeatureCollection',
-      features: gj.features.filter(f => {
-        const name = (f.properties?.FULLNAME || '').toUpperCase();
-        const rttyp = f.properties?.RTTYP || '';
-        // Keep state highways, US highways, and key arterials
-        return ['S','U','I'].includes(rttyp) ||
-               ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL','120TH','104TH',
-                '88TH','72ND','96TH','92ND','WESTMINSTER BLVD'].some(kw => name.includes(kw));
-      })
-    };
-    L.geoJSON(filtered, {
+    L.geoJSON(gj, {
       style: feat => {
         const c = classifyRoad(feat.properties || {});
         return { color: c.color, weight: c.weight, opacity: 0.75 };
@@ -206,9 +196,9 @@ fetch(`${RAW}/maps/westminster_railroads.geojson`)
     L.geoJSON(gj, {
       style: feat => {
         const name = (feat.properties?.FULLNAME || '').toUpperCase();
-        const isBNSF = name.includes('BURLINGTON') || name.includes('BNSF');
+        const isBNSF = name.includes('BURLINGTON') || name.includes('BNSF') || name.includes('SANTA FE');
         return {
-          color: isBNSF ? '#253646' : '#555759',
+          color: isBNSF ? '#253646' : '#FF671D',
           weight: 3, opacity: 0.9,
           dashArray: '8 5'
         };
@@ -216,7 +206,7 @@ fetch(`${RAW}/maps/westminster_railroads.geojson`)
       onEachFeature: (feat, layer) => {
         const props = feat.properties || {};
         const name  = props.FULLNAME || 'Railroad';
-        const isBNSF = name.toUpperCase().includes('BURLINGTON') || name.toUpperCase().includes('BNSF');
+        const isBNSF = name.toUpperCase().includes('BURLINGTON') || name.toUpperCase().includes('BNSF') || name.toUpperCase().includes('SANTA FE');
         layer.bindPopup(`
           <div class="popup-header" style="background:#253646">
             <div class="popup-name">${name}</div>

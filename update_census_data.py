@@ -505,17 +505,23 @@ except Exception as e:
 # ── CENSUS TIGER — ROADS & RAILROADS ─────────────────────────
 print("\n── Pulling road and railroad geometry (Census TIGER)...")
 
-TIGER_BASE = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer"
+# Correct service: tigerWMS_PhysicalFeatures
+# Layer 1 = Primary Roads (interstates, US highways)
+# Layer 3 = Secondary Roads (state highways, arterials)
+# Layer 7 = Railroads
 
-def tiger_get(layer_id, where, out_fields="*"):
-    """Pull features from Census TIGER web services as GeoJSON."""
+TIGER_BASE = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_PhysicalFeatures/MapServer"
+
+def tiger_get(layer_id, where, out_fields="FULLNAME,MTFCC"):
+    """Pull features from Census TIGER PhysicalFeatures service as GeoJSON."""
     url = f"{TIGER_BASE}/{layer_id}/query"
     params = {
-        "where":        where,
-        "outFields":    out_fields,
-        "f":            "geojson",
-        "outSR":        "4326",
-        "returnGeometry": "true"
+        "where":          where,
+        "outFields":      out_fields,
+        "f":              "geojson",
+        "outSR":          "4326",
+        "returnGeometry": "true",
+        "resultRecordCount": 5000
     }
     r = requests.get(url, params=params, timeout=60)
     r.raise_for_status()
@@ -529,79 +535,84 @@ def save_geojson(features, filepath, description):
         json.dump(geojson, f)
     print(f"   ✓ {len(features)} features → {filepath} ({description})")
 
-# Layer IDs in TIGER web services:
-# Layer 8  = Primary roads (interstates, US highways)
-# Layer 10 = Local roads / state highways
-# Layer 180 = Railroads
+# Westminster bounding box for spatial filter
+# Lat: 39.818 to 39.968, Lon: -105.166 to -104.988
+WM_ENVELOPE = "-105.166,39.818,-104.988,39.968"
+bbox_filter  = f"1=1"  # get all then clip to bbox via geometry
 
-# Filter to Adams (08001) and Jefferson (08059) counties
-county_filter = "STATEFP='08' AND (COUNTYFP='001' OR COUNTYFP='059')"
-
-# 1. Primary roads — interstates and US highways
+# 1. Primary roads — interstates and US highways (Layer 1)
 print("   1/3  Primary roads (interstates, US highways)...")
 try:
     data = tiger_get(
-        layer_id=8,
-        where=county_filter,
-        out_fields="FULLNAME,RTTYP,MTFCC"
+        layer_id=1,
+        where="1=1",
+        out_fields="FULLNAME,MTFCC"
     )
-    features = data.get('features', [])
-    # Filter to just the roads we care about for Westminster
-    relevant = [f for f in features if any(
-        kw in (f.get('properties',{}).get('FULLNAME','') or '').upper()
-        for kw in ['I- 25','I-25','US HWY 36','US-36','US HWY 287','FEDERAL','US HWY 36']
-    ) or f.get('properties',{}).get('RTTYP','') in ['I','U']]
+    all_feats = data.get('features', [])
+    # Filter to Westminster area by checking geometry bounds
+    # Keep features that intersect Westminster bounding box
+    def in_westminster(feat):
+        geom = feat.get('geometry', {})
+        coords = geom.get('coordinates', [])
+        def flatten(c):
+            if not c: return []
+            if isinstance(c[0], list): return [pt for seg in c for pt in flatten(seg)]
+            return [c]
+        pts = flatten(coords)
+        return any(-105.17 <= pt[0] <= -104.98 and 39.81 <= pt[1] <= 39.97
+                   for pt in pts if len(pt) >= 2)
 
-    # If filter too restrictive, keep all primary roads in the county
-    if len(relevant) < 3:
-        relevant = features
+    relevant = [f for f in all_feats if in_westminster(f)]
+    if not relevant:
+        relevant = all_feats  # fallback: keep all
 
     save_geojson(relevant, "maps/westminster_roads_primary.geojson",
                  "interstates and US highways")
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in relevant)
+    for n in sorted(names)[:10]:
+        if n: print(f"     {n}")
 except Exception as e:
     print(f"   ✗ Primary roads: {e}")
 
-# 2. State highways and major arterials
-print("   2/3  State highways and arterials...")
+# 2. Secondary roads — state highways and arterials (Layer 3)
+print("   2/3  Secondary roads (state highways and arterials)...")
 try:
     data = tiger_get(
-        layer_id=10,
-        where=county_filter,
-        out_fields="FULLNAME,RTTYP,MTFCC"
+        layer_id=3,
+        where="1=1",
+        out_fields="FULLNAME,MTFCC"
     )
-    features = data.get('features', [])
-    # Filter to state highways (RTTYP=S) and major arterials
-    relevant = [f for f in features if
-                f.get('properties',{}).get('RTTYP','') == 'S'
-                or any(kw in (f.get('properties',{}).get('FULLNAME','') or '').upper()
-                       for kw in ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL',
-                                  '120TH','104TH','88TH','72ND','WESTMINSTER'])]
-
-    if len(relevant) < 3:
-        relevant = [f for f in features if
-                    f.get('properties',{}).get('RTTYP','') in ['S','C']]
+    all_feats = data.get('features', [])
+    relevant  = [f for f in all_feats if in_westminster(f)]
+    if not relevant:
+        relevant = all_feats
 
     save_geojson(relevant, "maps/westminster_roads_state.geojson",
                  "state highways and arterials")
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in relevant)
+    for n in sorted(names)[:10]:
+        if n: print(f"     {n}")
 except Exception as e:
-    print(f"   ✗ State highways: {e}")
+    print(f"   ✗ Secondary roads: {e}")
 
-# 3. Railroads
+# 3. Railroads (Layer 7)
 print("   3/3  Railroads...")
 try:
     data = tiger_get(
-        layer_id=180,
-        where=county_filter,
+        layer_id=7,
+        where="1=1",
         out_fields="FULLNAME,MTFCC"
     )
-    features = data.get('features', [])
-    save_geojson(features, "maps/westminster_railroads.geojson",
+    all_feats = data.get('features', [])
+    relevant  = [f for f in all_feats if in_westminster(f)]
+    if not relevant:
+        relevant = all_feats
+
+    save_geojson(relevant, "maps/westminster_railroads.geojson",
                  "railroad lines")
-    # Show what railroads were found
-    names = set(f.get('properties',{}).get('FULLNAME','') for f in features)
-    for name in sorted(names):
-        if name:
-            print(f"     {name}")
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in relevant)
+    for n in sorted(names):
+        if n: print(f"     {n}")
 except Exception as e:
     print(f"   ✗ Railroads: {e}")
 

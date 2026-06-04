@@ -512,15 +512,20 @@ print("\n── Pulling road and railroad geometry (Census TIGER)...")
 
 TIGER_BASE = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_PhysicalFeatures/MapServer"
 
-def tiger_get(layer_id, where, out_fields="FULLNAME,MTFCC"):
-    """Pull features from Census TIGER PhysicalFeatures service as GeoJSON."""
+def tiger_get(layer_id, out_fields="FULLNAME,MTFCC"):
+    """Pull features from Census TIGER using spatial envelope filter."""
     url = f"{TIGER_BASE}/{layer_id}/query"
+    # Westminster bounding box in WGS84
+    # Use geometry envelope filter — much more efficient than where=1=1
     params = {
-        "where":          where,
-        "outFields":      out_fields,
-        "f":              "geojson",
-        "outSR":          "4326",
-        "returnGeometry": "true",
+        "geometry":         "-105.17,39.81,-104.98,39.97",
+        "geometryType":     "esriGeometryEnvelope",
+        "inSR":             "4326",
+        "spatialRel":       "esriSpatialRelIntersects",
+        "outFields":        out_fields,
+        "f":                "geojson",
+        "outSR":            "4326",
+        "returnGeometry":   "true",
         "resultRecordCount": 5000
     }
     r = requests.get(url, params=params, timeout=60)
@@ -535,41 +540,15 @@ def save_geojson(features, filepath, description):
         json.dump(geojson, f)
     print(f"   ✓ {len(features)} features → {filepath} ({description})")
 
-# Westminster bounding box for spatial filter
-# Lat: 39.818 to 39.968, Lon: -105.166 to -104.988
-WM_ENVELOPE = "-105.166,39.818,-104.988,39.968"
-bbox_filter  = f"1=1"  # get all then clip to bbox via geometry
-
 # 1. Primary roads — interstates and US highways (Layer 1)
 print("   1/3  Primary roads (interstates, US highways)...")
 try:
-    data = tiger_get(
-        layer_id=1,
-        where="1=1",
-        out_fields="FULLNAME,MTFCC"
-    )
-    all_feats = data.get('features', [])
-    # Filter to Westminster area by checking geometry bounds
-    # Keep features that intersect Westminster bounding box
-    def in_westminster(feat):
-        geom = feat.get('geometry', {})
-        coords = geom.get('coordinates', [])
-        def flatten(c):
-            if not c: return []
-            if isinstance(c[0], list): return [pt for seg in c for pt in flatten(seg)]
-            return [c]
-        pts = flatten(coords)
-        return any(-105.17 <= pt[0] <= -104.98 and 39.81 <= pt[1] <= 39.97
-                   for pt in pts if len(pt) >= 2)
-
-    relevant = [f for f in all_feats if in_westminster(f)]
-    if not relevant:
-        relevant = all_feats  # fallback: keep all
-
-    save_geojson(relevant, "maps/westminster_roads_primary.geojson",
+    data = tiger_get(layer_id=1, out_fields="FULLNAME,MTFCC")
+    features = data.get('features', [])
+    save_geojson(features, "maps/westminster_roads_primary.geojson",
                  "interstates and US highways")
-    names = set(f.get('properties',{}).get('FULLNAME','') for f in relevant)
-    for n in sorted(names)[:10]:
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in features)
+    for n in sorted(names):
         if n: print(f"     {n}")
 except Exception as e:
     print(f"   ✗ Primary roads: {e}")
@@ -577,20 +556,12 @@ except Exception as e:
 # 2. Secondary roads — state highways and arterials (Layer 3)
 print("   2/3  Secondary roads (state highways and arterials)...")
 try:
-    data = tiger_get(
-        layer_id=3,
-        where="1=1",
-        out_fields="FULLNAME,MTFCC"
-    )
-    all_feats = data.get('features', [])
-    relevant  = [f for f in all_feats if in_westminster(f)]
-    if not relevant:
-        relevant = all_feats
-
-    save_geojson(relevant, "maps/westminster_roads_state.geojson",
+    data = tiger_get(layer_id=3, out_fields="FULLNAME,MTFCC")
+    features = data.get('features', [])
+    save_geojson(features, "maps/westminster_roads_state.geojson",
                  "state highways and arterials")
-    names = set(f.get('properties',{}).get('FULLNAME','') for f in relevant)
-    for n in sorted(names)[:10]:
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in features)
+    for n in sorted(names)[:15]:
         if n: print(f"     {n}")
 except Exception as e:
     print(f"   ✗ Secondary roads: {e}")
@@ -598,19 +569,11 @@ except Exception as e:
 # 3. Railroads (Layer 7)
 print("   3/3  Railroads...")
 try:
-    data = tiger_get(
-        layer_id=7,
-        where="1=1",
-        out_fields="FULLNAME,MTFCC"
-    )
-    all_feats = data.get('features', [])
-    relevant  = [f for f in all_feats if in_westminster(f)]
-    if not relevant:
-        relevant = all_feats
-
-    save_geojson(relevant, "maps/westminster_railroads.geojson",
+    data = tiger_get(layer_id=7, out_fields="FULLNAME,MTFCC")
+    features = data.get('features', [])
+    save_geojson(features, "maps/westminster_railroads.geojson",
                  "railroad lines")
-    names = set(f.get('properties',{}).get('FULLNAME','') for f in relevant)
+    names = set(f.get('properties',{}).get('FULLNAME','') for f in features)
     for n in sorted(names):
         if n: print(f"     {n}")
 except Exception as e:

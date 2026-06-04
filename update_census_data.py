@@ -505,12 +505,12 @@ except Exception as e:
 # ── CENSUS TIGER — ROADS & RAILROADS ─────────────────────────
 print("\n── Pulling road and railroad geometry (Census TIGER)...")
 
-# Correct service: tigerWMS_PhysicalFeatures
-# Layer 1 = Primary Roads (interstates, US highways)
-# Layer 3 = Secondary Roads (state highways, arterials)
-# Layer 7 = Railroads
+# Use TIGERweb Transportation_LargeScale service — designed for detailed road queries
+# Layer 0 = Primary Roads
+# Layer 3 = Secondary Roads
+# Layer 6 = Railroads
 
-TIGER_BASE = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_PhysicalFeatures/MapServer"
+TIGER_BASE = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Transportation_LargeScale/MapServer"
 
 def tiger_get(layer_id, out_fields="FULLNAME,MTFCC"):
     """Pull features from Census TIGER using spatial envelope filter."""
@@ -543,7 +543,7 @@ def save_geojson(features, filepath, description):
 # 1. Primary roads — interstates and US highways (Layer 1)
 print("   1/3  Primary roads (interstates, US highways)...")
 try:
-    data = tiger_get(layer_id=1, out_fields="FULLNAME,MTFCC")
+    data = tiger_get(layer_id=0, out_fields="FULLNAME,MTFCC")
     features = data.get('features', [])
     save_geojson(features, "maps/westminster_roads_primary.geojson",
                  "interstates and US highways")
@@ -556,7 +556,7 @@ except Exception as e:
 # 2. Secondary roads — state highways and arterials (Layer 3)
 print("   2/3  Secondary roads (state highways and arterials)...")
 try:
-    data = tiger_get(layer_id=3, out_fields="FULLNAME,MTFCC")
+    data = tiger_get(layer_id=3, out_fields="FULLNAME,MTFCC")  # layer 3 same
     features = data.get('features', [])
     save_geojson(features, "maps/westminster_roads_state.geojson",
                  "state highways and arterials")
@@ -569,7 +569,7 @@ except Exception as e:
 # 3. Railroads (Layer 7)
 print("   3/3  Railroads...")
 try:
-    data = tiger_get(layer_id=7, out_fields="FULLNAME,MTFCC")
+    data = tiger_get(layer_id=6, out_fields="FULLNAME,MTFCC")
     features = data.get('features', [])
     save_geojson(features, "maps/westminster_railroads.geojson",
                  "railroad lines")

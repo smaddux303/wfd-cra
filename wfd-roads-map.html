@@ -139,6 +139,10 @@ function checkLoaded() {
 fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
   .then(r => r.json())
   .then(gj => {
+    console.log('Primary roads loaded:', gj.features.length, 'features');
+    if (gj.features.length > 0) {
+      console.log('Sample coords:', gj.features[0].geometry.coordinates[0]);
+    }
     L.geoJSON(gj, {
       style: feat => {
         const c = classifyRoad(feat.properties || {});
@@ -160,12 +164,13 @@ fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
       }
     }).addTo(map);
     checkLoaded();
-  }).catch(() => checkLoaded());
+  }).catch(e => { console.error('Load error:', e); checkLoaded(); });
 
 // State highways & arterials
 fetch(`${RAW}/maps/westminster_roads_state.geojson`)
   .then(r => r.json())
   .then(gj => {
+    console.log('State roads loaded:', gj.features.length, 'features');
     L.geoJSON(gj, {
       style: feat => {
         const c = classifyRoad(feat.properties || {});
@@ -187,12 +192,13 @@ fetch(`${RAW}/maps/westminster_roads_state.geojson`)
       }
     }).addTo(map);
     checkLoaded();
-  }).catch(() => checkLoaded());
+  }).catch(e => { console.error('Load error:', e); checkLoaded(); });
 
 // Railroads
 fetch(`${RAW}/maps/westminster_railroads.geojson`)
   .then(r => r.json())
   .then(gj => {
+    console.log('Railroads loaded:', gj.features.length, 'features');
     L.geoJSON(gj, {
       style: feat => {
         const name = (feat.properties?.FULLNAME || '').toUpperCase();
@@ -222,7 +228,7 @@ fetch(`${RAW}/maps/westminster_railroads.geojson`)
       }
     }).addTo(map);
     checkLoaded();
-  }).catch(() => checkLoaded());
+  }).catch(e => { console.error('Load error:', e); checkLoaded(); });
 
 // Airport marker
 const airportIcon = L.divIcon({

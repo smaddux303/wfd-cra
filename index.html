@@ -350,10 +350,10 @@
     <p class="section-lead">Understanding who lives in Westminster is fundamental to understanding risk. Age, income, housing type, and access to health care all influence the likelihood and severity of emergencies — and WFD's ability to help effectively.</p>
 
     <div class="demo-grid">
-      <div class="demo-stat"><div class="val">116,000</div><div class="lbl">Total Population</div><div class="sub">ACS Estimate</div></div>
-      <div class="demo-stat"><div class="val">36.4</div><div class="lbl">Median Age</div><div class="sub">Slightly younger than national median of 38.9</div></div>
-      <div class="demo-stat"><div class="val">$86K</div><div class="lbl">Median Household Income</div><div class="sub">Above Colorado state median</div></div>
-      <div class="demo-stat"><div class="val">6.1%</div><div class="lbl">Below Poverty Line</div><div class="sub">Concentrated in southern districts</div></div>
+      <div class="demo-stat"><div class="val" id="kpi-population">116,000</div><div class="lbl">Total Population</div><div class="sub">ACS Estimate</div></div>
+      <div class="demo-stat"><div class="val" id="kpi-age">36.4</div><div class="lbl">Median Age</div><div class="sub" id="kpi-age-sub">Years</div></div>
+      <div class="demo-stat"><div class="val" id="kpi-income">$86K</div><div class="lbl">Median Household Income</div><div class="sub" id="kpi-income-sub">Above Colorado state median</div></div>
+      <div class="demo-stat"><div class="val" id="kpi-poverty">6.1%</div><div class="lbl">Below Poverty Line</div><div class="sub">Concentrated in southern districts</div></div>
     </div>
 
     <!-- Poverty rate map -->
@@ -2512,6 +2512,69 @@
     s.style.transition='opacity .5s ease, transform .5s ease';
     observer.observe(s);
   });
+
+  // ── Auto-update demographic KPI cards from benchmarks CSV ────
+  (function() {
+    const BENCH_URL = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main/data/clean/westminster_benchmarks.csv";
+    fetch(BENCH_URL)
+      .then(r => r.text())
+      .then(csv => {
+        const lines = csv.trim().split('\n');
+        const headers = lines[0].split(',');
+        const rows = lines.slice(1).map(l => {
+          const vals = l.split(',');
+          const obj = {};
+          headers.forEach((h, i) => obj[h.trim()] = (vals[i] || '').trim());
+          return obj;
+        });
+
+        // Find Westminster row
+        const wm = rows.find(r => r.Geography && r.Geography.includes('Westminster'));
+        if (!wm) return;
+
+        // Population
+        const pop = parseFloat(wm.Population);
+        if (!isNaN(pop)) {
+          document.getElementById('kpi-population').textContent =
+            pop >= 1000 ? Math.round(pop / 1000) + ',000' : Math.round(pop).toLocaleString();
+        }
+
+        // Median age
+        const age = parseFloat(wm.Median_Age);
+        if (!isNaN(age)) {
+          document.getElementById('kpi-age').textContent = age.toFixed(1);
+        }
+
+        // Median income
+        const inc = parseFloat(wm.Median_HH_Income);
+        if (!isNaN(inc)) {
+          document.getElementById('kpi-income').textContent = '$' + Math.round(inc / 1000) + 'K';
+          // Compare to CO
+          const co = rows.find(r => r.Geography && r.Geography.includes('Colorado'));
+          if (co) {
+            const coInc = parseFloat(co.Median_HH_Income);
+            if (!isNaN(coInc)) {
+              const diff = Math.round((inc - coInc) / 1000);
+              document.getElementById('kpi-income-sub').textContent =
+                diff >= 0 ? `$${diff}K above Colorado median` : `$${Math.abs(diff)}K below Colorado median`;
+            }
+          }
+        }
+
+        // Poverty rate
+        const pov = parseFloat(wm.Poverty_Rate);
+        if (!isNaN(pov)) {
+          document.getElementById('kpi-poverty').textContent = pov.toFixed(1) + '%';
+        }
+
+        // Update year note in age sub
+        const yr = wm.ACS_Year;
+        if (yr) {
+          document.getElementById('kpi-age-sub').textContent = `ACS ${yr} 5-Year Estimate`;
+        }
+      })
+      .catch(() => {}); // silently keep hardcoded fallback values on error
+  })();
 </script>
 
 </body>

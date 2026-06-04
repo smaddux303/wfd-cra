@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WFD Transportation Infrastructure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', Arial, sans-serif; background: #fff; color: #253646; }
+
+    .map-header {
+      background: #253646; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .map-title  { font-size: 14px; font-weight: 700; color: #fff; }
+    .map-subtitle { font-size: 11px; color: #63C7C7; font-weight: 500; margin-top: 2px; }
+
+    #map { width: 100%; height: 560px; }
+
+    .legend {
+      background: rgba(255,255,255,.97); border-radius: 6px; padding: 12px 14px;
+      font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; color: #253646;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12); min-width: 200px;
+    }
+    .legend-title {
+      font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: #555759; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #CFD2D3;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-weight: 500; }
+    .legend-item:last-child { margin-bottom: 0; }
+    .legend-line { height: 4px; border-radius: 2px; flex-shrink: 0; width: 24px; }
+    .legend-dash { width: 24px; height: 0; flex-shrink: 0; }
+    .legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-sq   { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .legend-divider { border: none; border-top: 1px solid #F4F5F5; margin: 7px 0; }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px !important; box-shadow: 0 4px 16px rgba(0,0,0,.15) !important;
+      padding: 0 !important; overflow: hidden;
+    }
+    .leaflet-popup-content { margin: 0 !important; font-family: 'Montserrat', Arial, sans-serif !important; }
+    .popup-header { padding: 9px 13px; color: white; }
+    .popup-name  { font-size: 13px; font-weight: 700; line-height: 1.3; }
+    .popup-type  { font-size: 10px; font-weight: 500; opacity: .85; margin-top: 2px; letter-spacing: .04em; text-transform: uppercase; }
+    .popup-body  { padding: 9px 13px; background: white; font-size: 12px; color: #555759; line-height: 1.6; }
+
+    .map-footer {
+      background: #F4F5F5; padding: 8px 16px; font-size: 10px; color: #555759; font-weight: 500;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px;
+    }
+    .loading {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: rgba(37,54,70,.85); color: white; padding: 12px 20px;
+      border-radius: 8px; font-size: 12px; font-weight: 500; z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="map-header">
+  <div>
+    <div class="map-title">Transportation Infrastructure</div>
+    <div class="map-subtitle">Westminster Fire Department Service Area</div>
+  </div>
+</div>
+
+<div style="position:relative;">
+  <div id="map"></div>
+  <div class="loading" id="loading">Loading road and rail data…</div>
+</div>
+
+<div class="map-footer">
+  <span>Click any feature for details · Teal outline = Westminster city limits</span>
+  <span>Source: U.S. Census Bureau TIGER/Line 2024 · Westminster Fire Department CRA</span>
+</div>
+
+<script>
+const RAW = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main";
+
+// Road classification lookup
+function classifyRoad(props) {
+  const name = (props.FULLNAME || '').toUpperCase();
+  const rttyp = props.RTTYP || '';
+  if (rttyp === 'I' || name.includes('I- ') || name.includes('INTERSTATE'))
+    return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
+  if (rttyp === 'U' || name.includes('US HWY') || name.includes('US-'))
+    return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
+  if (rttyp === 'S' || name.includes('STATE HWY') || name.includes('CO HWY'))
+    return { type: 'State Highway', color: '#555759', weight: 3 };
+  return { type: 'Major Arterial', color: '#888', weight: 2 };
+}
+
+function roadDetail(name, type) {
+  const details = {
+    'I- 25': 'Primary north-south interstate forming Westminster\'s eastern boundary. High-volume MVA risk corridor.',
+    'US HWY 36': 'Denver-Boulder Turnpike — primary east-west corridor through Districts 2, 3, 4, and 5. High-speed, high-volume roadway.',
+    'US HWY 287': 'North-south and east-west US highway — includes Federal Blvd and 120th Ave alignments. Serves multiple districts.',
+    'Denver Boulder Tpke': 'US-36 corridor connecting Denver and Boulder through Westminster.',
+  };
+  for (const [key, val] of Object.entries(details)) {
+    if (name.includes(key)) return val;
+  }
+  return `${type} — part of Westminster's transportation network.`;
+}
+
+// Init map
+const map = L.map('map', {
+  center: [39.893, -105.058], zoom: 12,
+  zoomControl: true, scrollWheelZoom: false
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+// Westminster boundary
+fetch(`${RAW}/maps/westminster_boundary.geojson`)
+  .then(r => r.json())
+  .then(gj => {
+    L.geoJSON(gj, {
+      style: { color: '#008996', weight: 2.5, opacity: 0.9, fillColor: '#008996', fillOpacity: 0.04 }
+    }).addTo(map);
+  }).catch(() => {});
+
+let loaded = 0;
+function checkLoaded() {
+  loaded++;
+  if (loaded >= 3) document.getElementById('loading').style.display = 'none';
+}
+
+// Primary roads
+fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
+  .then(r => r.json())
+  .then(gj => {
+    L.geoJSON(gj, {
+      style: feat => {
+        const c = classifyRoad(feat.properties || {});
+        return { color: c.color, weight: c.weight, opacity: 0.85 };
+      },
+      onEachFeature: (feat, layer) => {
+        const props = feat.properties || {};
+        const name  = props.FULLNAME || 'Road';
+        const c     = classifyRoad(props);
+        layer.bindPopup(`
+          <div class="popup-header" style="background:${c.color}">
+            <div class="popup-name">${name}</div>
+            <div class="popup-type">${c.type}</div>
+          </div>
+          <div class="popup-body">${roadDetail(name.toUpperCase(), c.type)}</div>
+        `, { maxWidth: 280 });
+        layer.on('mouseover', function() { this.setStyle({ opacity: 1, weight: c.weight + 1 }); });
+        layer.on('mouseout',  function() { this.setStyle({ opacity: 0.85, weight: c.weight }); });
+      }
+    }).addTo(map);
+    checkLoaded();
+  }).catch(() => checkLoaded());
+
+// State highways & arterials
+fetch(`${RAW}/maps/westminster_roads_state.geojson`)
+  .then(r => r.json())
+  .then(gj => {
+    // Filter to just Westminster area and meaningful roads
+    const filtered = {
+      type: 'FeatureCollection',
+      features: gj.features.filter(f => {
+        const name = (f.properties?.FULLNAME || '').toUpperCase();
+        const rttyp = f.properties?.RTTYP || '';
+        // Keep state highways, US highways, and key arterials
+        return ['S','U','I'].includes(rttyp) ||
+               ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL','120TH','104TH',
+                '88TH','72ND','96TH','92ND','WESTMINSTER BLVD'].some(kw => name.includes(kw));
+      })
+    };
+    L.geoJSON(filtered, {
+      style: feat => {
+        const c = classifyRoad(feat.properties || {});
+        return { color: c.color, weight: c.weight, opacity: 0.75 };
+      },
+      onEachFeature: (feat, layer) => {
+        const props = feat.properties || {};
+        const name  = props.FULLNAME || 'Road';
+        const c     = classifyRoad(props);
+        layer.bindPopup(`
+          <div class="popup-header" style="background:${c.color}">
+            <div class="popup-name">${name}</div>
+            <div class="popup-type">${c.type}</div>
+          </div>
+          <div class="popup-body">${roadDetail(name.toUpperCase(), c.type)}</div>
+        `, { maxWidth: 280 });
+        layer.on('mouseover', function() { this.setStyle({ opacity: 1 }); });
+        layer.on('mouseout',  function() { this.setStyle({ opacity: 0.75 }); });
+      }
+    }).addTo(map);
+    checkLoaded();
+  }).catch(() => checkLoaded());
+
+// Railroads
+fetch(`${RAW}/maps/westminster_railroads.geojson`)
+  .then(r => r.json())
+  .then(gj => {
+    L.geoJSON(gj, {
+      style: feat => {
+        const name = (feat.properties?.FULLNAME || '').toUpperCase();
+        const isBNSF = name.includes('BURLINGTON') || name.includes('BNSF');
+        return {
+          color: isBNSF ? '#253646' : '#555759',
+          weight: 3, opacity: 0.9,
+          dashArray: '8 5'
+        };
+      },
+      onEachFeature: (feat, layer) => {
+        const props = feat.properties || {};
+        const name  = props.FULLNAME || 'Railroad';
+        const isBNSF = name.toUpperCase().includes('BURLINGTON') || name.toUpperCase().includes('BNSF');
+        layer.bindPopup(`
+          <div class="popup-header" style="background:#253646">
+            <div class="popup-name">${name}</div>
+            <div class="popup-type">Freight Railroad</div>
+          </div>
+          <div class="popup-body">${isBNSF
+            ? '7.5-mile BNSF freight corridor through Westminster. Multiple at-grade crossings in Districts 1, 2, and 3. Carries hazardous materials including chemicals and petroleum products.'
+            : 'Railroad corridor through Westminster service area.'
+          }</div>
+        `, { maxWidth: 280 });
+        layer.on('mouseover', function() { this.setStyle({ opacity: 1, weight: 4 }); });
+        layer.on('mouseout',  function() { this.setStyle({ opacity: 0.9, weight: 3 }); });
+      }
+    }).addTo(map);
+    checkLoaded();
+  }).catch(() => checkLoaded());
+
+// Airport marker
+const airportIcon = L.divIcon({
+  className: '',
+  html: `<div style="background:#FCB61A;border:2px solid #fff;border-radius:50%;
+         width:14px;height:14px;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>`,
+  iconSize: [14,14], iconAnchor: [7,7]
+});
+L.marker([39.9085, -105.1166], { icon: airportIcon }).addTo(map)
+  .bindPopup(`
+    <div class="popup-header" style="background:#FCB61A;color:#253646;">
+      <div class="popup-name">Rocky Mountain Metropolitan Airport</div>
+      <div class="popup-type" style="color:#253646;opacity:.7;">General Aviation / Commercial</div>
+    </div>
+    <div class="popup-body">Borders Westminster to the northwest. Aircraft approach and departure paths cross Districts 4 and 5. Active ARFF coordination with WFD.</div>
+  `, { maxWidth: 280 });
+
+// Westminster Station
+const trainIcon = L.divIcon({
+  className: '',
+  html: `<div style="background:#FF671D;border:2px solid #fff;border-radius:3px;
+         width:12px;height:12px;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>`,
+  iconSize: [12,12], iconAnchor: [6,6]
+});
+L.marker([39.8225, -105.0290], { icon: trainIcon }).addTo(map)
+  .bindPopup(`
+    <div class="popup-header" style="background:#FF671D;">
+      <div class="popup-name">Westminster Station</div>
+      <div class="popup-type">RTD B-Line Commuter Rail</div>
+    </div>
+    <div class="popup-body">Southern terminus of the RTD B-Line. Connects to Denver Union Station. Located in District 1 — increases pedestrian and transit activity in surrounding area.</div>
+  `, { maxWidth: 280 });
+
+// Legend
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = function() {
+  const div = L.DomUtil.create('div', 'legend');
+  div.innerHTML = `
+    <div class="legend-title">Transportation Infrastructure</div>
+    <div class="legend-item"><div class="legend-line" style="background:#1a3a5c;height:5px;"></div>Interstate</div>
+    <div class="legend-item"><div class="legend-line" style="background:#2d6a9f;height:4px;"></div>US Highway</div>
+    <div class="legend-item"><div class="legend-line" style="background:#555759;height:3px;"></div>State Highway</div>
+    <div class="legend-item"><div class="legend-line" style="background:#888;height:2px;"></div>Major Arterial</div>
+    <hr class="legend-divider">
+    <div class="legend-item">
+      <div style="width:24px;height:0;border-top:3px dashed #253646;flex-shrink:0;"></div>
+      Freight Railroad
+    </div>
+    <hr class="legend-divider">
+    <div class="legend-item"><div class="legend-dot" style="background:#FCB61A;"></div>Airport</div>
+    <div class="legend-item"><div class="legend-sq" style="background:#FF671D;border-radius:2px;"></div>Rail Station</div>
+    <div class="legend-item"><div class="legend-line" style="background:#008996;"></div>Westminster boundary</div>
+  `;
+  return div;
+};
+legend.addTo(map);
+</script>
+</body>
+</html>

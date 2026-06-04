@@ -193,6 +193,15 @@
     .ins-bar-fill { height: 100%; border-radius: 3px; }
     .ins-pct { font-size: 11px; font-weight: 700; color: var(--navy); width: 36px; text-align: right; flex-shrink: 0; }
 
+    /* District overview map */
+    #district-map-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--gray-light); margin-bottom: 1.5rem; }
+    #district-overview-map { width: 100%; height: 320px; }
+    .district-map-label {
+      background: var(--navy); color: white; border: none; border-radius: 4px;
+      padding: 3px 7px; font-family: var(--font); font-size: 11px; font-weight: 700;
+      white-space: nowrap; box-shadow: 0 1px 4px rgba(0,0,0,.3);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       :root { --section-pad: 3rem 1.25rem; }
@@ -202,6 +211,8 @@
     }
   </style>
   <script src="https://datawrapper.dwcdn.net/lib/embed.min.js" async></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 </head>
 <body>
 
@@ -543,6 +554,11 @@
     <div class="accent-bar" aria-hidden="true"></div>
     <h2 id="districts-title" class="section-title">Six Districts, One Department</h2>
     <p class="section-lead">Westminster is divided into six fire response districts, each served by a primary station. Select a district and use the sub-tabs to explore demographics, economic conditions, health coverage, vulnerability indicators, and risk scores — all compared to Westminster, Colorado, and US benchmarks.</p>
+
+    <!-- District overview map -->
+    <div id="district-map-wrap">
+      <div id="district-overview-map"></div>
+    </div>
 
     <div style="font-size:10px;color:var(--gray-dark);margin-bottom:1rem;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
       <span>Comparison bars:</span>
@@ -2377,6 +2393,14 @@
 </footer>
 
 <script>
+  // ── District colors ──────────────────────────────────────────
+  const DIST_COLORS = {
+    1: '#FF671D', 2: '#FCB61A', 3: '#008996',
+    4: '#8CC740', 5: '#253646', 6: '#63C7C7'
+  };
+  let districtLayers = {};
+  let activeDistrict = 1;
+
   function showDistrict(num) {
     document.querySelectorAll('.district-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.district-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
@@ -2385,6 +2409,8 @@
     tabs[num-1].classList.add('active');
     tabs[num-1].setAttribute('aria-selected','true');
     showSubPanel(num, 'demo');
+    activeDistrict = num;
+    highlightDistrict(num);
   }
 
   function showSubPanel(distNum, panel) {
@@ -2400,6 +2426,80 @@
     const panelIndex = panels.indexOf(panel);
     if (subTabs[panelIndex]) subTabs[panelIndex].classList.add('active');
   }
+
+  function highlightDistrict(num) {
+    Object.entries(districtLayers).forEach(([d, layer]) => {
+      const isActive = parseInt(d) === num;
+      layer.setStyle({
+        fillOpacity: isActive ? 0.55 : 0.15,
+        weight:      isActive ? 2.5  : 1,
+        opacity:     isActive ? 1    : 0.5,
+      });
+      if (isActive) layer.bringToFront();
+    });
+  }
+
+  // ── Build district overview map ───────────────────────────────
+  function initDistrictMap() {
+    const dmap = L.map('district-overview-map', {
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: false
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd', maxZoom: 19
+    }).addTo(dmap);
+
+    fetch('https://raw.githubusercontent.com/smaddux303/wfd-cra/main/maps/wfd_districts.geojson')
+      .then(r => r.json())
+      .then(gj => {
+        const allLayers = L.geoJSON(gj, {
+          style: feat => {
+            const d = feat.properties.District;
+            return {
+              color:       DIST_COLORS[d] || '#008996',
+              weight:      d === 1 ? 2.5 : 1,
+              opacity:     d === 1 ? 1   : 0.5,
+              fillColor:   DIST_COLORS[d] || '#008996',
+              fillOpacity: d === 1 ? 0.55 : 0.15
+            };
+          },
+          onEachFeature: (feat, layer) => {
+            const d = feat.properties.District;
+            districtLayers[d] = layer;
+
+            // Clickable — switches tab
+            layer.on('click', () => showDistrict(d));
+            layer.on('mouseover', function() {
+              if (d !== activeDistrict) this.setStyle({ fillOpacity: 0.35 });
+              this.getElement().style.cursor = 'pointer';
+            });
+            layer.on('mouseout', function() {
+              if (d !== activeDistrict) this.setStyle({ fillOpacity: 0.15 });
+            });
+
+            // District number label
+            const center = layer.getBounds().getCenter();
+            L.marker(center, {
+              icon: L.divIcon({
+                className: 'district-map-label',
+                html: `${d}`,
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+              }),
+              interactive: true
+            }).addTo(dmap).on('click', () => showDistrict(d));
+          }
+        }).addTo(dmap);
+
+        dmap.fitBounds(allLayers.getBounds(), { padding: [16, 16] });
+      })
+      .catch(() => {});
+  }
+
+  // Init map when page loads
+  document.addEventListener('DOMContentLoaded', initDistrictMap);
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {

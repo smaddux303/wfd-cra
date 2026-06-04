@@ -85,13 +85,21 @@ const RAW = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main";
 function classifyRoad(props) {
   const name  = (props.FULLNAME || '').toUpperCase();
   const rttyp = props.RTTYP || '';
-  if (rttyp === 'I' || name.includes('I- ') || name.includes('INTERSTATE'))
+  // Check name first — TIGER sometimes assigns wrong RTTYP to interstate segments
+  if (name.includes('I- ') || name.includes('I-2') || name.includes('I-7') || name.includes('INTERSTATE'))
     return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
-  if (rttyp === 'U' || name.includes('US HWY') || name.includes('US-'))
+  if (name.includes('US HWY') || name.includes('US-') || name.includes('DENVER BOULDER'))
     return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
-  if (rttyp === 'S' || name.includes('STATE HWY') || name.includes('CO HWY') || name.includes('CO RD'))
-    return { type: 'State/County Highway', color: '#555759', weight: 3 };
-  if (rttyp === 'C')
+  if (name.includes('NORTHWEST PKY') || name.includes('NORTHWEST PKWY'))
+    return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
+  // Then check RTTYP
+  if (rttyp === 'I')
+    return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
+  if (rttyp === 'U')
+    return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
+  if (rttyp === 'S' || name.includes('STATE HWY') || name.includes('CO HWY'))
+    return { type: 'State Highway', color: '#555759', weight: 3 };
+  if (rttyp === 'C' || name.includes('CO RD'))
     return { type: 'County Road', color: '#777', weight: 2 };
   return { type: 'Major Arterial', color: '#888', weight: 2 };
 }
@@ -202,9 +210,8 @@ fetch(`${RAW}/maps/westminster_railroads.geojson`)
     L.geoJSON(gj, {
       style: feat => {
         const name = (feat.properties?.FULLNAME || '').toUpperCase();
-        const isBNSF = name.includes('BURLINGTON') || name.includes('BNSF') || name.includes('SANTA FE');
         return {
-          color: isBNSF ? '#253646' : '#FF671D',
+          color: '#253646',
           weight: 3, opacity: 0.9,
           dashArray: '8 5'
         };

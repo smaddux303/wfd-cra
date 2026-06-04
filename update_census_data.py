@@ -505,61 +505,81 @@ except Exception as e:
 # ── CENSUS TIGER — ROADS & RAILROADS ─────────────────────────
 print("\n── Pulling road and railroad geometry (Census TIGER)...")
 
-# Use Census TIGER/Line static shapefiles — ZIP download → ogr2ogr → GeoJSON
-# More reliable than web services which have scale/query limitations
+# Use Census TIGER/Line static shapefiles — ZIP download → pyshp → GeoJSON
+# Uses pyshp (shapefile) library — pure Python, no ogr2ogr needed
 
-import zipfile, tempfile, subprocess
+import zipfile, tempfile, struct
 
-def download_tiger_shapefile(url, layer_name):
-    """Download a TIGER shapefile ZIP, extract, convert to GeoJSON clipped to Westminster."""
-    try:
-        import urllib.request as ur
-        with tempfile.TemporaryDirectory() as tmpdir:
-            zip_path = os.path.join(tmpdir, f"{layer_name}.zip")
-            req = ur.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with ur.urlopen(req, timeout=120) as resp:
-                with open(zip_path, 'wb') as f:
-                    f.write(resp.read())
-            with zipfile.ZipFile(zip_path, 'r') as z:
-                z.extractall(tmpdir)
-            shp_files = [f for f in os.listdir(tmpdir) if f.endswith('.shp')]
-            if not shp_files:
-                return None
-            shp_path = os.path.join(tmpdir, shp_files[0])
-            geojson_path = os.path.join(tmpdir, f"{layer_name}.geojson")
-            result = subprocess.run([
-                "ogr2ogr", "-f", "GeoJSON",
-                "-t_srs", "EPSG:4326",
-                "-spat", "-105.20", "39.80", "-104.97", "39.98",
-                geojson_path, shp_path
-            ], capture_output=True, text=True, timeout=120)
-            if result.returncode != 0:
-                print(f"     ogr2ogr error: {result.stderr[:200]}")
-                return None
-            with open(geojson_path, 'r') as f:
-                return json.load(f)
-    except Exception as e:
-        print(f"     Error: {e}")
-        return None
+def shapefile_to_geojson(zip_url, bbox=None):
+    """Download TIGER ZIP, parse with pyshp, return GeoJSON clipped to bbox."""
+    import urllib.request as ur
+    import shapefile  # pyshp
 
+    with tempfile.TemporaryDirectory() as tmpdir:
+        zip_path = os.path.join(tmpdir, "data.zip")
+        req = ur.Request(zip_url, headers={"User-Agent": "Mozilla/5.0"})
+        with ur.urlopen(req, timeout=120) as resp:
+            with open(zip_path, 'wb') as f:
+                f.write(resp.read())
+
+        with zipfile.ZipFile(zip_path, 'r') as z:
+            z.extractall(tmpdir)
+
+        shp_files = [f for f in os.listdir(tmpdir) if f.endswith('.shp')]
+        if not shp_files:
+            return {"type": "FeatureCollection", "features": []}
+
+        shp_path = os.path.join(tmpdir, shp_files[0])
+        sf = shapefile.Reader(shp_path)
+        fields = [f[0] for f in sf.fields[1:]]  # skip deletion flag
+
+        features = []
+        for sr in sf.shapeRecords():
+            props = dict(zip(fields, sr.record))
+            geom  = sr.shape.__geo_interface__
+
+            # Clip to bounding box if provided
+            if bbox and geom.get('type') == 'LineString':
+                coords = geom.get('coordinates', [])
+                minx, miny, maxx, maxy = bbox
+                in_bbox = any(minx <= pt[0] <= maxx and miny <= pt[1] <= maxy
+                              for pt in coords)
+                if not in_bbox:
+                    continue
+            elif bbox and geom.get('type') == 'MultiLineString':
+                all_coords = [pt for line in geom.get('coordinates', []) for pt in line]
+                minx, miny, maxx, maxy = bbox
+                in_bbox = any(minx <= pt[0] <= maxx and miny <= pt[1] <= maxy
+                              for pt in all_coords)
+                if not in_bbox:
+                    continue
+
+            features.append({
+                "type": "Feature",
+                "properties": {k: (v if not isinstance(v, bytes) else v.decode('utf-8', errors='replace'))
+                               for k, v in props.items()},
+                "geometry": geom
+            })
+
+        return {"type": "FeatureCollection", "features": features}
+
+# Westminster bounding box
+WM_BBOX = (-105.20, 39.80, -104.97, 39.98)
 TIGER_YEAR = 2024
 
 # 1. Primary roads — national file (interstates, US highways)
 print("   1/3  Primary roads (interstates, US highways)...")
 try:
     url = f"https://www2.census.gov/geo/tiger/TIGER{TIGER_YEAR}/PRIMARYROADS/tl_{TIGER_YEAR}_us_primaryroads.zip"
-    data = download_tiger_shapefile(url, "primaryroads")
-    if data:
-        features = data.get('features', [])
-        os.makedirs("maps", exist_ok=True)
-        with open("maps/westminster_roads_primary.geojson", 'w') as f:
-            json.dump(data, f)
-        print(f"   ✓ {len(features)} features → maps/westminster_roads_primary.geojson")
-        names = set(ft.get('properties',{}).get('FULLNAME','') for ft in features)
-        for n in sorted(names)[:10]:
-            if n: print(f"     {n}")
-    else:
-        print("   ! No primary road data returned")
+    data = shapefile_to_geojson(url, bbox=WM_BBOX)
+    features = data.get('features', [])
+    os.makedirs("maps", exist_ok=True)
+    with open("maps/westminster_roads_primary.geojson", 'w') as f:
+        json.dump(data, f)
+    print(f"   ✓ {len(features)} features → maps/westminster_roads_primary.geojson")
+    names = set(ft.get('properties',{}).get('FULLNAME','') for ft in features)
+    for n in sorted(names)[:10]:
+        if n: print(f"     {n}")
 except Exception as e:
     print(f"   ✗ Primary roads: {e}")
 
@@ -569,15 +589,15 @@ try:
     all_features = []
     for county_fips, county_name in [("08001", "Adams"), ("08059", "Jefferson")]:
         url = f"https://www2.census.gov/geo/tiger/TIGER{TIGER_YEAR}/ROADS/tl_{TIGER_YEAR}_{county_fips}_roads.zip"
-        data = download_tiger_shapefile(url, f"roads_{county_name.lower()}")
-        if data:
-            feats = [f for f in data.get('features', [])
-                     if f.get('properties',{}).get('RTTYP') in ['S','U','I','C']
-                     or any(kw in (f.get('properties',{}).get('FULLNAME','') or '').upper()
-                            for kw in ['WADSWORTH','SHERIDAN','120TH','104TH',
-                                       '88TH','72ND','LOWELL','FEDERAL'])]
-            all_features.extend(feats)
-            print(f"     {county_name}: {len(feats)} relevant road features")
+        data = shapefile_to_geojson(url, bbox=WM_BBOX)
+        feats = [f for f in data.get('features', [])
+                 if f.get('properties',{}).get('RTTYP') in ['S','U','I','C']
+                 or any(kw in (f.get('properties',{}).get('FULLNAME','') or '').upper()
+                        for kw in ['WADSWORTH','SHERIDAN','120TH','104TH',
+                                   '88TH','72ND','LOWELL','FEDERAL','WESTMINSTER'])]
+        all_features.extend(feats)
+        print(f"     {county_name}: {len(feats)} relevant features")
+
     combined = {"type": "FeatureCollection", "features": all_features}
     os.makedirs("maps", exist_ok=True)
     with open("maps/westminster_roads_state.geojson", 'w') as f:
@@ -593,18 +613,15 @@ except Exception as e:
 print("   3/3  Railroads...")
 try:
     url = f"https://www2.census.gov/geo/tiger/TIGER{TIGER_YEAR}/RAILS/tl_{TIGER_YEAR}_us_rails.zip"
-    data = download_tiger_shapefile(url, "rails")
-    if data:
-        features = data.get('features', [])
-        os.makedirs("maps", exist_ok=True)
-        with open("maps/westminster_railroads.geojson", 'w') as f:
-            json.dump(data, f)
-        print(f"   ✓ {len(features)} features → maps/westminster_railroads.geojson")
-        names = set(ft.get('properties',{}).get('FULLNAME','') for ft in features)
-        for n in sorted(names):
-            if n: print(f"     {n}")
-    else:
-        print("   ! No railroad data returned")
+    data = shapefile_to_geojson(url, bbox=WM_BBOX)
+    features = data.get('features', [])
+    os.makedirs("maps", exist_ok=True)
+    with open("maps/westminster_railroads.geojson", 'w') as f:
+        json.dump(data, f)
+    print(f"   ✓ {len(features)} features → maps/westminster_railroads.geojson")
+    names = set(ft.get('properties',{}).get('FULLNAME','') for ft in features)
+    for n in sorted(names):
+        if n: print(f"     {n}")
 except Exception as e:
     print(f"   ✗ Railroads: {e}")
 

@@ -171,22 +171,36 @@ fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
     checkLoaded();
   }).catch(e => { console.error('Load error:', e); checkLoaded(); });
 
-// State highways & arterials — filter out residential streets
+// State highways & arterials — keep only classified roads and major named arterials
 fetch(`${RAW}/maps/westminster_roads_state.geojson`)
   .then(r => r.json())
   .then(gj => {
     console.log('State roads loaded:', gj.features.length, 'features');
-    // Only keep classified roads and key named Westminster arterials
+
+    const ARTERIALS = ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL','PECOS','HURON',
+      'ZUNI','SIMMS','INDIANA','GARRISON','HARLAN','DEPEW','WESTMINSTER BLVD',
+      'CHURCH RANCH','120TH AVE','112TH AVE','108TH AVE','104TH AVE','96TH AVE',
+      '92ND AVE','88TH AVE','72ND AVE'];
+    const EXCLUDE = ['CIR','DR ','FRONTAGE',' CT',' PL ',' WAY',' LN '];
+
     const filtered = {
       type: 'FeatureCollection',
       features: gj.features.filter(f => {
         const rttyp = f.properties?.RTTYP || '';
         const name  = (f.properties?.FULLNAME || '').toUpperCase();
-        if (['S','U','I','C'].includes(rttyp)) return true;
-        return ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL','PECOS',
-                'HURON','ZUNI','WOLFF','120TH','104TH','88TH','72ND',
-                '96TH','92ND','112TH','108TH','144TH','136TH',
-                'WESTMINSTER BLVD','CHURCH RANCH'].some(kw => name.includes(kw));
+        // Keep state/US/county roads but NOT interstates
+        // (interstates are already in the primary roads layer)
+        if (['S','U','C'].includes(rttyp)) return true;
+        // For M-type (local/arterial): keep only named Westminster arterials
+        // that are not circles, drives, courts etc.
+        // Skip if it's an interstate by name (redundant with primary layer)
+        if (name.includes('I- ') || name.includes('INTERSTATE')) return false;
+        if (rttyp === 'M') {
+          const isArterial = ARTERIALS.some(kw => name.includes(kw));
+          const isMinor    = EXCLUDE.some(sfx => name.includes(sfx));
+          return isArterial && !isMinor;
+        }
+        return false;
       })
     };
     console.log('State roads after filter:', filtered.features.length);

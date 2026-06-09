@@ -85,19 +85,16 @@ const RAW = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main";
 function classifyRoad(props) {
   const name  = (props.FULLNAME || '').toUpperCase();
   const rttyp = props.RTTYP || '';
-  // Check name first — TIGER sometimes assigns wrong RTTYP to interstate segments
-  if (name.includes('I- ') || name.includes('I-2') || name.includes('I-7') || name.includes('INTERSTATE'))
+  // RTTYP first — most reliable indicator
+  if (rttyp === 'I') return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
+  if (rttyp === 'U') return { type: 'US Highway',  color: '#2d6a9f', weight: 4 };
+  if (rttyp === 'S') return { type: 'State Highway', color: '#555759', weight: 3 };
+  // Then name-based fallbacks for known roads without correct RTTYP
+  if (name.includes('I- ') || name.includes('INTERSTATE'))
     return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
-  if (name.includes('US HWY') || name.includes('US-') || name.includes('DENVER BOULDER'))
+  if (name.includes('US HWY') || name.includes('DENVER BOULDER') || name.includes('NORTHWEST PKY'))
     return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
-  if (name.includes('NORTHWEST PKY') || name.includes('NORTHWEST PKWY'))
-    return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
-  // Then check RTTYP
-  if (rttyp === 'I')
-    return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
-  if (rttyp === 'U')
-    return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
-  if (rttyp === 'S' || name.includes('STATE HWY') || name.includes('CO HWY'))
+  if (name.includes('STATE HWY') || name.includes('CO HWY'))
     return { type: 'State Highway', color: '#555759', weight: 3 };
   if (rttyp === 'C' || name.includes('CO RD'))
     return { type: 'County Road', color: '#777', weight: 2 };

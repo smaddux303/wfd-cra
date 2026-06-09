@@ -114,7 +114,7 @@ const LABELED_ROADS = {
   'US Hwy 36':        { label: 'US-36',           color: '#1a3a5c', weight: 4 },
   'US Hwy 287':       { label: 'US-287',          color: '#1a3a5c', weight: 4 },
   'Denver Boulder Tpke': { label: 'US-36 / Denver-Boulder Tpke', color: '#1a3a5c', weight: 4 },
-  'US Hwy 87':        { label: 'US-287',          color: '#1a3a5c', weight: 4 },
+  'US Hwy 87':        { label: 'US-287 (Federal Blvd)', color: '#1a3a5c', weight: 4, fixedLabel: [39.870, -105.020] },
   'State Hwy 121':    { label: 'Wadsworth Blvd (SH-121)', color: '#555759', weight: 3 },
   'State Hwy 95':     { label: 'Sheridan Blvd (SH-95)',   color: '#555759', weight: 3 },
   'State Hwy 128':    { label: '120th Ave (SH-128)',       color: '#555759', weight: 3 },
@@ -142,7 +142,7 @@ fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
       // Add permanent label for named corridors (once per road name)
       if (info && info.label && !labeledRoads.has(info.label)) {
         const bounds  = line.getBounds();
-        const center  = bounds.getCenter();
+        const center  = info.fixedLabel ? L.latLng(info.fixedLabel[0], info.fixedLabel[1]) : bounds.getCenter();
         L.marker(center, {
           icon: L.divIcon({
             className: 'road-label',

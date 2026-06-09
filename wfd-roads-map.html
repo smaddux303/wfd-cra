@@ -11,16 +11,13 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Montserrat', Arial, sans-serif; background: #fff; color: #253646; }
-
     .map-header {
       background: #253646; padding: 14px 20px;
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
     }
-    .map-title  { font-size: 14px; font-weight: 700; color: #fff; }
+    .map-title    { font-size: 14px; font-weight: 700; color: #fff; }
     .map-subtitle { font-size: 11px; color: #63C7C7; font-weight: 500; margin-top: 2px; }
-
     #map { width: 100%; height: 560px; }
-
     .legend {
       background: rgba(255,255,255,.97); border-radius: 6px; padding: 12px 14px;
       font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; color: #253646;
@@ -33,11 +30,9 @@
     .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-weight: 500; }
     .legend-item:last-child { margin-bottom: 0; }
     .legend-line { height: 4px; border-radius: 2px; flex-shrink: 0; width: 24px; }
-    .legend-dash { width: 24px; height: 0; flex-shrink: 0; }
     .legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .legend-sq   { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
     .legend-divider { border: none; border-top: 1px solid #F4F5F5; margin: 7px 0; }
-
     .leaflet-popup-content-wrapper {
       border-radius: 8px !important; box-shadow: 0 4px 16px rgba(0,0,0,.15) !important;
       padding: 0 !important; overflow: hidden;
@@ -47,15 +42,9 @@
     .popup-name  { font-size: 13px; font-weight: 700; line-height: 1.3; }
     .popup-type  { font-size: 10px; font-weight: 500; opacity: .85; margin-top: 2px; letter-spacing: .04em; text-transform: uppercase; }
     .popup-body  { padding: 9px 13px; background: white; font-size: 12px; color: #555759; line-height: 1.6; }
-
     .map-footer {
       background: #F4F5F5; padding: 8px 16px; font-size: 10px; color: #555759; font-weight: 500;
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px;
-    }
-    .loading {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      background: rgba(37,54,70,.85); color: white; padding: 12px 20px;
-      border-radius: 8px; font-size: 12px; font-weight: 500; z-index: 1000;
     }
   </style>
 </head>
@@ -68,55 +57,57 @@
   </div>
 </div>
 
-<div style="position:relative;">
-  <div id="map"></div>
-  <div class="loading" id="loading">Loading road and rail data…</div>
-</div>
+<div id="map"></div>
 
 <div class="map-footer">
-  <span>Click any feature for details · Teal outline = Westminster city limits</span>
+  <span>Click any feature for details · Toggle layers using buttons above</span>
   <span>Source: U.S. Census Bureau TIGER/Line 2024 · Westminster Fire Department CRA</span>
 </div>
 
 <script>
 const RAW = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main";
 
-// Road classification lookup
+// ── Color scheme ──────────────────────────────────────────────
+const COLORS = {
+  interstate:   '#1a3a5c',  // dark navy  — I-25, I-270, I-76
+  usHighway:    '#2d6a9f',  // medium blue — US-36, US-287
+  stateHighway: '#555759',  // gray        — SH-121, SH-95
+  arterial:     '#888888',  // light gray  — major arterials
+  railroad:     '#253646',  // darkest navy — dashed
+  boundary:     '#008996',  // teal
+};
+
+// ── Classify roads by RTTYP (source of truth from TIGER) ─────
 function classifyRoad(props) {
+  const rttyp = (props.RTTYP || '').trim();
   const name  = (props.FULLNAME || '').toUpperCase();
-  const rttyp = props.RTTYP || '';
-  // RTTYP first — most reliable indicator
-  if (rttyp === 'I') return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
-  if (rttyp === 'U') return { type: 'US Highway',  color: '#2d6a9f', weight: 4 };
-  if (rttyp === 'S') return { type: 'State Highway', color: '#555759', weight: 3 };
-  // Then name-based fallbacks for known roads without correct RTTYP
-  if (name.includes('I- ') || name.includes('INTERSTATE'))
-    return { type: 'Interstate', color: '#1a3a5c', weight: 5 };
-  if (name.includes('US HWY') || name.includes('DENVER BOULDER') || name.includes('NORTHWEST PKY'))
-    return { type: 'US Highway', color: '#2d6a9f', weight: 4 };
-  if (name.includes('STATE HWY') || name.includes('CO HWY'))
-    return { type: 'State Highway', color: '#555759', weight: 3 };
-  if (rttyp === 'C' || name.includes('CO RD'))
-    return { type: 'County Road', color: '#777', weight: 2 };
-  return { type: 'Major Arterial', color: '#888', weight: 2 };
+
+  // RTTYP is the definitive classifier — always use it first
+  if (rttyp === 'I') return { label: 'Interstate',    color: COLORS.interstate,   weight: 5, opacity: 0.9 };
+  if (rttyp === 'U') return { label: 'US Highway',    color: COLORS.usHighway,    weight: 4, opacity: 0.85 };
+  if (rttyp === 'S') return { label: 'State Highway', color: COLORS.stateHighway, weight: 3, opacity: 0.8 };
+  if (rttyp === 'C') return { label: 'County Road',   color: COLORS.stateHighway, weight: 2, opacity: 0.7 };
+
+  // RTTYP='M' with no better info — name-based fallback only
+  if (name.includes('US HWY'))    return { label: 'US Highway',    color: COLORS.usHighway,    weight: 4, opacity: 0.85 };
+  if (name.includes('STATE HWY')) return { label: 'State Highway', color: COLORS.stateHighway, weight: 3, opacity: 0.8 };
+
+  return { label: 'Major Arterial', color: COLORS.arterial, weight: 2, opacity: 0.75 };
 }
 
-function roadDetail(name, type) {
-  const details = {
-    'I- 25': 'Primary north-south interstate forming Westminster\'s eastern boundary. High-volume MVA risk corridor.',
-    'US HWY 36': 'Denver-Boulder Turnpike — primary east-west corridor through Districts 2, 3, 4, and 5. High-speed, high-volume roadway.',
-    'US HWY 287': 'North-south and east-west US highway — includes Federal Blvd and 120th Ave alignments. Serves multiple districts.',
-    'Denver Boulder Tpke': 'US-36 corridor connecting Denver and Boulder through Westminster.',
-  };
-  for (const [key, val] of Object.entries(details)) {
-    if (name.includes(key)) return val;
-  }
-  return `${type} — part of Westminster's transportation network.`;
+function popup(name, cls) {
+  return `
+    <div class="popup-header" style="background:${cls.color}">
+      <div class="popup-name">${name}</div>
+      <div class="popup-type">${cls.label}</div>
+    </div>
+    <div class="popup-body">${name} is classified as a ${cls.label} in the Westminster service area.</div>
+  `;
 }
 
-// Init map
+// ── Map init ──────────────────────────────────────────────────
 const map = L.map('map', {
-  center: [39.893, -105.058], zoom: 12,
+  center: [39.883, -105.058], zoom: 12,
   zoomControl: true, scrollWheelZoom: false
 });
 
@@ -128,173 +119,143 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 // Westminster boundary
 fetch(`${RAW}/maps/westminster_boundary.geojson`)
   .then(r => r.json())
-  .then(gj => {
-    L.geoJSON(gj, {
-      style: { color: '#008996', weight: 2.5, opacity: 0.9, fillColor: '#008996', fillOpacity: 0.04 }
-    }).addTo(map);
-  }).catch(() => {});
+  .then(gj => L.geoJSON(gj, {
+    style: { color: COLORS.boundary, weight: 2.5, opacity: 0.9, fillOpacity: 0.03 }
+  }).addTo(map)).catch(() => {});
 
-let loaded = 0;
-function checkLoaded() {
-  loaded++;
-  if (loaded >= 3) document.getElementById('loading').style.display = 'none';
-}
-
-// Primary roads
+// ── Primary roads (interstates + US highways) ─────────────────
+// This file contains RTTYP: I, U, S, M
+// ALL features rendered — RTTYP determines color
 fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
   .then(r => r.json())
   .then(gj => {
-    console.log('Primary roads loaded:', gj.features.length, 'features');
-    if (gj.features.length > 0) {
-      console.log('Sample coords:', gj.features[0].geometry.coordinates[0]);
-    }
     L.geoJSON(gj, {
       style: feat => {
         const c = classifyRoad(feat.properties || {});
-        return { color: c.color, weight: c.weight, opacity: 0.85 };
+        return { color: c.color, weight: c.weight, opacity: c.opacity };
       },
       onEachFeature: (feat, layer) => {
-        const props = feat.properties || {};
-        const name  = props.FULLNAME || 'Road';
-        const c     = classifyRoad(props);
-        layer.bindPopup(`
-          <div class="popup-header" style="background:${c.color}">
-            <div class="popup-name">${name}</div>
-            <div class="popup-type">${c.type}</div>
-          </div>
-          <div class="popup-body">${roadDetail(name.toUpperCase(), c.type)}</div>
-        `, { maxWidth: 280 });
+        const name = feat.properties?.FULLNAME || 'Road';
+        const c    = classifyRoad(feat.properties || {});
+        layer.bindPopup(popup(name, c), { maxWidth: 280 });
         layer.on('mouseover', function() { this.setStyle({ opacity: 1, weight: c.weight + 1 }); });
-        layer.on('mouseout',  function() { this.setStyle({ opacity: 0.85, weight: c.weight }); });
+        layer.on('mouseout',  function() { this.setStyle({ opacity: c.opacity, weight: c.weight }); });
       }
     }).addTo(map);
-    checkLoaded();
-  }).catch(e => { console.error('Load error:', e); checkLoaded(); });
+  }).catch(e => console.error('Primary roads error:', e));
 
-// State highways & arterials — keep only classified roads and major named arterials
+// ── State/arterial roads ──────────────────────────────────────
+// This file has RTTYP: S, U, C, M, and also I (duplicates from primary)
+// Filter: keep S/U/C, exclude I (already in primary), 
+//         keep M only if a named Westminster arterial and not a minor road
 fetch(`${RAW}/maps/westminster_roads_state.geojson`)
   .then(r => r.json())
   .then(gj => {
-    console.log('State roads loaded:', gj.features.length, 'features');
 
-    const ARTERIALS = ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL','PECOS','HURON',
-      'ZUNI','SIMMS','INDIANA','GARRISON','HARLAN','DEPEW','WESTMINSTER BLVD',
-      'CHURCH RANCH','120TH AVE','112TH AVE','108TH AVE','104TH AVE','96TH AVE',
-      '92ND AVE','88TH AVE','72ND AVE'];
-    const EXCLUDE = ['CIR','DR ','FRONTAGE',' CT',' PL ',' WAY',' LN '];
+    // Named Westminster arterials we want to show (RTTYP='M')
+    const KEEP_NAMES = [
+      'WADSWORTH', 'SHERIDAN', 'LOWELL', 'FEDERAL', 'PECOS',
+      'HURON', 'ZUNI', 'SIMMS', 'INDIANA', 'GARRISON', 'HARLAN', 'DEPEW',
+      'WESTMINSTER BLVD', 'CHURCH RANCH',
+      '120TH AVE', '112TH AVE', '108TH AVE', '104TH AVE',
+      '96TH AVE', '92ND AVE', '88TH AVE', '72ND AVE'
+    ];
 
-    const filtered = {
-      type: 'FeatureCollection',
-      features: gj.features.filter(f => {
-        const rttyp = f.properties?.RTTYP || '';
-        const name  = (f.properties?.FULLNAME || '').toUpperCase();
-        // Keep state/US/county roads but NOT interstates
-        // (interstates are already in the primary roads layer)
-        if (['S','U','C'].includes(rttyp)) return true;
-        // For M-type (local/arterial): keep only named Westminster arterials
-        // that are not circles, drives, courts etc.
-        // Skip if it's an interstate by name (redundant with primary layer)
-        if (name.includes('I- ') || name.includes('INTERSTATE')) return false;
-        if (rttyp === 'M') {
-          const isArterial = ARTERIALS.some(kw => name.includes(kw));
-          const isMinor    = EXCLUDE.some(sfx => name.includes(sfx));
-          return isArterial && !isMinor;
-        }
-        return false;
-      })
-    };
-    console.log('State roads after filter:', filtered.features.length);
-    L.geoJSON(filtered, {
+    // Minor road suffixes — exclude even if name partially matches
+    const EXCLUDE_SUFFIX = [' CIR', ' DR', ' CT', ' PL', ' WAY', ' LN', 'FRONTAGE'];
+
+    const filtered = gj.features.filter(f => {
+      const rttyp = (f.properties?.RTTYP || '').trim();
+      const name  = (f.properties?.FULLNAME || '').toUpperCase();
+
+      // Never show interstates from this layer — they're in primary
+      if (rttyp === 'I') return false;
+
+      // Always show state, US, county roads
+      if (rttyp === 'S' || rttyp === 'U' || rttyp === 'C') return true;
+
+      // For M-type: only show named arterials, not minor roads
+      if (rttyp === 'M') {
+        const isArterial = KEEP_NAMES.some(kw => name.includes(kw));
+        const isMinor    = EXCLUDE_SUFFIX.some(sfx => name.includes(sfx));
+        return isArterial && !isMinor;
+      }
+
+      return false;
+    });
+
+    L.geoJSON({ type: 'FeatureCollection', features: filtered }, {
       style: feat => {
         const c = classifyRoad(feat.properties || {});
-        return { color: c.color, weight: c.weight, opacity: 0.75 };
+        return { color: c.color, weight: c.weight, opacity: c.opacity };
       },
       onEachFeature: (feat, layer) => {
-        const props = feat.properties || {};
-        const name  = props.FULLNAME || 'Road';
-        const c     = classifyRoad(props);
-        layer.bindPopup(`
-          <div class="popup-header" style="background:${c.color}">
-            <div class="popup-name">${name}</div>
-            <div class="popup-type">${c.type}</div>
-          </div>
-          <div class="popup-body">${roadDetail(name.toUpperCase(), c.type)}</div>
-        `, { maxWidth: 280 });
-        layer.on('mouseover', function() { this.setStyle({ opacity: 1 }); });
-        layer.on('mouseout',  function() { this.setStyle({ opacity: 0.75 }); });
+        const name = feat.properties?.FULLNAME || 'Road';
+        const c    = classifyRoad(feat.properties || {});
+        layer.bindPopup(popup(name, c), { maxWidth: 280 });
+        layer.on('mouseover', function() { this.setStyle({ opacity: 1, weight: c.weight + 1 }); });
+        layer.on('mouseout',  function() { this.setStyle({ opacity: c.opacity, weight: c.weight }); });
       }
     }).addTo(map);
-    checkLoaded();
-  }).catch(e => { console.error('Load error:', e); checkLoaded(); });
 
-// Railroads
+  }).catch(e => console.error('State roads error:', e));
+
+// ── Railroads ─────────────────────────────────────────────────
 fetch(`${RAW}/maps/westminster_railroads.geojson`)
   .then(r => r.json())
   .then(gj => {
-    console.log('Railroads loaded:', gj.features.length, 'features');
     L.geoJSON(gj, {
-      style: feat => {
-        const name = (feat.properties?.FULLNAME || '').toUpperCase();
-        return {
-          color: '#253646',
-          weight: 3, opacity: 0.9,
-          dashArray: '8 5'
-        };
-      },
+      style: () => ({ color: COLORS.railroad, weight: 3, opacity: 0.9, dashArray: '8 5' }),
       onEachFeature: (feat, layer) => {
-        const props = feat.properties || {};
-        const name  = props.FULLNAME || 'Railroad';
-        const isBNSF = name.toUpperCase().includes('BURLINGTON') || name.toUpperCase().includes('BNSF') || name.toUpperCase().includes('SANTA FE');
+        const name = feat.properties?.FULLNAME || 'Railroad';
         layer.bindPopup(`
           <div class="popup-header" style="background:#253646">
             <div class="popup-name">${name}</div>
             <div class="popup-type">Freight Railroad</div>
           </div>
-          <div class="popup-body">${isBNSF
-            ? '7.5-mile BNSF freight corridor through Westminster. Multiple at-grade crossings in Districts 1, 2, and 3. Carries hazardous materials including chemicals and petroleum products.'
-            : 'Railroad corridor through Westminster service area.'
-          }</div>
+          <div class="popup-body">
+            ${name.toUpperCase().includes('BURLINGTON') || name.toUpperCase().includes('BNSF')
+              ? 'BNSF freight corridor through Westminster. Multiple at-grade crossings in Districts 1, 2, and 3. Carries hazardous materials including chemicals and petroleum products.'
+              : 'Freight railroad corridor through Westminster service area.'}
+          </div>
         `, { maxWidth: 280 });
         layer.on('mouseover', function() { this.setStyle({ opacity: 1, weight: 4 }); });
         layer.on('mouseout',  function() { this.setStyle({ opacity: 0.9, weight: 3 }); });
       }
     }).addTo(map);
-    checkLoaded();
-  }).catch(e => { console.error('Load error:', e); checkLoaded(); });
+  }).catch(e => console.error('Railroad error:', e));
 
-// Airport marker
-const airportIcon = L.divIcon({
-  className: '',
-  html: `<div style="background:#FCB61A;border:2px solid #fff;border-radius:50%;
-         width:14px;height:14px;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>`,
-  iconSize: [14,14], iconAnchor: [7,7]
-});
-L.marker([39.9085, -105.1166], { icon: airportIcon }).addTo(map)
-  .bindPopup(`
-    <div class="popup-header" style="background:#FCB61A;color:#253646;">
-      <div class="popup-name">Rocky Mountain Metropolitan Airport</div>
-      <div class="popup-type" style="color:#253646;opacity:.7;">General Aviation / Commercial</div>
-    </div>
-    <div class="popup-body">Borders Westminster to the northwest. Aircraft approach and departure paths cross Districts 4 and 5. Active ARFF coordination with WFD.</div>
-  `, { maxWidth: 280 });
+// ── Airport marker ────────────────────────────────────────────
+L.marker([39.9085, -105.1166], {
+  icon: L.divIcon({
+    className: '',
+    html: '<div style="background:#FCB61A;border:2px solid #fff;border-radius:50%;width:14px;height:14px;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>',
+    iconSize: [14,14], iconAnchor: [7,7]
+  })
+}).addTo(map).bindPopup(`
+  <div class="popup-header" style="background:#FCB61A;color:#253646;">
+    <div class="popup-name">Rocky Mountain Metropolitan Airport</div>
+    <div class="popup-type" style="color:#253646;opacity:.7;">General Aviation / Commercial</div>
+  </div>
+  <div class="popup-body">Borders Westminster to the northwest. Aircraft approach and departure paths cross Districts 4 and 5. Active ARFF coordination with WFD.</div>
+`, { maxWidth: 280 });
 
-// Westminster Station
-const trainIcon = L.divIcon({
-  className: '',
-  html: `<div style="background:#FF671D;border:2px solid #fff;border-radius:3px;
-         width:12px;height:12px;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>`,
-  iconSize: [12,12], iconAnchor: [6,6]
-});
-L.marker([39.8225, -105.0290], { icon: trainIcon }).addTo(map)
-  .bindPopup(`
-    <div class="popup-header" style="background:#FF671D;">
-      <div class="popup-name">Westminster Station</div>
-      <div class="popup-type">RTD B-Line Commuter Rail</div>
-    </div>
-    <div class="popup-body">Southern terminus of the RTD B-Line. Connects to Denver Union Station. Located in District 1 — increases pedestrian and transit activity in surrounding area.</div>
-  `, { maxWidth: 280 });
+// ── Westminster Station marker ────────────────────────────────
+L.marker([39.8225, -105.0290], {
+  icon: L.divIcon({
+    className: '',
+    html: '<div style="background:#FF671D;border:2px solid #fff;border-radius:3px;width:12px;height:12px;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>',
+    iconSize: [12,12], iconAnchor: [6,6]
+  })
+}).addTo(map).bindPopup(`
+  <div class="popup-header" style="background:#FF671D;">
+    <div class="popup-name">Westminster Station</div>
+    <div class="popup-type">RTD B-Line Commuter Rail</div>
+  </div>
+  <div class="popup-body">Southern terminus of the RTD B-Line. Connects to Denver Union Station. Located in District 1.</div>
+`, { maxWidth: 280 });
 
-// Legend
+// ── Legend ────────────────────────────────────────────────────
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function() {
   const div = L.DomUtil.create('div', 'legend');
@@ -302,7 +263,7 @@ legend.onAdd = function() {
     <div class="legend-title">Transportation Infrastructure</div>
     <div class="legend-item"><div class="legend-line" style="background:#1a3a5c;height:5px;"></div>Interstate</div>
     <div class="legend-item"><div class="legend-line" style="background:#2d6a9f;height:4px;"></div>US Highway</div>
-    <div class="legend-item"><div class="legend-line" style="background:#555759;height:3px;"></div>State Highway</div>
+    <div class="legend-item"><div class="legend-line" style="background:#555759;height:3px;"></div>State / County Highway</div>
     <div class="legend-item"><div class="legend-line" style="background:#888;height:2px;"></div>Major Arterial</div>
     <hr class="legend-divider">
     <div class="legend-item">

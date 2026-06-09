@@ -171,12 +171,26 @@ fetch(`${RAW}/maps/westminster_roads_primary.geojson`)
     checkLoaded();
   }).catch(e => { console.error('Load error:', e); checkLoaded(); });
 
-// State highways & arterials
+// State highways & arterials — filter out residential streets
 fetch(`${RAW}/maps/westminster_roads_state.geojson`)
   .then(r => r.json())
   .then(gj => {
     console.log('State roads loaded:', gj.features.length, 'features');
-    L.geoJSON(gj, {
+    // Only keep classified roads and key named Westminster arterials
+    const filtered = {
+      type: 'FeatureCollection',
+      features: gj.features.filter(f => {
+        const rttyp = f.properties?.RTTYP || '';
+        const name  = (f.properties?.FULLNAME || '').toUpperCase();
+        if (['S','U','I','C'].includes(rttyp)) return true;
+        return ['WADSWORTH','SHERIDAN','LOWELL','FEDERAL','PECOS',
+                'HURON','ZUNI','WOLFF','120TH','104TH','88TH','72ND',
+                '96TH','92ND','112TH','108TH','144TH','136TH',
+                'WESTMINSTER BLVD','CHURCH RANCH'].some(kw => name.includes(kw));
+      })
+    };
+    console.log('State roads after filter:', filtered.features.length);
+    L.geoJSON(filtered, {
       style: feat => {
         const c = classifyRoad(feat.properties || {});
         return { color: c.color, weight: c.weight, opacity: 0.75 };

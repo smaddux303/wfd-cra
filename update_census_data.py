@@ -425,6 +425,135 @@ try:
 except Exception as e:
     print(f"   ✗ Benchmarks: {e}")
 
+# Westminster city-level insurance by type (B27010)
+print("   Pulling Westminster insurance by type...")
+try:
+    emp_only = [f"B27010_{str(i).zfill(3)}E" for i in [4,17,28,40]]
+    dp_only  = [f"B27010_{str(i).zfill(3)}E" for i in [5,18,29,41]]
+    mc_only  = [f"B27010_{str(i).zfill(3)}E" for i in [6,19,30,42]]
+    md_only  = [f"B27010_{str(i).zfill(3)}E" for i in [7,20,31,43]]
+    tr_only  = [f"B27010_{str(i).zfill(3)}E" for i in [8,21,32,44]]
+    va_only  = [f"B27010_{str(i).zfill(3)}E" for i in [9,22,33,45]]
+    un_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [16,26,37,49]]
+    # Combination rows
+    emp_dp   = [f"B27010_{str(i).zfill(3)}E" for i in [12,27,38,60]]  # employer+direct
+    emp_mc   = [f"B27010_{str(i).zfill(3)}E" for i in [13,28,39,61]]  # employer+Medicare
+    dp_mc    = [f"B27010_{str(i).zfill(3)}E" for i in [62]]           # direct+Medicare (65+ only)
+    mc_md    = [f"B27010_{str(i).zfill(3)}E" for i in [14,30,41,63]]  # Medicare+Medicaid
+    other_pub= [f"B27010_{str(i).zfill(3)}E" for i in [65]]           # other public (65+)
+
+    all_vars = ["B27010_001E"] + emp_only+dp_only+mc_only+md_only+tr_only+va_only+un_vars+emp_dp+emp_mc+dp_mc+mc_md+other_pub
+    wm_ins = get_place(all_vars)
+
+    def s(vars_list):
+        return sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in vars_list if v in wm_ins.columns)
+
+    tot_pop    = s(["B27010_001E"])
+    emp_o      = s(emp_only)
+    dp_o       = s(dp_only)
+    mc_o       = s(mc_only)
+    md_o       = s(md_only)
+    tri        = s(tr_only)
+    va         = s(va_only)
+    un         = s(un_vars)
+    e_dp       = s(emp_dp)
+    e_mc       = s(emp_mc)
+    d_mc       = s(dp_mc)
+    mc_md_val  = s(mc_md)
+    oth_pub    = s(other_pub)
+
+    # Totals for each type (anyone who has it)
+    emp_total = emp_o + e_dp + e_mc
+    mc_total  = mc_o + e_mc + d_mc + mc_md_val + oth_pub
+    md_total  = md_o + mc_md_val
+    dp_total  = dp_o + e_dp + d_mc
+
+    def pp(n): return round(n/tot_pop*100, 1) if tot_pop else 0
+
+    ins_df = pd.DataFrame([{
+        "Geography": "Westminster, CO", "ACS_Year": ACS_YEAR,
+        "Total_Population": int(tot_pop),
+        # Main counts
+        "Employer_Count": int(emp_total), "Medicare_Count": int(mc_total),
+        "Medicaid_Count": int(md_total),  "Direct_Count":   int(dp_total),
+        "Uninsured_Count": int(un),       "TRICARE_Count":  int(tri),
+        "VA_Count": int(va),
+        # Main pcts
+        "Pct_Employer": pp(emp_total), "Pct_Medicare": pp(mc_total),
+        "Pct_Medicaid": pp(md_total),  "Pct_Direct":   pp(dp_total),
+        "Pct_Uninsured": pp(un),       "Pct_TRICARE":  pp(tri),
+        "Pct_VA": pp(va),
+        # Sub counts
+        "Employer_Only_Count": int(emp_o),    "Employer_Medicare_Count": int(e_mc),
+        "Employer_Direct_Count": int(e_dp),   "Medicare_Only_Count": int(mc_o),
+        "Medicare_Direct_Count": int(d_mc),   "Medicare_Employer_Count": int(e_mc),
+        "Medicare_Medicaid_Count": int(mc_md_val), "Medicare_Other_Count": int(oth_pub),
+        "Medicaid_Only_Count": int(md_o),     "Medicaid_Medicare_Count": int(mc_md_val),
+        "Direct_Only_Count": int(dp_o),       "Direct_Medicare_Count": int(d_mc),
+        "Direct_Employer_Count": int(e_dp),
+        # Sub pcts
+        "Pct_Employer_Only": pp(emp_o),    "Pct_Employer_Medicare": pp(e_mc),
+        "Pct_Employer_Direct": pp(e_dp),   "Pct_Medicare_Only": pp(mc_o),
+        "Pct_Medicare_Direct": pp(d_mc),   "Pct_Medicare_Employer": pp(e_mc),
+        "Pct_Medicare_Medicaid": pp(mc_md_val), "Pct_Medicare_Other": pp(oth_pub),
+        "Pct_Medicaid_Only": pp(md_o),     "Pct_Medicaid_Medicare": pp(mc_md_val),
+        "Pct_Direct_Only": pp(dp_o),       "Pct_Direct_Medicare": pp(d_mc),
+        "Pct_Direct_Employer": pp(e_dp),
+        "Source": f"ACS B27010 {ACS_YEAR} 5-Year Estimates",
+        "Note": "Combination coverage counted in each applicable category"
+    }])
+    ins_df.to_csv(f"{OUT_DIR}/westminster_insurance_bytype.csv", index=False)
+    print(f"   ✓ Insurance by type → westminster_insurance_bytype.csv")
+    print(f"     Employer: {pp(emp_total)}% · Medicare: {pp(mc_total)}% · Medicaid: {pp(md_total)}% · Uninsured: {pp(un)}%")
+except Exception as e:
+    print(f"   ✗ Insurance by type: {e}")
+
+# Westminster city-level insurance by type (B27010)
+print("   Pulling Westminster insurance by type...")
+try:
+    emp_vars = [f"B27010_{str(i).zfill(3)}E" for i in [4,17,28,40]]
+    dp_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [5,18,29,41]]
+    mc_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [6,19,30,42]]
+    md_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [7,20,31,43]]
+    tr_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [8,21,32,44]]
+    va_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [9,22,33,45]]
+    un_vars  = [f"B27010_{str(i).zfill(3)}E" for i in [16,26,37,49]]
+    all_ins  = ["B27010_001E"] + emp_vars+dp_vars+mc_vars+md_vars+tr_vars+va_vars+un_vars
+
+    wm_ins = get_place(all_ins)
+    emp  = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in emp_vars)
+    dp   = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in dp_vars)
+    mc   = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in mc_vars)
+    md   = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in md_vars)
+    tri  = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in tr_vars)
+    va   = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in va_vars)
+    un   = sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in un_vars)
+    ins_total = emp+dp+mc+md+tri+va+un
+
+    ins_df = pd.DataFrame([{
+        "Geography":          "Westminster, CO",
+        "ACS_Year":           ACS_YEAR,
+        "Employer_Insurance": int(emp),
+        "Direct_Purchase":    int(dp),
+        "Medicare":           int(mc),
+        "Medicaid":           int(md),
+        "TRICARE":            int(tri),
+        "VA":                 int(va),
+        "Uninsured":          int(un),
+        "Pct_Employer":       pct(emp, ins_total),
+        "Pct_Direct":         pct(dp,  ins_total),
+        "Pct_Medicare":       pct(mc,  ins_total),
+        "Pct_Medicaid":       pct(md,  ins_total),
+        "Pct_TRICARE":        pct(tri, ins_total),
+        "Pct_VA":             pct(va,  ins_total),
+        "Pct_Uninsured":      pct(un,  ins_total),
+    }])
+    ins_df.to_csv(f"{OUT_DIR}/westminster_insurance_citywide.csv", index=False)
+    print(f"   ✓ Insurance by type → westminster_insurance_citywide.csv")
+    print(f"     Employer: {pct(emp,ins_total)}% · Medicaid: {pct(md,ins_total)}% · Medicare: {pct(mc,ins_total)}% · Uninsured: {pct(un,ins_total)}%")
+except Exception as e:
+    print(f"   ✗ Insurance by type: {e}")
+
 # ── BLS UNEMPLOYMENT ───────────────────────────────────────────
 print("\n── Pulling BLS unemployment rates...")
 try:
@@ -468,39 +597,6 @@ try:
         print(f"     {k}: {v}%")
 except Exception as e:
     print(f"   ✗ BLS unemployment (will retry next run): {e}")
-
-# ── COUNTY BUSINESS PATTERNS ───────────────────────────────────
-print("\n── Pulling business data (County Business Patterns)...")
-try:
-    cbp_year = ACS_YEAR
-    cbp_url  = f"https://api.census.gov/data/{cbp_year}/cbp"
-    businesses_total = 0
-    employees_total  = 0
-
-    for zipcode in WM_ZIPS:
-        try:
-            df = census_get(
-                ["ESTAB","EMP"],
-                f"zipcode:{zipcode}",
-                base=cbp_url
-            )
-            businesses_total += safe_int(df["ESTAB"].sum())
-            employees_total  += safe_int(df["EMP"].sum())
-        except:
-            pass
-
-    biz_df = pd.DataFrame([{
-        "Geography":    "Westminster, CO",
-        "Year":         cbp_year,
-        "Total_Businesses": businesses_total,
-        "Total_Employees":  employees_total,
-        "Source":       "Census County Business Patterns"
-    }])
-    biz_df.to_csv(f"{OUT_DIR}/westminster_businesses.csv", index=False)
-    print(f"   ✓ Businesses: {businesses_total:,} establishments, {employees_total:,} employees")
-    print(f"     → westminster_businesses.csv")
-except Exception as e:
-    print(f"   ✗ Business data: {e}")
 
 # ── CENSUS TIGER — ROADS & RAILROADS ─────────────────────────
 print("\n── Pulling road and railroad geometry (Census TIGER)...")

@@ -2504,9 +2504,17 @@
               if (d !== activeDistrict) this.setStyle({ fillOpacity: 0.15 });
             });
 
-            // District number label
-            const center = layer.getBounds().getCenter();
-            L.marker(center, {
+            // Station marker at actual station location
+            const stationCoords = {
+      1: [39.828754, -105.039562],
+      2: [39.862314, -105.03401],
+      3: [39.859447, -105.083758],
+      4: [39.899397, -105.044752],
+      5: [39.879572, -105.102322],
+      6: [39.922412, -104.999098]
+    };
+            const sCoord = stationCoords[d] || layer.getBounds().getCenter();
+            L.marker(sCoord, {
               icon: L.divIcon({
                 className: 'district-map-label',
                 html: `<div style="text-align:center;line-height:1.1;">

@@ -446,7 +446,13 @@ try:
     wm_ins = get_place(all_vars)
 
     def s(vars_list):
-        return sum(pd.to_numeric(wm_ins[v], errors='coerce').fillna(0).sum() for v in vars_list if v in wm_ins.columns)
+        total = 0
+        for v in vars_list:
+            if v in wm_ins.columns:
+                val = pd.to_numeric(wm_ins[v].iloc[0], errors='coerce')
+                if not pd.isna(val):
+                    total += val
+        return total
 
     tot_pop    = s(["B27010_001E"])
     emp_o      = s(emp_only)
@@ -614,7 +620,7 @@ def shapefile_to_geojson(zip_url, bbox=None):
     with tempfile.TemporaryDirectory() as tmpdir:
         zip_path = os.path.join(tmpdir, "data.zip")
         req = ur.Request(zip_url, headers={"User-Agent": "Mozilla/5.0"})
-        with ur.urlopen(req, timeout=120) as resp:
+        with ur.urlopen(req, timeout=180) as resp:
             with open(zip_path, 'wb') as f:
                 f.write(resp.read())
 

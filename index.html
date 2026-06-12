@@ -209,6 +209,25 @@
       .intro-grid, .demo-grid, .district-panel.active, .footer-inner { grid-template-columns: 1fr; }
       .kpi-strip { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* Risk panel data-driven styles */
+    .risk-cat-card { border-radius: 8px; padding: 10px 12px; background: var(--off-white); position: relative; }
+    .risk-cat-name { font-size: 11px; color: var(--gray-dark); font-weight: 600; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+    .risk-cat-score { font-size: 18px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .risk-cat-bar-track { height: 6px; background: var(--gray-light); border-radius: 3px; margin-bottom: 4px; overflow: hidden; }
+    .risk-cat-bar-fill { height: 6px; border-radius: 3px; transition: width .4s ease; }
+    .risk-cat-level { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .risk-cat-count { font-size: 10px; color: var(--gray-dark); }
+    .risk-outlier-badge { font-size: 9px; font-weight: 700; color: #FF671D; background: rgba(255,103,29,.12); border-radius: 3px; padding: 1px 5px; }
+    .risk-z-note { font-size: 10px; color: var(--gray-dark); margin-top: 2px; }
+    .risk-outlier-banner { background: rgba(255,103,29,.08); border-left: 3px solid #FF671D; border-radius: 0 6px 6px 0; padding: 6px 10px; font-size: 11px; color: #993c1d; font-weight: 500; margin-bottom: 8px; }
+    .risk-pct-rank { display: inline-block; width: 18px; height: 18px; border-radius: 50%; font-size: 9px; font-weight: 800; text-align: center; line-height: 18px; margin-left: 4px; flex-shrink: 0; }
+    .rank-6 { background: #FF671D; color: white; }
+    .rank-5 { background: #FCB61A; color: white; }
+    .rank-4 { background: #a8c56d; color: white; }
+    .rank-3 { background: var(--gray-light); color: var(--navy); }
+    .rank-2 { background: var(--gray-light); color: var(--navy); }
+    .rank-1 { background: #8CC740; color: white; }
   </style>
   <script src="https://datawrapper.dwcdn.net/lib/embed.min.js" async></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -890,14 +909,22 @@
   </div>
 </div>
 </div></div>
-  <div id="d1-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FF671D">High</span> <span style="color:var(--gray-dark);font-size:11px;">(29.76)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:99.2%;background:#FF671D;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(14.14)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:47.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(4.47)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:14.9%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(4.47)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:14.9%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(0.97)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:3.2%;background:#8CC740;border-radius:3px;"></div></div></div>
-</div>
-<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Senior care facilities — multiple</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• I-25 corridor</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad — 5 at-grade crossings</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Older non-sprinklered housing</div></div></div>
+  <div id="d1-risk" class="district-sub-panel">
+  <!-- Data-driven risk scores loaded from data/clean/district_risk_scores.csv -->
+  <div id="d1-risk-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+    <div style="grid-column:1/-1;text-align:center;padding:1rem;color:var(--gray-dark);font-size:12px;">Loading risk scores…</div>
+  </div>
+  <div style="margin-top:.5rem;margin-bottom:1rem;">
+    <div id="d1-outlier-note"></div>
+  </div>
+  <div style="margin-top:.5rem;">
+    <div class="metric-name" style="margin-bottom:6px;">Key hazards</div>
+    <div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Senior care facilities — multiple</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• I-25 corridor</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad — 5 at-grade crossings</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Older non-sprinklered housing</div>
+  </div>
+  <div style="margin-top:1rem;padding:.75rem;background:var(--off-white);border-radius:8px;">
+    <div style="font-size:9px;color:var(--gray-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">About these scores</div>
+    <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
+  </div>
 </div>
     <div id="district-2" class="district-panel">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
@@ -1186,14 +1213,22 @@
   </div>
 </div>
 </div></div>
-  <div id="d2-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(18.52)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:61.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(14.14)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:47.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(11.18)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:37.3%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(16.0)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:53.3%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(0.97)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:3.2%;background:#8CC740;border-radius:3px;"></div></div></div>
-</div>
-<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ammonia storage — ice arena (256 tons)</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• US-36 multi-story hotels</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Non-sprinklered multi-family</div></div></div>
+  <div id="d2-risk" class="district-sub-panel">
+  <!-- Data-driven risk scores loaded from data/clean/district_risk_scores.csv -->
+  <div id="d2-risk-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+    <div style="grid-column:1/-1;text-align:center;padding:1rem;color:var(--gray-dark);font-size:12px;">Loading risk scores…</div>
+  </div>
+  <div style="margin-top:.5rem;margin-bottom:1rem;">
+    <div id="d2-outlier-note"></div>
+  </div>
+  <div style="margin-top:.5rem;">
+    <div class="metric-name" style="margin-bottom:6px;">Key hazards</div>
+    <div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ammonia storage — ice arena (256 tons)</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• US-36 multi-story hotels</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Non-sprinklered multi-family</div>
+  </div>
+  <div style="margin-top:1rem;padding:.75rem;background:var(--off-white);border-radius:8px;">
+    <div style="font-size:9px;color:var(--gray-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">About these scores</div>
+    <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
+  </div>
 </div>
     <div id="district-3" class="district-panel">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
@@ -1482,14 +1517,22 @@
   </div>
 </div>
 </div></div>
-  <div id="d3-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(5.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:19.4%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
-</div>
-<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Standley Lake dam failure risk</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Downtown Westminster high-density development</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad — 3 at-grade crossings</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Manufactured home subdivision</div></div></div>
+  <div id="d3-risk" class="district-sub-panel">
+  <!-- Data-driven risk scores loaded from data/clean/district_risk_scores.csv -->
+  <div id="d3-risk-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+    <div style="grid-column:1/-1;text-align:center;padding:1rem;color:var(--gray-dark);font-size:12px;">Loading risk scores…</div>
+  </div>
+  <div style="margin-top:.5rem;margin-bottom:1rem;">
+    <div id="d3-outlier-note"></div>
+  </div>
+  <div style="margin-top:.5rem;">
+    <div class="metric-name" style="margin-bottom:6px;">Key hazards</div>
+    <div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Standley Lake dam failure risk</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Downtown Westminster high-density development</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad — 3 at-grade crossings</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Manufactured home subdivision</div>
+  </div>
+  <div style="margin-top:1rem;padding:.75rem;background:var(--off-white);border-radius:8px;">
+    <div style="font-size:9px;color:var(--gray-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">About these scores</div>
+    <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
+  </div>
 </div>
     <div id="district-4" class="district-panel">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
@@ -1778,14 +1821,22 @@
   </div>
 </div>
 </div></div>
-  <div id="d4-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(7.94)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:26.5%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(5.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:19.4%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(3.46)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:11.5%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(1.98)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:6.6%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
-</div>
-<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Gated community access delays</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Open space wildland interface</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Highest 65+ population in city</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Newer construction — mostly sprinklered</div></div></div>
+  <div id="d4-risk" class="district-sub-panel">
+  <!-- Data-driven risk scores loaded from data/clean/district_risk_scores.csv -->
+  <div id="d4-risk-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+    <div style="grid-column:1/-1;text-align:center;padding:1rem;color:var(--gray-dark);font-size:12px;">Loading risk scores…</div>
+  </div>
+  <div style="margin-top:.5rem;margin-bottom:1rem;">
+    <div id="d4-outlier-note"></div>
+  </div>
+  <div style="margin-top:.5rem;">
+    <div class="metric-name" style="margin-bottom:6px;">Key hazards</div>
+    <div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Senior living facilities</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• 112th Ave commercial corridor</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Uplands residential development</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Aging single-family housing stock</div>
+  </div>
+  <div style="margin-top:1rem;padding:.75rem;background:var(--off-white);border-radius:8px;">
+    <div style="font-size:9px;color:var(--gray-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">About these scores</div>
+    <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
+  </div>
 </div>
     <div id="district-5" class="district-panel">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
@@ -2074,14 +2125,22 @@
   </div>
 </div>
 </div></div>
-  <div id="d5-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(9.92)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:33.1%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(5.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:19.4%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(17.32)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:57.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#FF671D">High</span> <span style="color:var(--gray-dark);font-size:11px;">(21.22)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:70.7%;background:#FF671D;border-radius:3px;"></div></div></div>
-</div>
-<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Rocky Mountain Regional Airport approach path</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ammonia — Promenade ice arena</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Standley Lake Regional Park wildland interface</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ball Aerospace / Ball Metal manufacturing</div></div></div>
+  <div id="d5-risk" class="district-sub-panel">
+  <!-- Data-driven risk scores loaded from data/clean/district_risk_scores.csv -->
+  <div id="d5-risk-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+    <div style="grid-column:1/-1;text-align:center;padding:1rem;color:var(--gray-dark);font-size:12px;">Loading risk scores…</div>
+  </div>
+  <div style="margin-top:.5rem;margin-bottom:1rem;">
+    <div id="d5-outlier-note"></div>
+  </div>
+  <div style="margin-top:.5rem;">
+    <div class="metric-name" style="margin-bottom:6px;">Key hazards</div>
+    <div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Ball Aerospace and manufacturing facilities</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Rocky Mountain Metropolitan Airport approach path</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Standley Lake — water rescue risk</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• BNSF railroad</div>
+  </div>
+  <div style="margin-top:1rem;padding:.75rem;background:var(--off-white);border-radius:8px;">
+    <div style="font-size:9px;color:var(--gray-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">About these scores</div>
+    <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
+  </div>
 </div>
     <div id="district-6" class="district-panel">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
@@ -2370,14 +2429,22 @@
   </div>
 </div>
 </div></div>
-  <div id="d6-risk" class="district-sub-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div class="metric-card"><div class="metric-name">EMS</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(13.42)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:44.7%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Fire</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">Rescue</div><span style="font-weight:700;color:#FCB61A">Medium</span> <span style="color:var(--gray-dark);font-size:11px;">(10.83)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:36.1%;background:#FCB61A;border-radius:3px;"></div></div></div>
-  <div class="metric-card"><div class="metric-name">HazMat</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(1.98)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:6.6%;background:#8CC740;border-radius:3px;"></div></div></div>
-  <div class="metric-card" style="grid-column:1/-1;"><div class="metric-name">Wildland</div><span style="font-weight:700;color:#8CC740">Low</span> <span style="color:var(--gray-dark);font-size:11px;">(1.98)</span><div style="height:6px;background:var(--gray-light);border-radius:3px;margin-top:4px;"><div style="height:6px;width:6.6%;background:#8CC740;border-radius:3px;"></div></div></div>
-</div>
-<div style="margin-top:1rem;"><div class="metric-name" style="margin-bottom:6px;">Key hazards</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Mobile home parks — fire access challenges</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• I-25 interchange MVA risk</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Mixed housing stock — varying age and construction</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• St. Anthony North Level II Trauma at north end</div></div></div>
+  <div id="d6-risk" class="district-sub-panel">
+  <!-- Data-driven risk scores loaded from data/clean/district_risk_scores.csv -->
+  <div id="d6-risk-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+    <div style="grid-column:1/-1;text-align:center;padding:1rem;color:var(--gray-dark);font-size:12px;">Loading risk scores…</div>
+  </div>
+  <div style="margin-top:.5rem;margin-bottom:1rem;">
+    <div id="d6-outlier-note"></div>
+  </div>
+  <div style="margin-top:.5rem;">
+    <div class="metric-name" style="margin-bottom:6px;">Key hazards</div>
+    <div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• St. Anthony North Health Campus (Level II Trauma)</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• North Suburban Medical Center vicinity</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Mixed housing stock — mobile homes to custom homes</div><div style="font-size:11px;color:var(--gray-dark);padding:3px 0;border-bottom:1px solid var(--off-white);">• Significant renter-occupied percentage</div>
+  </div>
+  <div style="margin-top:1rem;padding:.75rem;background:var(--off-white);border-radius:8px;">
+    <div style="font-size:9px;color:var(--gray-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">About these scores</div>
+    <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
+  </div>
 </div>
   </div>
 </section>
@@ -2777,6 +2844,128 @@
     chart.appendChild(note);
   })();
 </script>
+
+
+  <!-- District Risk Scores — data-driven rendering from data/clean/district_risk_scores.csv -->
+  <script>
+  (function() {
+    // Category display config
+    const CAT_CONFIG = {
+      'Medical':              { icon: '🚑', skip: false },
+      'Structure Fire':       { icon: '🏠', skip: false },
+      'Outside/Vehicle Fire': { icon: '🔥', skip: false },
+      'Wildland Fire':        { icon: '🌲', skip: false },
+      'Rescue':               { icon: '⛑️',  skip: false },
+      'Hazardous Situation':  { icon: '☣️',  skip: false },
+      'Public Service':       { icon: '🔧', skip: true  },
+      'No Emergency':         { icon: '📋', skip: true  },
+      'Unknown':              { icon: '❓', skip: true  },
+    };
+
+    const RISK_COLORS = {
+      'HIGH':   { bar: '#FF671D', text: '#FF671D', bg: 'rgba(255,103,29,.08)', border: 'rgba(255,103,29,.3)' },
+      'MEDIUM': { bar: '#FCB61A', text: '#FCB61A', bg: 'rgba(252,182,26,.08)', border: 'rgba(252,182,26,.3)' },
+      'LOW':    { bar: '#8CC740', text: '#8CC740', bg: 'rgba(140,199,64,.08)', border: 'rgba(140,199,64,.2)' },
+    };
+
+    // Parse CSV
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',');
+      return lines.slice(1).map(line => {
+        const vals = line.split(',');
+        const obj = {};
+        headers.forEach((h, i) => obj[h.trim()] = vals[i] ? vals[i].trim() : '');
+        return obj;
+      });
+    }
+
+    // Build card HTML for one category row
+    function buildCard(row, isWide) {
+      const cfg = CAT_CONFIG[row.category] || { icon: '•', skip: false };
+      const rc  = RISK_COLORS[row.risk_level] || RISK_COLORS['LOW'];
+      const score = parseFloat(row.score) || 0;
+      const maxScore = 70; // visual max for bar width
+      const barPct = Math.min(100, (score / maxScore) * 100).toFixed(1);
+      const z = parseFloat(row.z_score) || 0;
+      const rank = parseInt(row.percentile_rank) || 1;
+      const count = parseInt(row.incident_count) || 0;
+      const isOutlier = z > 1.0;
+
+      const outlierBadge = isOutlier
+        ? `<span class="risk-outlier-badge">⚑ ${z >= 1.5 ? 'Outlier' : 'Elevated'}</span>`
+        : '';
+
+      const rankClass = `rank-${rank}`;
+
+      return `<div class="risk-cat-card" style="grid-column:${isWide ? '1/-1' : 'auto'};border:1px solid ${rc.border};background:${rc.bg};">
+  <div class="risk-cat-name">
+    <span>${cfg.icon} ${row.category}</span>
+    <span style="display:flex;align-items:center;gap:4px;">
+      ${outlierBadge}
+      <span class="risk-pct-rank ${rankClass}" title="Percentile rank ${rank} of 6 districts">${rank}</span>
+    </span>
+  </div>
+  <div class="risk-cat-score" style="color:${rc.text};">${score.toFixed(2)}</div>
+  <div class="risk-cat-bar-track">
+    <div class="risk-cat-bar-fill" style="width:${barPct}%;background:${rc.bar};"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <span class="risk-cat-level" style="color:${rc.text};">${row.risk_level}</span>
+    <span class="risk-cat-count">${count.toLocaleString()} incidents · Z: ${z >= 0 ? '+' : ''}${z.toFixed(2)}</span>
+  </div>
+</div>`;
+    }
+
+    // Render all 6 districts
+    function renderRiskPanels(data) {
+      for (let d = 1; d <= 6; d++) {
+        const distRows = data.filter(r => parseInt(r.district) === d);
+        const container = document.getElementById(`d${d}-risk-cards`);
+        const noteEl    = document.getElementById(`d${d}-outlier-note`);
+        if (!container) continue;
+
+        // Scored categories only (skip Public Service, No Emergency, Unknown)
+        const scored = distRows.filter(r => {
+          const cfg = CAT_CONFIG[r.category];
+          return cfg && !cfg.skip;
+        });
+
+        // Outliers for this district (z > 1.5)
+        const outliers = scored.filter(r => parseFloat(r.z_score) >= 1.5);
+
+        // Build cards — last card spans full width if odd count
+        let cardsHTML = '';
+        scored.forEach((row, idx) => {
+          const isLast = idx === scored.length - 1;
+          const isWide = isLast && scored.length % 2 !== 0;
+          cardsHTML += buildCard(row, isWide);
+        });
+
+        container.innerHTML = cardsHTML;
+
+        // Outlier note
+        if (outliers.length > 0 && noteEl) {
+          const names = outliers.map(r => `<strong>${r.category}</strong>`).join(' and ');
+          noteEl.innerHTML = `<div class="risk-outlier-banner">⚑ Statistical outlier: ${names} — this district scores more than 1.5 standard deviations above the 6-district mean. The rank badge (1–6) shows how this district compares to all others for each category.</div>`;
+        }
+      }
+    }
+
+    // Load CSV from repo
+    fetch("https://raw.githubusercontent.com/smaddux303/wfd-cra/main/data/clean/district_risk_scores.csv")
+      .then(r => r.ok ? r.text() : Promise.reject('CSV not found'))
+      .then(text => renderRiskPanels(parseCSV(text)))
+      .catch(err => {
+        console.warn('data/clean/district_risk_scores.csv not loaded:', err);
+        // Fallback: leave loading message, don't crash
+        for (let d = 1; d <= 6; d++) {
+          const el = document.getElementById(`d${d}-risk-cards`);
+          if (el) el.innerHTML = '<div style="grid-column:1/-1;padding:1rem;font-size:12px;color:var(--gray-dark);">Risk score data not available. Upload district_risk_scores.csv to data/clean/ in the repository to enable this section.</div>';
+        }
+      });
+  })();
+  </script>
 
 </body>
 </html>

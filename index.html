@@ -117,18 +117,7 @@
     .demo-stat .sub { font-size: 12px; color: var(--gray-dark); margin-top: 2px; }
 
     /* Risk cards */
-    .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
-    .risk-card { border-radius: 10px; padding: 1.25rem; border: 1px solid; }
-    .risk-high { background: rgba(255,103,29,.08); border-color: rgba(255,103,29,.3); }
-    .risk-med  { background: rgba(252,182,26,.08); border-color: rgba(252,182,26,.3); }
-    .risk-card .risk-level { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
-    .risk-high .risk-level { color: var(--orange-red); }
-    .risk-med  .risk-level { color: #a06800; }
-    .risk-card h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .risk-card .score { font-size: 24px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-    .risk-high .score { color: var(--orange-red); }
-    .risk-med  .score { color: var(--orange); }
-    .risk-card p { font-size: 12px; color: var(--gray-dark); }
+    /* Risk grid CSS removed — section deprecated */
 
     /* District tabs */
     .district-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
@@ -247,7 +236,7 @@
     <li><a href="#community">Community</a></li>
     <li><a href="#demographics">Demographics</a></li>
     <li><a href="#climate">Climate</a></li>
-    <li><a href="#risks">Risks</a></li>
+    <li></li>
     <li><a href="#districts">Districts</a></li>
   </ul>
   <span class="nav-updated">Data period: 2024–2028</span>
@@ -571,25 +560,6 @@
     <div style="background:rgba(0,137,150,.1);border:1px solid rgba(0,137,150,.3);border-radius:10px;padding:1.25rem;">
       <p style="font-size:12px;color:var(--gray-light);line-height:1.7;margin:0;"><strong style="color:var(--teal-light);">Cascading hazard note:</strong> Westminster's 2023 Hazard Mitigation Plan emphasizes that hazards are interconnected. Drought stresses vegetation and increases wildfire risk. Wildfire degrades watersheds and increases flooding. Flooding can threaten dams. Extreme heat exacerbates drought. Climate change is amplifying the frequency and severity of each of these hazards — making multi-hazard planning and all-hazards emergency response capability increasingly critical for WFD. This document should be read alongside Westminster's <a href="https://www.westminsterco.gov" style="color:var(--teal-light);" target="_blank" rel="noopener">2023 Hazard Mitigation Plan</a> for full depth of analysis.</p>
     </div>
-
-  </div>
-</section>
-
-<!-- Risk Assessment -->
-<section id="risks" class="section section-alt" aria-labelledby="risks-title">
-  <div class="inner">
-    <p class="section-eyebrow">Risk Assessment</p>
-    <div class="accent-bar" aria-hidden="true"></div>
-    <h2 id="risks-title" class="section-title">Community Risk Scores</h2>
-    <p class="section-lead">WFD assessed risk across all NFIRS incident types using five years of actual response data. Each incident type received a probability score, a consequence score, and a community impact score — combined into a final Community Risk Score using Heron's Formula.</p>
-
-    <div class="risk-grid">
-      <div class="risk-card risk-high"><div class="risk-level">High Risk</div><h3>Building Fire</h3><div class="score">78.7</div><p>Highest risk score. Structure fires pose the most severe life safety and property loss consequences.</p></div>
-      <div class="risk-card risk-high"><div class="risk-level">High Risk</div><h3>EMS — Medical Emergency</h3><div class="score">38.7</div><p>Highest call volume category. Cardiac, respiratory, and trauma emergencies are the most frequent life-threatening events.</p></div>
-      <div class="risk-card risk-high"><div class="risk-level">High Risk</div><h3>Explosion</h3><div class="score">36.2</div><p>Industrial and residential gas incidents carry extreme consequence scores even at lower probability.</p></div>
-      <div class="risk-card risk-high"><div class="risk-level">High Risk</div><h3>MVA with Injuries</h3><div class="score">32.6</div><p>I-25 and US-36 corridors generate significant high-severity vehicle accident calls annually.</p></div>
-    </div>
-
 
   </div>
 </section>

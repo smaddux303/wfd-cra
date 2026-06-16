@@ -2640,7 +2640,7 @@
         <li><a href="docs/DATA_SOURCES.md">Data sources</a></li>
         <li><a href="https://www.westminsterco.gov/fire" target="_blank" rel="noopener">WFD Website</a></li>
       </ul>
-      <p style="margin-top:1rem">Data period: 2024–2028<br>Last updated: 2025</p>
+      <p style="margin-top:1rem">Data period: 2024–2028<br>Last updated: <span id="last-updated-year"></span></p>
     </div>
   </div>
   <div class="footer-bottom">
@@ -3131,5 +3131,8 @@
   })();
   </script>
 
+<script>
+  document.getElementById('last-updated-year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>

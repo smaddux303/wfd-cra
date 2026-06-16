@@ -2865,7 +2865,7 @@
 
   // ── Health insurance coverage chart (Demographics section) ───
   (function() {
-    const CSV_URL = "https://raw.githubusercontent.com/smaddox303/wfd-cra/main/data/clean/westminster_insurance_bytype.csv";
+    const CSV_URL = "https://raw.githubusercontent.com/smaddux303/wfd-cra/main/data/clean/westminster_insurance_bytype.csv";
 
     function buildCategories(row) {
       return [
@@ -2902,7 +2902,7 @@
             { label: "Direct + Employer",          pct: parseFloat(row.Pct_Direct_Employer),count: parseInt(row.Direct_Employer_Count) },
           ]
         },
-        { label: "Uninsured",    pct: parseFloat(row.Pct_Uninsured), count: parseInt(row.Uninsured_Count), color: "#CFD2D3", subs: [] },
+        { label: "Uninsured",    pct: parseFloat(row.Pct_Uninsured), count: parseInt(row.Uninsured_Count), color: "#C00000", subs: [] },
         { label: "TRICARE",      pct: parseFloat(row.Pct_TRICARE),   count: parseInt(row.TRICARE_Count),   color: "#8CC740", subs: [] },
         { label: "VA/Military",  pct: parseFloat(row.Pct_VA),        count: parseInt(row.VA_Count),        color: "#555759", subs: [] },
       ];
@@ -2935,7 +2935,7 @@
           { label: "Direct only", pct: 6.0, count: 6910 },
           { label: "Direct + Medicare", pct: 2.8, count: 3222 },
           { label: "Direct + Employer", pct: 1.1, count: 1261 }] },
-      { label: "Uninsured",   pct: 8.2, count: 9469, color: "#CFD2D3", subs: [] },
+      { label: "Uninsured",   pct: 8.2, count: 9469, color: "#C00000", subs: [] },
       { label: "TRICARE",     pct: 0.6, count:  660, color: "#8CC740", subs: [] },
       { label: "VA/Military", pct: 0.2, count:  265, color: "#555759", subs: [] },
     ];

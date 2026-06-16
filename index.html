@@ -238,6 +238,7 @@
     <li><a href="#climate">Climate</a></li>
     <li></li>
     <li><a href="#districts">Districts</a></li>
+    <li><a href="#methodology">Methodology</a></li>
   </ul>
   <span class="nav-updated">Data period: 2024–2028</span>
 </nav>
@@ -2495,6 +2496,120 @@
     <div style="font-size:11px;color:var(--gray-dark);line-height:1.6;">Risk scores use Heron's Formula combining Probability (incident frequency), Consequence (severity by call type), and Impact (commitment time). Thresholds: <strong>HIGH</strong> ≥ 20 · <strong>MEDIUM</strong> 10–19.99 · <strong>LOW</strong> &lt; 10. Scores are compared across all 6 districts — <span style="color:#FF671D;font-weight:600;">⚑ outlier</span> indicates this district is more than 1 standard deviation above the district mean for that category.</div>
   </div>
 </div>
+  </div>
+</section>
+
+
+<!-- Risk Methodology -->
+<section id="methodology" class="section section-alt" aria-labelledby="methodology-title">
+  <div class="inner">
+    <p class="section-eyebrow">How Risk Is Calculated</p>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 id="methodology-title" class="section-title">Risk Score Methodology</h2>
+    <p class="section-lead">District risk scores combine three factors — how often an incident type occurs, how severe it tends to be, and how much time it commits — into a single comparable score for each of nine incident categories across all six districts.</p>
+
+    <!-- Heron's Formula -->
+    <div style="background:var(--white);border:1px solid var(--gray-light);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;">
+      <h3 style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:.75rem;">The Formula</h3>
+      <div style="background:var(--off-white);border-radius:8px;padding:1rem;text-align:center;margin-bottom:1rem;">
+        <span style="font-size:18px;font-weight:800;color:var(--navy);font-family:Georgia,serif;">Risk Score = &radic;(P &times; C &times; I) &times; &radic;(P + C + I) / 3</span>
+      </div>
+      <p style="font-size:13px;color:var(--gray-dark);line-height:1.6;">Each incident category in each district receives a <strong>Probability</strong> score (P), a <strong>Consequence</strong> score (C), and an <strong>Impact</strong> score (I) — each on a 0–10 scale. The three are combined using this geometric mean formula, which rewards categories that score high across all three dimensions rather than any single factor alone.</p>
+    </div>
+
+    <!-- Three factor cards -->
+    <div class="metric-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:1.5rem;gap:14px;">
+      <div class="metric-card" style="padding:16px;">
+        <div class="metric-name" style="font-size:12px;font-weight:700;color:var(--teal);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Probability</div>
+        <p style="font-size:13px;color:var(--gray-dark);line-height:1.5;margin:0;">How often this incident type occurs in a district, based on actual incident counts since 2024. More frequent categories score higher.</p>
+      </div>
+      <div class="metric-card" style="padding:16px;">
+        <div class="metric-name" style="font-size:12px;font-weight:700;color:var(--orange-red);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Consequence</div>
+        <p style="font-size:13px;color:var(--gray-dark);line-height:1.5;margin:0;">How severe this incident type tends to be — property loss, civilian deaths and injuries, and incident-specific severity factors. Scoring varies by category (see below).</p>
+      </div>
+      <div class="metric-card" style="padding:16px;">
+        <div class="metric-name" style="font-size:12px;font-weight:700;color:#a06800;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Impact</div>
+        <p style="font-size:13px;color:var(--gray-dark);line-height:1.5;margin:0;">How long units are committed on scene, on average, for this incident type. Longer commitments place greater demand on district resources.</p>
+      </div>
+    </div>
+
+    <!-- Risk thresholds -->
+    <div style="background:var(--white);border:1px solid var(--gray-light);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;">
+      <h3 style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:1rem;">Risk Level Thresholds</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+        <div style="background:rgba(255,103,29,.08);border:1px solid rgba(255,103,29,.3);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-red);margin-bottom:4px;">High</div>
+          <div style="font-size:20px;font-weight:800;color:var(--orange-red);">&ge; 20.00</div>
+        </div>
+        <div style="background:rgba(252,182,26,.08);border:1px solid rgba(252,182,26,.3);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#a06800;margin-bottom:4px;">Medium</div>
+          <div style="font-size:20px;font-weight:800;color:var(--orange);">10.00 – 19.99</div>
+        </div>
+        <div style="background:rgba(140,199,64,.08);border:1px solid rgba(140,199,64,.2);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a7c2f;margin-bottom:4px;">Low</div>
+          <div style="font-size:20px;font-weight:800;color:#4a7c2f;">&lt; 10.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consequence scoring by category -->
+    <h3 style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:.5rem;margin-top:2rem;">Consequence Scoring by Category</h3>
+    <p style="font-size:14px;color:var(--gray-dark);line-height:1.6;margin-bottom:1.25rem;max-width:760px;">Consequence is calculated differently for each incident category to reflect what actually drives severity for that type of call. Every score is normalized to a 0–10 scale.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+      <div class="metric-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">🏠</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">Structure Fire</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin:0;">A structure fire is always high-consequence — multi-unit response, life-safety risk — regardless of outcome. Scoring starts with a base tier (5 for full structural involvement, 3 for confined/chimney fires) and adds property loss, fatality, and injury factors on top.</p>
+      </div>
+
+      <div class="metric-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">🔥</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">Outside/Vehicle Fire</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin:0;">Vehicle, dumpster, and outside fires are scored on property loss and casualties only — no structural involvement tier applies since these incidents don't involve occupied buildings.</p>
+      </div>
+
+      <div class="metric-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">🌲</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">Wildland Fire</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin:0;">Scored the same way as outside/vehicle fires — property loss and casualties — reflecting the open-land nature of these incidents.</p>
+      </div>
+
+      <div class="metric-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">🚑</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">Medical</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin:0;">Based on the highest-acuity procedure performed by EMS crews — from basic assessment up to CPR, defibrillation, and trauma activation — reflecting true patient severity rather than dispatch type alone.</p>
+      </div>
+
+      <div class="metric-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">⛑️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">Rescue</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin:0;">Tiered by technical complexity — confined space, trench, and high-angle rescues score highest, down to standby and limited-access calls at the low end.</p>
+      </div>
+
+      <div class="metric-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">☣️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">Hazardous Situation</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin:0;">Tiers reflect Westminster's actual operational experience: a typical gas leak is a single-engine, routine response and scores low, while a radiological or biological release requiring outside resources scores highest.</p>
+      </div>
+
+    </div>
+
+    <p style="font-size:12px;color:var(--gray-dark);margin-top:1.5rem;max-width:760px;line-height:1.6;">Risk scores are recalculated annually using all incident data collected since January 1, 2024. District scores are also compared statistically against the 6-district average — a district more than one standard deviation above the mean for a category is flagged as a <span style="color:#FF671D;font-weight:600;">statistical outlier</span> in the District Profiles section above.</p>
+
   </div>
 </section>
 

@@ -1,0 +1,761 @@
+/* ============================================================
+   City of Westminster — Brand Styles (Design System drop-in)
+   For: smaddux303/wfd-cra (Westminster Fire Dept. CRA)
+   Place at: assets/css/style.css  and link in <head> BEFORE any
+   page-specific <style>. Generated from the Westminster Design System.
+
+   Montserrat is already loaded via your Google Fonts <link>, so no
+   @font-face is included here.
+   ============================================================ */
+
+
+/* ---- tokens/colors.css ---- */
+/* ============================================================
+   COLORS — City of Westminster, Colorado
+   Source: 2022 Brand Guidelines + Power BI theme.
+   Westminster Teal is the anchor of the system. Pair teal with
+   1-2 palette colors at a time (2-3 colors total per design).
+   ============================================================ */
+
+:root {
+  /* ---------- Brand palette (exact, from brand guidelines) ---------- */
+  --wm-teal:        #008996; /* Westminster Teal — PMS 321 — PRIMARY */
+  --wm-navy:        #253646; /* Navy — PMS 7546 */
+  --wm-orange-red:  #FF671D; /* Orange-Red — PMS 165 */
+  --wm-orange:      #FCB61A; /* Orange (amber) — PMS 1235 */
+  --wm-lime:        #DAE144; /* Lime Green — PMS 380 */
+  --wm-light-blue:  #63C7C7; /* Light Blue — PMS 325 */
+  --wm-green:       #8CC740; /* Green — PMS 367 */
+  --wm-dark-gray:   #555759; /* Dark Gray — PMS 425 */
+  --wm-light-gray:  #CFD2D3; /* Light Gray — PMS 427 */
+
+  /* ---------- Teal scale (derived for interaction states) ---------- */
+  --teal-50:   #EBF6F7;
+  --teal-100:  #D2EBED;
+  --teal-200:  #A6D7DC;
+  --teal-300:  #6FBEC6;
+  --teal-400:  #2BA1AC;
+  --teal-500:  #008996; /* base brand teal */
+  --teal-600:  #007A85; /* hover */
+  --teal-700:  #00646E; /* active / pressed */
+  --teal-800:  #004F57;
+  --teal-900:  #073C42;
+
+  /* ---------- Navy scale ---------- */
+  --navy-50:   #EEF1F4;
+  --navy-100:  #D6DDE3;
+  --navy-300:  #6E8294;
+  --navy-500:  #3C5063;
+  --navy-700:  #253646; /* base brand navy */
+  --navy-900:  #18242F;
+
+  /* ---------- Neutral / gray ramp ---------- */
+  --neutral-0:    #FFFFFF;
+  --neutral-50:   #FAFBFB;
+  --neutral-100:  #F4F5F5; /* surface — Power BI "outspace" */
+  --neutral-150:  #ECEEEE;
+  --neutral-200:  #E2E4E5;
+  --neutral-300:  #CFD2D3; /* brand Light Gray */
+  --neutral-400:  #ABAEAF;
+  --neutral-500:  #8A8C8E;
+  --neutral-600:  #6E7072;
+  --neutral-700:  #555759; /* brand Dark Gray */
+  --neutral-800:  #3A3C3E;
+  --neutral-900:  #25282A;
+
+  /* ---------- Semantic surfaces ---------- */
+  --color-bg:             var(--neutral-0);
+  --color-surface:        var(--neutral-100);
+  --color-surface-raised: var(--neutral-0);
+  --color-surface-sunken: var(--neutral-150);
+  --color-surface-inverse:var(--navy-700);
+  --color-surface-brand:  var(--teal-500);
+  --color-surface-brand-subtle: var(--teal-50);
+
+  /* ---------- Text ---------- */
+  --text-strong:   var(--navy-700);   /* headings, key copy (brand foreground) */
+  --text-body:     #2E3A45;           /* default body, navy-leaning */
+  --text-muted:    var(--neutral-700);/* labels, secondary (brand Dark Gray) */
+  --text-subtle:   var(--neutral-500);/* captions, meta */
+  --text-disabled: var(--neutral-400);
+  --text-inverse:  var(--neutral-0);  /* on teal / navy */
+  --text-on-brand: var(--neutral-0);
+  --text-link:     var(--teal-600);
+  --text-link-hover: var(--teal-700);
+
+  /* ---------- Primary (Westminster Teal) ---------- */
+  --color-primary:        var(--teal-500);
+  --color-primary-hover:  var(--teal-600);
+  --color-primary-active: var(--teal-700);
+  --color-primary-tint:   var(--teal-50);
+  --color-on-primary:     var(--neutral-0);
+
+  /* ---------- Borders & lines ---------- */
+  --border-subtle:  var(--neutral-200);
+  --border-default: var(--neutral-300);
+  --border-strong:  var(--neutral-400);
+  --border-brand:   var(--teal-500);
+  --divider:        var(--neutral-200);
+
+  /* ---------- Status (built on palette) ---------- */
+  --color-success:        #5BA215;   /* deepened brand green for legibility */
+  --color-success-bg:     #EEF6E0;
+  --color-success-border: #BFE08A;
+  --color-success-text:   #3F6E12;
+
+  --color-warning:        var(--wm-orange);
+  --color-warning-bg:     #FEF3D9;
+  --color-warning-border: #F8D98A;
+  --color-warning-text:   #8A5A05;
+
+  --color-danger:         var(--wm-orange-red);
+  --color-danger-bg:      #FDE8DF;
+  --color-danger-border:  #F8B79B;
+  --color-danger-text:    #B23A0E;
+
+  --color-info:           var(--teal-500);
+  --color-info-bg:        var(--teal-50);
+  --color-info-border:    var(--teal-200);
+  --color-info-text:      var(--teal-700);
+
+  /* ---------- Focus ring ---------- */
+  --focus-ring:        0 0 0 3px rgba(0, 137, 150, 0.32);
+  --focus-ring-color:  var(--teal-500);
+
+  /* ---------- Data-viz sequence (Power BI theme order) ---------- */
+  --viz-1: #008996;
+  --viz-2: #253646;
+  --viz-3: #FCB61A;
+  --viz-4: #FF671D;
+  --viz-5: #8CC740;
+  --viz-6: #63C7C7;
+  --viz-7: #DAE144;
+  --viz-8: #555759;
+  --viz-9: #CFD2D3;
+}
+
+/* ---- tokens/typography.css ---- */
+/* ============================================================
+   TYPOGRAPHY — Montserrat everywhere
+   Headers & body both use Montserrat. Headings tend toward
+   ExtraBold/Bold (often in Westminster Teal). Body is Regular
+   in navy. Uppercase, wide-tracked "overline" labels echo the
+   section tags (LOGO / COLOR / TYPOGRAPHY) in the brand guide.
+   ============================================================ */
+
+:root {
+  /* ---------- Families ---------- */
+  --font-sans: "Montserrat", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-display: "Montserrat", Arial, sans-serif;
+  --font-body: "Montserrat", Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* ---------- Weights ---------- */
+  --weight-light:     300;
+  --weight-regular:   400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+  --weight-extrabold: 800;
+  --weight-black:     900;
+
+  /* ---------- Type scale (1.250 major-third-ish, tuned) ---------- */
+  --text-display-2: 4.5rem;   /* 72px */
+  --text-display:   3.5rem;   /* 56px */
+  --text-h1:        2.5rem;   /* 40px */
+  --text-h2:        2rem;     /* 32px */
+  --text-h3:        1.5rem;   /* 24px */
+  --text-h4:        1.25rem;  /* 20px */
+  --text-h5:        1.0625rem;/* 17px */
+  --text-body-lg:   1.125rem; /* 18px */
+  --text-base:      1rem;     /* 16px */
+  --text-sm:        0.875rem; /* 14px */
+  --text-xs:        0.75rem;  /* 12px */
+  --text-2xs:       0.6875rem;/* 11px — Power BI default label size */
+
+  /* ---------- Line heights ---------- */
+  --leading-tight:   1.08;
+  --leading-snug:    1.2;
+  --leading-heading: 1.18;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+
+  /* ---------- Letter spacing ---------- */
+  --tracking-tighter: -0.02em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;
+  --tracking-overline:0.14em; /* uppercase eyebrow / section labels */
+}
+
+/* ---------- Semantic text role helpers (optional utility classes) ---------- */
+.wm-display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+}
+.wm-h1 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+}
+.wm-h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+}
+.wm-h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+}
+.wm-h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+}
+.wm-body {
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-body);
+}
+.wm-lead {
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+}
+.wm-small {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+.wm-overline {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-xs);
+  line-height: 1;
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- tokens/spacing.css ---- */
+/* ============================================================
+   SPACING, RADII & LAYOUT
+   4px base grid. Geometric, governmental, generous whitespace.
+   ============================================================ */
+
+:root {
+  /* ---------- Spacing scale (4px base) ---------- */
+  --space-0:   0;
+  --space-1:   0.25rem;  /* 4 */
+  --space-2:   0.5rem;   /* 8 */
+  --space-3:   0.75rem;  /* 12 */
+  --space-4:   1rem;     /* 16 */
+  --space-5:   1.25rem;  /* 20 */
+  --space-6:   1.5rem;   /* 24 */
+  --space-8:   2rem;     /* 32 */
+  --space-10:  2.5rem;   /* 40 */
+  --space-12:  3rem;     /* 48 */
+  --space-16:  4rem;     /* 64 */
+  --space-20:  5rem;     /* 80 */
+  --space-24:  6rem;     /* 96 */
+  --space-32:  8rem;     /* 128 */
+
+  /* ---------- Radii ---------- */
+  --radius-xs:   3px;
+  --radius-sm:   4px;
+  --radius-md:   6px;   /* buttons, inputs, chips */
+  --radius-lg:   10px;  /* cards, panels */
+  --radius-xl:   16px;  /* large feature cards */
+  --radius-2xl:  24px;
+  --radius-pill: 999px; /* tags, badges, avatars */
+  --radius-circle: 50%;
+
+  /* ---------- Containers & layout ---------- */
+  --container-sm:   640px;
+  --container-md:   840px;
+  --container-lg:   1080px;
+  --container-xl:   1280px;
+  --container-2xl:  1440px;
+  --gutter:         var(--space-6);
+
+  /* ---------- Control sizing ---------- */
+  --control-height-sm: 32px;
+  --control-height-md: 40px;
+  --control-height-lg: 48px;
+  --tap-target-min:    44px;
+
+  /* ---------- Border widths ---------- */
+  --border-width:       1px;
+  --border-width-thick: 2px;
+  --border-width-accent:4px; /* top/side accent strokes */
+}
+
+/* ---- tokens/effects.css ---- */
+/* ============================================================
+   EFFECTS — shadows, motion, z-index
+   Civic & clean: soft navy-tinted shadows, crisp borders,
+   restrained motion (short fades + slides, no bounces).
+   ============================================================ */
+
+:root {
+  /* ---------- Elevation (shadows tinted with brand navy) ---------- */
+  --shadow-xs:  0 1px 2px rgba(37, 54, 70, 0.06);
+  --shadow-sm:  0 1px 3px rgba(37, 54, 70, 0.08), 0 1px 2px rgba(37, 54, 70, 0.05);
+  --shadow-md:  0 4px 12px rgba(37, 54, 70, 0.10), 0 2px 4px rgba(37, 54, 70, 0.06);
+  --shadow-lg:  0 12px 28px rgba(37, 54, 70, 0.13), 0 4px 8px rgba(37, 54, 70, 0.07);
+  --shadow-xl:  0 24px 48px rgba(37, 54, 70, 0.18), 0 8px 16px rgba(37, 54, 70, 0.08);
+  --shadow-inset: inset 0 1px 2px rgba(37, 54, 70, 0.08);
+
+  /* Card default: hairline border does the framing, shadow stays subtle */
+  --shadow-card: 0 1px 2px rgba(37, 54, 70, 0.05), 0 4px 14px rgba(37, 54, 70, 0.06);
+
+  /* ---------- Motion ---------- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1); /* @kind other */
+
+  --duration-fast:   120ms; /* @kind other */
+  --duration-base:   180ms; /* @kind other */
+  --duration-slow:   260ms; /* @kind other */
+  --duration-slower: 400ms; /* @kind other */
+
+  --transition-colors: color var(--duration-base) var(--ease-standard),
+                       background-color var(--duration-base) var(--ease-standard),
+                       border-color var(--duration-base) var(--ease-standard); /* @kind other */
+  --transition-transform: transform var(--duration-base) var(--ease-out); /* @kind other */
+
+  /* ---------- Z-index ---------- */
+  --z-base:      1;    /* @kind other */
+  --z-dropdown:  1000; /* @kind other */
+  --z-sticky:    1100; /* @kind other */
+  --z-overlay:   1200; /* @kind other */
+  --z-modal:     1300; /* @kind other */
+  --z-toast:     1400; /* @kind other */
+  --z-tooltip:   1500; /* @kind other */
+}
+
+/* ============================================================
+   COMPATIBILITY BRIDGE — maps wfd-cra's existing CSS variables to
+   the canonical tokens. Lets you DELETE the inline :root in your
+   HTML files and keep every existing class working unchanged.
+   ============================================================ */
+:root {
+  --teal:        var(--wm-teal);        /* #008996 */
+  --teal-light:  var(--wm-light-blue);  /* #63C7C7 */
+  --navy:        var(--wm-navy);        /* #253646 */
+  --gray-dark:   var(--wm-dark-gray);   /* #555759 */
+  --gray-light:  var(--neutral-300);    /* #CFD2D3 */
+  --off-white:   var(--neutral-100);    /* #F4F5F5 */
+  --white:       var(--neutral-0);      /* #FFFFFF */
+  --orange:      var(--wm-orange);      /* #FCB61A */
+  --orange-red:  var(--wm-orange-red);  /* #FF671D */
+  --green:       var(--wm-green);       /* #8CC740 */
+  --font:        var(--font-sans);
+  /* layout vars left as-is in your files: --max-w, --section-pad */
+}
+
+/* ---- css/buttons.css ---- */
+/* ============================================================
+   COMPONENT STYLES — Buttons
+   class API consumed by <Button> and <IconButton>.
+   ============================================================ */
+
+.wm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-height-md);
+  padding: 0 var(--space-5);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
+  transition: background-color var(--duration-base) var(--ease-standard),
+              border-color var(--duration-base) var(--ease-standard),
+              color var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard),
+              transform var(--duration-fast) var(--ease-standard);
+}
+.wm-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.wm-btn:active { transform: translateY(1px); }
+.wm-btn[disabled],
+.wm-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+  pointer-events: none;
+}
+.wm-btn .wm-btn__icon { display: inline-flex; width: 1.05em; height: 1.05em; flex: none; }
+.wm-btn .wm-btn__icon svg { width: 100%; height: 100%; display: block; }
+
+/* sizes */
+.wm-btn--sm { height: var(--control-height-sm); padding: 0 var(--space-4); font-size: var(--text-xs); border-radius: var(--radius-sm); }
+.wm-btn--lg { height: var(--control-height-lg); padding: 0 var(--space-6); font-size: var(--text-base); }
+.wm-btn--block { display: flex; width: 100%; }
+
+/* primary — Westminster Teal */
+.wm-btn--primary { background: var(--color-primary); color: var(--color-on-primary); }
+.wm-btn--primary:hover { background: var(--color-primary-hover); }
+.wm-btn--primary:active { background: var(--color-primary-active); }
+
+/* secondary — white with hairline */
+.wm-btn--secondary { background: var(--neutral-0); color: var(--text-strong); border-color: var(--border-default); }
+.wm-btn--secondary:hover { background: var(--neutral-50); border-color: var(--border-strong); }
+.wm-btn--secondary:active { background: var(--neutral-100); }
+
+/* outline — teal outline */
+.wm-btn--outline { background: transparent; color: var(--color-primary-active); border-color: var(--color-primary); }
+.wm-btn--outline:hover { background: var(--color-primary-tint); }
+.wm-btn--outline:active { background: var(--teal-100); }
+
+/* tonal — soft teal fill */
+.wm-btn--tonal { background: var(--color-primary-tint); color: var(--color-primary-active); }
+.wm-btn--tonal:hover { background: var(--teal-100); }
+.wm-btn--tonal:active { background: var(--teal-200); }
+
+/* ghost — text only */
+.wm-btn--ghost { background: transparent; color: var(--text-strong); }
+.wm-btn--ghost:hover { background: var(--neutral-100); }
+.wm-btn--ghost:active { background: var(--neutral-150); }
+
+/* danger */
+.wm-btn--danger { background: var(--color-danger); color: #fff; }
+.wm-btn--danger:hover { background: #E85A12; }
+.wm-btn--danger:active { background: #CC4D0C; }
+
+/* on dark / teal backgrounds */
+.wm-btn--inverse { background: #fff; color: var(--color-primary-active); }
+.wm-btn--inverse:hover { background: var(--neutral-100); }
+
+/* icon-only */
+.wm-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--control-height-md); height: var(--control-height-md);
+  padding: 0; border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md); cursor: pointer; color: var(--text-muted);
+  background: transparent;
+  transition: var(--transition-colors), box-shadow var(--duration-base) var(--ease-standard);
+}
+.wm-icon-btn:hover { background: var(--neutral-100); color: var(--text-strong); }
+.wm-icon-btn:active { background: var(--neutral-150); }
+.wm-icon-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.wm-icon-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+.wm-icon-btn--sm { width: var(--control-height-sm); height: var(--control-height-sm); }
+.wm-icon-btn--lg { width: var(--control-height-lg); height: var(--control-height-lg); }
+.wm-icon-btn--solid { background: var(--color-primary); color: #fff; }
+.wm-icon-btn--solid:hover { background: var(--color-primary-hover); color: #fff; }
+.wm-icon-btn svg { width: 1.25em; height: 1.25em; display: block; }
+
+/* ---- css/forms.css ---- */
+/* ============================================================
+   COMPONENT STYLES — Forms
+   Input, Textarea, Select, Checkbox, Radio, Switch, FormField.
+   ============================================================ */
+
+/* ---- Field wrapper ---- */
+.wm-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.wm-field__label {
+  font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--text-strong);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.wm-field__req { color: var(--color-danger); font-weight: var(--weight-bold); }
+.wm-field__hint { font-size: var(--text-xs); color: var(--text-subtle); line-height: 1.45; }
+.wm-field__error { font-size: var(--text-xs); color: var(--color-danger-text); font-weight: var(--weight-medium); }
+
+/* ---- Text input / select / textarea ---- */
+.wm-input {
+  width: 100%;
+  height: var(--control-height-md);
+  padding: 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-strong);
+  background: var(--neutral-0);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+  transition: var(--transition-colors), box-shadow var(--duration-base) var(--ease-standard);
+}
+.wm-input::placeholder { color: var(--text-subtle); }
+.wm-input:hover { border-color: var(--border-strong); }
+.wm-input:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring); }
+.wm-input:disabled { background: var(--neutral-100); color: var(--text-disabled); cursor: not-allowed; }
+.wm-input[aria-invalid="true"] { border-color: var(--color-danger); }
+.wm-input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgba(255, 103, 29, 0.28); }
+textarea.wm-input { height: auto; min-height: 96px; padding: var(--space-3); line-height: 1.5; resize: vertical; }
+
+/* input with leading/trailing adornment */
+.wm-input-group { position: relative; display: flex; align-items: center; }
+.wm-input-group .wm-input { padding-left: 38px; }
+.wm-input-group--trailing .wm-input { padding-left: var(--space-3); padding-right: 38px; }
+.wm-input-group__icon {
+  position: absolute; left: 12px; display: inline-flex; color: var(--text-subtle);
+  pointer-events: none; width: 16px; height: 16px;
+}
+.wm-input-group--trailing .wm-input-group__icon { left: auto; right: 12px; }
+.wm-input-group__icon svg { width: 100%; height: 100%; }
+
+/* select chevron */
+.wm-select {
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555759' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 36px; cursor: pointer;
+}
+
+.wm-input--sm { height: var(--control-height-sm); font-size: var(--text-xs); }
+.wm-input--lg { height: var(--control-height-lg); font-size: var(--text-base); }
+
+/* ---- Checkbox & radio ---- */
+.wm-check { display: inline-flex; align-items: flex-start; gap: var(--space-2); cursor: pointer; font-size: var(--text-sm); color: var(--text-body); }
+.wm-check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.wm-check__box {
+  flex: none; width: 18px; height: 18px; margin-top: 1px;
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius-xs);
+  background: var(--neutral-0); display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; transition: var(--transition-colors), box-shadow var(--duration-base) var(--ease-standard);
+}
+.wm-check__box svg { width: 12px; height: 12px; opacity: 0; transform: scale(0.6); transition: opacity var(--duration-fast), transform var(--duration-fast) var(--ease-out); }
+.wm-check input:checked + .wm-check__box { background: var(--color-primary); border-color: var(--color-primary); }
+.wm-check input:checked + .wm-check__box svg { opacity: 1; transform: scale(1); }
+.wm-check input:focus-visible + .wm-check__box { box-shadow: var(--focus-ring); }
+.wm-check input:disabled ~ * { opacity: 0.5; }
+.wm-check--radio .wm-check__box { border-radius: 50%; }
+.wm-check--radio .wm-check__dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0; transform: scale(0.4); transition: opacity var(--duration-fast), transform var(--duration-fast) var(--ease-out); }
+.wm-check--radio input:checked + .wm-check__box .wm-check__dot { opacity: 1; transform: scale(1); }
+
+/* ---- Switch ---- */
+.wm-switch { display: inline-flex; align-items: center; gap: var(--space-3); cursor: pointer; font-size: var(--text-sm); color: var(--text-body); }
+.wm-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.wm-switch__track {
+  position: relative; width: 40px; height: 22px; flex: none;
+  background: var(--neutral-300); border-radius: var(--radius-pill);
+  transition: background-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base);
+}
+.wm-switch__thumb {
+  position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
+  background: #fff; border-radius: 50%; box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.wm-switch input:checked + .wm-switch__track { background: var(--color-primary); }
+.wm-switch input:checked + .wm-switch__track .wm-switch__thumb { transform: translateX(18px); }
+.wm-switch input:focus-visible + .wm-switch__track { box-shadow: var(--focus-ring); }
+.wm-switch input:disabled + .wm-switch__track { opacity: 0.5; }
+
+/* ---- css/feedback.css ---- */
+/* ============================================================
+   COMPONENT STYLES — Feedback
+   Alert, Badge, Tag, Spinner, ProgressBar.
+   ============================================================ */
+
+/* ---- Alert / banner ---- */
+.wm-alert {
+  display: flex; gap: var(--space-3); align-items: flex-start;
+  padding: var(--space-4); border: var(--border-width) solid;
+  border-radius: var(--radius-lg); border-left-width: 4px;
+}
+.wm-alert__icon { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+.wm-alert__icon svg { width: 100%; height: 100%; }
+.wm-alert__body { flex: 1; min-width: 0; }
+.wm-alert__title { font-weight: var(--weight-bold); font-size: var(--text-sm); margin-bottom: 2px; }
+.wm-alert__text { font-size: var(--text-sm); line-height: 1.5; color: var(--text-body); }
+.wm-alert--info { background: var(--color-info-bg); border-color: var(--color-info-border); }
+.wm-alert--info .wm-alert__icon, .wm-alert--info .wm-alert__title { color: var(--color-info-text); }
+.wm-alert--success { background: var(--color-success-bg); border-color: var(--color-success-border); }
+.wm-alert--success .wm-alert__icon, .wm-alert--success .wm-alert__title { color: var(--color-success-text); }
+.wm-alert--warning { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
+.wm-alert--warning .wm-alert__icon, .wm-alert--warning .wm-alert__title { color: var(--color-warning-text); }
+.wm-alert--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
+.wm-alert--danger .wm-alert__icon, .wm-alert--danger .wm-alert__title { color: var(--color-danger-text); }
+
+/* ---- Badge ---- */
+.wm-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 20px; padding: 0 8px;
+  font-size: var(--text-2xs); font-weight: var(--weight-bold);
+  letter-spacing: 0.02em; line-height: 1;
+  border-radius: var(--radius-pill); white-space: nowrap;
+}
+.wm-badge__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.wm-badge--neutral { background: var(--neutral-150); color: var(--neutral-700); }
+.wm-badge--teal    { background: var(--teal-50); color: var(--teal-700); }
+.wm-badge--navy    { background: var(--navy-100); color: var(--navy-700); }
+.wm-badge--success { background: var(--color-success-bg); color: var(--color-success-text); }
+.wm-badge--warning { background: var(--color-warning-bg); color: var(--color-warning-text); }
+.wm-badge--danger  { background: var(--color-danger-bg); color: var(--color-danger-text); }
+.wm-badge--solid   { background: var(--color-primary); color: #fff; }
+.wm-badge--solid-navy { background: var(--navy-700); color: #fff; }
+
+/* ---- Tag / chip (pill) ---- */
+.wm-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 12px;
+  font-size: var(--text-xs); font-weight: var(--weight-semibold);
+  color: var(--text-strong); background: var(--neutral-100);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-pill); white-space: nowrap;
+}
+.wm-tag--active { background: var(--teal-50); border-color: var(--teal-200); color: var(--teal-700); }
+.wm-tag__close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; margin-right: -4px; border-radius: 50%;
+  cursor: pointer; color: var(--text-subtle); background: transparent; border: 0;
+  transition: var(--transition-colors);
+}
+.wm-tag__close:hover { background: var(--neutral-200); color: var(--text-strong); }
+.wm-tag__close svg { width: 11px; height: 11px; }
+
+/* ---- Spinner ---- */
+.wm-spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 2.5px solid var(--teal-100); border-top-color: var(--color-primary);
+  border-radius: 50%; animation: wm-spin 0.7s linear infinite;
+}
+.wm-spinner--sm { width: 14px; height: 14px; border-width: 2px; }
+.wm-spinner--lg { width: 30px; height: 30px; border-width: 3px; }
+@keyframes wm-spin { to { transform: rotate(360deg); } }
+
+/* ---- Progress bar ---- */
+.wm-progress { width: 100%; height: 8px; background: var(--neutral-150); border-radius: var(--radius-pill); overflow: hidden; }
+.wm-progress__fill { height: 100%; background: var(--color-primary); border-radius: var(--radius-pill); transition: width var(--duration-slow) var(--ease-out); }
+
+/* ---- css/data.css ---- */
+/* ============================================================
+   COMPONENT STYLES — Data display
+   Card, Stat (KPI), Avatar, simple Table.
+   ============================================================ */
+
+/* ---- Card ---- */
+.wm-card {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.wm-card--flat { box-shadow: none; }
+.wm-card--interactive { transition: box-shadow var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-out), border-color var(--duration-base); cursor: pointer; }
+.wm-card--interactive:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--border-default); }
+.wm-card--accent { border-top: 4px solid var(--color-primary); }
+.wm-card__media { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--neutral-100); }
+.wm-card__body { padding: var(--space-5); }
+.wm-card__header { padding: var(--space-5) var(--space-5) 0; }
+.wm-card__footer { padding: var(--space-4) var(--space-5); border-top: var(--border-width) solid var(--divider); display: flex; align-items: center; gap: var(--space-3); }
+.wm-card__title { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-h4); color: var(--text-strong); line-height: 1.25; }
+.wm-card__text { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.55; margin-top: var(--space-2); }
+
+/* ---- Stat / KPI ---- */
+.wm-stat {
+  display: flex; flex-direction: column; gap: var(--space-1);
+  padding: var(--space-5);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.wm-stat__label { font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--text-muted); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+.wm-stat__value { font-family: var(--font-display); font-weight: var(--weight-extrabold); font-size: 30px; line-height: 1.05; color: var(--color-primary); letter-spacing: -0.01em; }
+.wm-stat__value--navy { color: var(--text-strong); }
+.wm-stat__meta { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-xs); font-weight: var(--weight-semibold); margin-top: 2px; }
+.wm-stat__meta--up { color: var(--color-success-text); }
+.wm-stat__meta--down { color: var(--color-danger-text); }
+
+/* ---- Avatar ---- */
+.wm-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: none; border-radius: 50%;
+  background: var(--teal-100); color: var(--teal-700);
+  font-weight: var(--weight-bold); font-size: var(--text-sm);
+  overflow: hidden; user-select: none;
+}
+.wm-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.wm-avatar--sm { width: 28px; height: 28px; font-size: var(--text-xs); }
+.wm-avatar--lg { width: 56px; height: 56px; font-size: var(--text-h4); }
+.wm-avatar--navy { background: var(--navy-100); color: var(--navy-700); }
+.wm-avatar--square { border-radius: var(--radius-md); }
+
+/* ---- Table ---- */
+.wm-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.wm-table thead th {
+  text-align: left; font-weight: var(--weight-bold); color: #fff;
+  background: var(--color-primary); padding: var(--space-3) var(--space-4);
+  white-space: nowrap;
+}
+.wm-table thead th:first-child { border-top-left-radius: var(--radius-md); }
+.wm-table thead th:last-child { border-top-right-radius: var(--radius-md); }
+.wm-table tbody td { padding: var(--space-3) var(--space-4); color: var(--text-body); border-bottom: var(--border-width) solid var(--divider); }
+.wm-table tbody tr:nth-child(even) td { background: var(--neutral-50); }
+.wm-table tbody tr:hover td { background: var(--teal-50); }
+.wm-table--bordered { border: var(--border-width) solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; }
+
+/* ---- css/navigation.css ---- */
+/* ============================================================
+   COMPONENT STYLES — Navigation
+   Tabs, Breadcrumb, Pagination.
+   ============================================================ */
+
+/* ---- Tabs ---- */
+.wm-tabs { display: flex; gap: var(--space-1); border-bottom: var(--border-width) solid var(--divider); }
+.wm-tab {
+  appearance: none; background: transparent; border: 0; cursor: pointer;
+  padding: var(--space-3) var(--space-4); margin-bottom: -1px;
+  font-family: var(--font-sans); font-size: var(--text-sm); font-weight: var(--weight-semibold);
+  color: var(--text-muted); border-bottom: 2.5px solid transparent;
+  transition: var(--transition-colors);
+}
+.wm-tab:hover { color: var(--text-strong); }
+.wm-tab[aria-selected="true"] { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+.wm-tab:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+/* pill tabs variant */
+.wm-tabs--pills { border-bottom: 0; gap: var(--space-2); }
+.wm-tabs--pills .wm-tab { border-radius: var(--radius-pill); border: 0; margin-bottom: 0; padding: var(--space-2) var(--space-4); }
+.wm-tabs--pills .wm-tab[aria-selected="true"] { background: var(--color-primary); color: #fff; }
+
+/* ---- Breadcrumb ---- */
+.wm-breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); font-size: var(--text-sm); }
+.wm-breadcrumb a { color: var(--text-muted); font-weight: var(--weight-medium); }
+.wm-breadcrumb a:hover { color: var(--color-primary); text-decoration: none; }
+.wm-breadcrumb__sep { color: var(--neutral-400); display: inline-flex; }
+.wm-breadcrumb__sep svg { width: 14px; height: 14px; }
+.wm-breadcrumb__current { color: var(--text-strong); font-weight: var(--weight-semibold); }
+
+/* ---- Pagination ---- */
+.wm-pagination { display: inline-flex; align-items: center; gap: var(--space-1); }
+.wm-page {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 36px; height: 36px; padding: 0 var(--space-2);
+  font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--text-muted);
+  background: transparent; border: var(--border-width) solid transparent; border-radius: var(--radius-md);
+  cursor: pointer; transition: var(--transition-colors);
+}
+.wm-page:hover { background: var(--neutral-100); color: var(--text-strong); }
+.wm-page[aria-current="page"] { background: var(--color-primary); color: #fff; }
+.wm-page[disabled] { opacity: 0.4; cursor: not-allowed; }
+.wm-page svg { width: 16px; height: 16px; }

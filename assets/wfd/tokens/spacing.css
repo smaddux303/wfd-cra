@@ -1,0 +1,47 @@
+/* ============================================================
+   Westminster Fire Department — Spacing, Radius, Layout Tokens
+   8px base grid.
+   ============================================================ */
+
+:root {
+  /* --- Spacing scale (8px grid, with 4px half-steps) ---- */
+  --space-0:   0;
+  --space-1:   0.25rem;  /*  4px */
+  --space-2:   0.5rem;   /*  8px */
+  --space-3:   0.75rem;  /* 12px */
+  --space-4:   1rem;     /* 16px */
+  --space-5:   1.5rem;   /* 24px */
+  --space-6:   2rem;     /* 32px */
+  --space-7:   2.5rem;   /* 40px */
+  --space-8:   3rem;     /* 48px */
+  --space-9:   4rem;     /* 64px */
+  --space-10:  5rem;     /* 80px */
+  --space-12:  6rem;     /* 96px */
+
+  /* --- Radii -------------------------------------------- */
+  /* Civic, sturdy — restrained corners. Pills only for status. */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+  --radius-xl:   16px;
+  --radius-pill: 999px;
+
+  /* --- Borders ------------------------------------------ */
+  --border-width:      1px;       /* @kind spacing */
+  --border-width-thick:2px;       /* @kind spacing */
+  --border-accent:     3px;   /* gold/maroon emphasis rules  @kind spacing */
+
+  /* --- Container widths --------------------------------- */
+  --container-sm:  640px;
+  --container-md:  860px;
+  --container-lg:  1100px;
+  --container-xl:  1320px;
+
+  /* --- Z-index ------------------------------------------ */
+  --z-base:     1;   /* @kind other */
+  --z-sticky:   100; /* @kind other */
+  --z-overlay:  500; /* @kind other */
+  --z-modal:    700; /* @kind other */
+  --z-toast:    900; /* @kind other */
+}

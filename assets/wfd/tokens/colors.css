@@ -1,0 +1,96 @@
+/* ============================================================
+   Westminster Fire Department — Color Tokens
+   Primary brand palette taken from the department badge:
+   black, fire gold, and fire maroon (crimson).
+   ============================================================ */
+
+:root {
+  /* --- Brand core --------------------------------------- */
+  --wfd-black:        #0c0c0d;   /* badge field / ink */
+  --wfd-gold:         #ffcc00;   /* badge lettering & monogram */
+  --wfd-maroon:       #990033;   /* badge ring / mountains */
+
+  /* --- Gold ramp ---------------------------------------- */
+  --gold-50:          #fff9e0;
+  --gold-100:         #fff0b0;
+  --gold-200:         #ffe478;
+  --gold-300:         #ffd83f;
+  --gold-400:         #ffcc00;   /* = --wfd-gold */
+  --gold-500:         #e6b800;
+  --gold-600:         #b88f00;
+  --gold-700:         #8a6a00;
+
+  /* --- Maroon ramp -------------------------------------- */
+  --maroon-50:        #fbe9ee;
+  --maroon-100:       #f3c0cf;
+  --maroon-200:       #e07f9c;
+  --maroon-300:       #c54871;
+  --maroon-400:       #990033;   /* = --wfd-maroon */
+  --maroon-500:       #800029;
+  --maroon-600:       #66001f;
+  --maroon-700:       #4a0016;
+
+  /* --- Neutral / ink ramp (warm charcoal) --------------- */
+  --ink-900:          #0c0c0d;
+  --ink-800:          #1c1c1f;
+  --ink-700:          #2b2b30;
+  --ink-600:          #44444c;
+  --ink-500:          #61616b;
+  --ink-400:          #8a8a93;
+  --ink-300:          #b6b6bd;
+  --ink-200:          #d6d6db;
+  --ink-100:          #e9e9ec;
+  --ink-50:           #f5f5f6;
+  --paper:            #ffffff;
+
+  /* --- Status / signal (emergency-services semantics) --- */
+  --signal-emergency: #d11f2d;   /* active incident / 911 red */
+  --signal-warning:   #f5a623;   /* advisory / watch amber    */
+  --signal-success:   #1f8a4c;   /* clear / resolved green    */
+  --signal-info:      #1f5fa8;   /* information blue           */
+
+  --signal-emergency-bg: #fdeaeb;
+  --signal-warning-bg:    #fef4e3;
+  --signal-success-bg:    #e7f4ec;
+  --signal-info-bg:       #e8f0fa;
+
+  /* ============================================================
+     Semantic aliases — reach for these in product UI.
+     ============================================================ */
+
+  /* Surfaces */
+  --surface-page:     var(--ink-50);
+  --surface-card:     var(--paper);
+  --surface-sunken:   var(--ink-100);
+  --surface-inverse:  var(--wfd-black);
+  --surface-brand:    var(--maroon-400);
+  --surface-brand-deep: var(--maroon-600);
+
+  /* Text */
+  --text-strong:      var(--ink-900);
+  --text-body:        var(--ink-700);
+  --text-muted:       var(--ink-500);
+  --text-faint:       var(--ink-400);
+  --text-on-dark:     #f5f5f6;
+  --text-on-brand:    #ffffff;
+  --text-on-gold:     var(--ink-900);
+  --text-link:        var(--maroon-400);
+  --text-link-hover:  var(--maroon-600);
+
+  /* Borders & lines */
+  --border-subtle:    var(--ink-200);
+  --border-default:   var(--ink-300);
+  --border-strong:    var(--ink-600);
+  --border-brand:     var(--maroon-400);
+  --hairline:         color-mix(in srgb, var(--ink-900) 10%, transparent);
+
+  /* Interactive (primary = maroon, accent = gold) */
+  --action-primary:        var(--maroon-400);
+  --action-primary-hover:  var(--maroon-500);
+  --action-primary-press:  var(--maroon-600);
+  --action-accent:         var(--gold-400);
+  --action-accent-hover:   var(--gold-500);
+  --action-accent-press:   var(--gold-600);
+
+  --focus-ring:       color-mix(in srgb, var(--gold-400) 70%, var(--maroon-400));
+}

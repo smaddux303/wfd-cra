@@ -1,0 +1,15 @@
+/* ============================================================
+   Westminster Fire Department — Webfonts
+   Display : Oswald      (condensed gothic — echoes the badge
+             lettering used around the Maltese cross)
+   Text    : Public Sans (the U.S. federal government typeface —
+             the right civic register for a municipal dept.)
+   Mono    : Roboto Mono (unit IDs, station numbers, codes)
+
+   NOTE: Loaded from the Google Fonts CDN. These are open-license
+   substitutes chosen to match the badge's condensed lettering and
+   a government-grade body face. Swap in licensed brand fonts if
+   the department has them.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap');

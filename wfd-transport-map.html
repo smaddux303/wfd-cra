@@ -149,8 +149,9 @@ const map = L.map('map', {
   scrollWheelZoom: false
 });
 
-// Clean Positron basemap
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+// Clean Positron basemap (CARTO — requires API key)
+const CARTO_KEY = 'cb1_4d5n_1_7d9c57ddcc36506d06c7d6f4';
+L.tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=${CARTO_KEY}`, {
   attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
   subdomains: 'abcd',
   maxZoom: 19
